@@ -1,7 +1,7 @@
 /* peer.rs store_persists. */
 #include "mesh/check.h"
 #include "mesh/fleet_store.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <unistd.h>

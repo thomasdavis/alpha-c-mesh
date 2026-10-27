@@ -1,6 +1,6 @@
 /* peer_sched.rs: ViewWait and view_take; LoadAvg. */
 #include "mesh/peer_view.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

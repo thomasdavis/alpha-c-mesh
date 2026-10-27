@@ -4,7 +4,7 @@
 #include "mesh/abi/reconcile.h"
 #include "mesh/check.h"
 #include "mesh/reconcile.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 

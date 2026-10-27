@@ -4,7 +4,7 @@
 #include "mesh/abi/host_mload.h"
 #include "mesh/abi/peer_frames.h"
 #include "mesh/abi/peer_sizes.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <errno.h>
 #include <fcntl.h>

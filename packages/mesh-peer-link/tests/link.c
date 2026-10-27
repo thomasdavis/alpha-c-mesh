@@ -5,7 +5,7 @@
 #include "mesh/abi/place_ops.h"
 #include "mesh/check.h"
 #include "mesh/peer_link.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <netinet/in.h>
 #include <pthread.h>

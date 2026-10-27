@@ -3,7 +3,7 @@
 #include "mesh/abi/peer_sizes.h"
 #include "mesh/abi/reconcile.h"
 #include "mesh/strmap.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <pthread.h>
 #include <stdio.h>

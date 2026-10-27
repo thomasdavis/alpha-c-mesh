@@ -19,6 +19,6 @@
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "ldflags": ["-lpthread"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-plan": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-peer-codec": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-plan": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-peer-codec": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*"
   }
 }
