@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-sched-weights",
+  "version": "0.1.0",
+  "description": "The fleet scheduler's weights and policy, with the cluster config's sched_* keys over the defaults",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-sched-weights",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "scheduler",
+    "weights"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/rust-fmt": "workspace:*"
+  }
+}

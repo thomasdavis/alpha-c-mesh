@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-fleet-edit",
+  "version": "0.1.0",
+  "description": "Changes to the fleet's desired state as the control port asks for them (load, upgrade, rollback, place, groups, sched pin/pause/cordon) and their revert",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-fleet-edit",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "fleet",
+    "changes",
+    "control"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-groups": "workspace:*", "@ajax/mesh-place-mode": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-placement": "workspace:*"
+  }
+}

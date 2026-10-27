@@ -117,6 +117,52 @@ bool mj_utf8_ok(const uint8_t *b, size_t n) {
     return true;
 }
 
+/* The length of the valid UTF-8 sequence at b (1..4), or 0 with *bad the length of the maximal
+ * invalid prefix to replace (Unicode's "maximal subpart", as Rust's Utf8Chunks does). */
+static size_t seq_at(const uint8_t *b, size_t n, size_t *bad) {
+    uint8_t c = b[0];
+    if (c < 0x80) return 1;
+    size_t k;
+    uint8_t lo = 0x80, hi = 0xbf;
+    if (c >= 0xc2 && c <= 0xdf) k = 1;
+    else if (c >= 0xe0 && c <= 0xef) {
+        k = 2;
+        if (c == 0xe0) lo = 0xa0;
+        if (c == 0xed) hi = 0x9f;
+    } else if (c >= 0xf0 && c <= 0xf4) {
+        k = 3;
+        if (c == 0xf0) lo = 0x90;
+        if (c == 0xf4) hi = 0x8f;
+    } else {
+        *bad = 1;
+        return 0;
+    }
+    size_t i = 1;
+    for (; i <= k && i < n; i++) {
+        uint8_t x = b[i];
+        if (i == 1 ? (x < lo || x > hi) : (x & 0xc0) != 0x80) break;
+    }
+    if (i == k + 1) return k + 1;
+    *bad = i;
+    return 0;
+}
+
+char *mj_utf8_lossy(const uint8_t *b, size_t n) {
+    msb out = {0};
+    size_t i = 0;
+    while (i < n) {
+        size_t bad = 0, k = seq_at(b + i, n - i, &bad);
+        if (k) {
+            msb_put(&out, b + i, k);
+            i += k;
+        } else {
+            msb_puts(&out, "\xef\xbf\xbd");
+            i += bad;
+        }
+    }
+    return msb_take(&out);
+}
+
 bool mj_rd_str(mj_rd *r, char **s) {
     uint32_t len;
     const uint8_t *p;

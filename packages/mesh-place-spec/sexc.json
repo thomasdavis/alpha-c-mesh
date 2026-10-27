@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-place-spec",
+  "version": "0.1.0",
+  "description": "A program's placement regions from its manifest: the shared state, the frame number and the output split into parts",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-place-spec",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "placement",
+    "manifest",
+    "regions"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*"
+  }
+}

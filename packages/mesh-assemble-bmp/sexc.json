@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-assemble-bmp",
+  "version": "0.1.0",
+  "description": "A 24-bit BMP of an RGB raster (rows bottom-up, BGR, each padded to 4 bytes)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-assemble-bmp",
+  "keywords": ["mesh", "alphaos", "bmp", "image"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*"}
+}

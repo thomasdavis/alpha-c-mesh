@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-parse",
+  "version": "0.1.0",
+  "description": "Rust-compatible number parsing: str::parse for u32, u64, i32, f32, f64 and from_str_radix(16)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-parse",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "parse",
+    "number"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

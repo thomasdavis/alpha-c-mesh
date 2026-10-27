@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-fleet-golden",
+  "version": "0.1.0",
+  "description": "Golden vectors from the Rust fleet (float formatting, needs, 150 random scheduler scenarios) and the tests that hold the C port to them",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-mt": "workspace:*",
+    "@ajax/mesh-parse": "workspace:*",
+    "@ajax/rust-fmt": "workspace:*",
+    "@ajax/mesh-abi-fnv": "workspace:*",
+    "@ajax/mesh-member-list": "workspace:*",
+    "@ajax/mesh-sched-member": "workspace:*",
+    "@ajax/mesh-sched-needs": "workspace:*",
+    "@ajax/mesh-sched-weights": "workspace:*",
+    "@ajax/mesh-sched-score": "workspace:*",
+    "@ajax/mesh-sched-place": "workspace:*",
+    "@ajax/mesh-sched-tracker": "workspace:*",
+    "@ajax/mesh-fleet-doc": "workspace:*",
+    "@ajax/mesh-fleet-persist": "workspace:*",
+    "@ajax/mesh-fleet-core": "workspace:*"
+  }
+}

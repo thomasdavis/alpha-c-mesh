@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-sched-report",
+  "version": "0.1.0",
+  "description": "A member's F_PERF report (capacity, its programs' measured performance, failures, link RTTs and echoes) in the Rust's text form",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-sched-report",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "scheduler",
+    "report",
+    "perf"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-sched-member": "workspace:*"
+  }
+}

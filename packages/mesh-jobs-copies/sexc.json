@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-jobs-copies",
+  "version": "0.1.0",
+  "description": "Who keeps the durable copies of a job item's payload before its result is sent: the member that ran it, the leader, then the next members up",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-copies",
+  "keywords": ["mesh", "alphaos", "jobs", "replication", "durability"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

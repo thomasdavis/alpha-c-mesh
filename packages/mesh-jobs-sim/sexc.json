@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-sim",
+  "version": "0.1.0",
+  "description": "Test bed for the job nodes: simulated fleets checked against the Rust (traces) and the jobs.rs fleet tests",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["mesh", "alphaos", "jobs", "simulation", "tests"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-node": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*"
+  }
+}

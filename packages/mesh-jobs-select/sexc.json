@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-select",
+  "version": "0.1.0",
+  "description": "Who gets a job's next lease: every member's verdict (down, not in the job's members, not running it, the scheduler's filter and score, the owner policy's backoff), best first",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-select",
+  "keywords": ["mesh", "alphaos", "jobs", "scheduling", "leases"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-spec": "workspace:*",
+    "@ajax/mesh-jobs-frame": "workspace:*"
+  }
+}

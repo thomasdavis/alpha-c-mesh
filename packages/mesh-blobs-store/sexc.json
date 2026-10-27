@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-blobs-store",
+  "version": "0.1.0",
+  "description": "A member's blob store: job payloads content-addressed by sha256 and referenced per job, bounded, evicting only forgotten jobs' references, verified on read",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-blobs-store",
+  "keywords": ["mesh", "alphaos", "blobs", "content-addressed", "storage"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-omap": "workspace:*",
+    "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-ref-sha256d": "workspace:*", "@ajax/mesh-blobs-durable": "workspace:*"
+  }
+}

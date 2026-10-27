@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-fleet-plan",
+  "version": "0.1.0",
+  "description": "What makes one member's programs match the fleet's committed document: unloads, loads, upgrades, rollbacks, migrations, run states, resets; and the first document",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-fleet-plan",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "fleet",
+    "reconcile",
+    "plan"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*"
+  }
+}

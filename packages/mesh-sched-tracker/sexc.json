@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-sched-tracker",
+  "version": "0.1.0",
+  "description": "The fleet scheduler's rebalancer: migrations with hysteresis, a budget and dwell, the owner policy, lockstep group re-form proposals, and moves' verdicts",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-sched-tracker",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "scheduler",
+    "rebalance",
+    "migration"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-sched-score": "workspace:*", "@ajax/mesh-sched-place": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-strmap": "workspace:*"
+  }
+}

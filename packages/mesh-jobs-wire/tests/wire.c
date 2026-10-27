@@ -43,6 +43,17 @@ int main(void) {
     }
     CHECK(mj_utf8_ok((const uint8_t *)"caf\xc3\xa9 \xf0\x9f\x98\x80", 10));
     CHECK(!mj_utf8_ok((const uint8_t *)"\xf4\x90\x80\x80", 4));
+    /* from_utf8_lossy: a maximal invalid prefix is one U+FFFD (values from Rust). */
+    static const struct { const char *in; size_t n; const char *out; } lossy[] = {
+        {"ok", 2, "ok"}, {"a\xff" "b", 3, "a\xef\xbf\xbd" "b"}, {"\xe2\x82", 2, "\xef\xbf\xbd"}, {"\xe2\x82" "x", 3, "\xef\xbf\xbd" "x"},
+        {"\xed\xa0\x80", 3, "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd"}, {"\xf0\x9f\x98", 3, "\xef\xbf\xbd"},
+        {"\xc0\xaf", 2, "\xef\xbf\xbd\xef\xbf\xbd"}, {"\xf4\x90\x80\x80", 4, "\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd"},
+    };
+    for (size_t i = 0; i < sizeof lossy / sizeof *lossy; i++) {
+        char *l = mj_utf8_lossy((const uint8_t *)lossy[i].in, lossy[i].n);
+        CHECK_S(l, lossy[i].out);
+        free(l);
+    }
     mj_ranges_free(&r);
     mj_ranges_free(&back);
     msb_free(&w);

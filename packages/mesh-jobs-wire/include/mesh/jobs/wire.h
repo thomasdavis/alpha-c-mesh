@@ -42,5 +42,7 @@ static inline bool mj_rd_done(const mj_rd *r) { return r->at == r->n; }
 
 /* Rust's String::from_utf8 test: well-formed UTF-8 (no overlongs, surrogates or values past U+10FFFF). */
 bool mj_utf8_ok(const uint8_t *b, size_t n);
+/* Rust's String::from_utf8_lossy: each maximal invalid subsequence becomes U+FFFD. A new string. */
+char *mj_utf8_lossy(const uint8_t *b, size_t n);
 
 #endif

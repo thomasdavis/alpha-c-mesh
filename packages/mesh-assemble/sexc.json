@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-assemble",
+  "version": "0.1.0",
+  "description": "The assembler of a fleet-rendered pathtrace image: each tile's pass sums folded in pass order, exactly once, in the cluster float mode, checked against their digests",
+  "kind": "library",
+  "targets": ["host"],
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-assemble",
+  "keywords": ["mesh", "alphaos", "pathtrace", "assembly", "deterministic"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-omap": "workspace:*",
+    "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-jobs-spec": "workspace:*", "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-ftz": "workspace:*", "@ajax/pathtrace-scene": "workspace:*", "@ajax/pathtrace-job-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*", "@ajax/pathtrace-digest": "workspace:*", "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/mesh-ref-pathtrace": "workspace:*", "@ajax/mesh-ref-sha256d": "workspace:*", "@ajax/mesh-assemble-bmp": "workspace:*"
+  }
+}
