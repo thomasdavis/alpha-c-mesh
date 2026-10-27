@@ -1,4 +1,4 @@
-/* @ajax/mesh-abi-host-fields: its tables and functions, and its compile-time layout checks. */
+/* @ajax/mesh-abi-host-fields: its tables and functions. */
 #include "mesh/abi/host_fields.h"
 
 const mesh_field MESH_HOST_FIELDS[138] = {

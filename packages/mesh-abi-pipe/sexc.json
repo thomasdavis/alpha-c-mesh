@@ -22,6 +22,7 @@
     "@ajax/mesh-abi-pipe-ring": "workspace:*",
     "@ajax/mesh-abi-words": "workspace:*",
     "@ajax/mesh-abi-pipe-hash": "workspace:*",
+    "@ajax/mesh-abi-view-heap": "workspace:*",
     "@ajax/mesh-check": "workspace:*"
   }
 }

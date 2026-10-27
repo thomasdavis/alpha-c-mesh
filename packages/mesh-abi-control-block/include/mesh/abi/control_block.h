@@ -84,4 +84,12 @@ static inline size_t mesh_prog_ctl(uint32_t slot) { return MESH_PROG_CTL + MESH_
 /* The next P_RUN_REQ value after `cur` for a request to run (`on`) or stop. */
 static inline uint32_t mesh_run_req_next(uint32_t cur, bool on) { return ((cur & ~1u) + 2u) | (uint32_t)on; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_P_LAUNCHES + 4 <= MESH_LINE, "P_LAUNCHES + 4 <= LINE");
+_Static_assert((MESH_P_RING_TAIL % 8 == 0), "P_RING_TAIL.is_multiple_of(8)");
+_Static_assert((MESH_P_REQ_SEQ % 8 == 0), "P_REQ_SEQ.is_multiple_of(8)");
+_Static_assert(MESH_P_RING_HEAD == MESH_LINE, "P_RING_HEAD == LINE");
+_Static_assert(MESH_P_DONE == 2 * MESH_LINE, "P_DONE == 2 * LINE");
+_Static_assert(MESH_P_COUNTERS == 3 * MESH_LINE, "P_COUNTERS == 3 * LINE");
+
 #endif

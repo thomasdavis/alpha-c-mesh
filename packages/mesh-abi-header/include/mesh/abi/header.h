@@ -80,4 +80,11 @@
 #define MESH_HEADER_FIELDS_LEN 19
 extern const mesh_field MESH_HEADER_FIELDS[19];
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_H_SMS < MESH_H_SYSTEMS, "H_SMS < H_SYSTEMS");
+_Static_assert(MESH_H_SYSTEMS < MESH_H_CC, "H_SYSTEMS < H_CC");
+_Static_assert(MESH_H_SMS_TOTAL + 4 <= MESH_H_BACKEND, "H_SMS_TOTAL + 4 <= H_BACKEND");
+_Static_assert(MESH_H_MAX_TG_THREADS + 4 <= MESH_H_BYTES, "H_MAX_TG_THREADS + 4 <= H_BYTES");
+_Static_assert(MESH_H_SYSTEMS + 4 <= MESH_H_BYTES, "H_SYSTEMS + 4 <= H_BYTES");
+
 #endif

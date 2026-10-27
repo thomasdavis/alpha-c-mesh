@@ -1,4 +1,4 @@
-/* @ajax/mesh-abi-pipe-table: its tables and functions, and its compile-time layout checks. */
+/* @ajax/mesh-abi-pipe-table: its tables and functions. */
 #include "mesh/abi/pipe_table.h"
 
 const mesh_field MESH_PIPE_FIELDS[10] = {

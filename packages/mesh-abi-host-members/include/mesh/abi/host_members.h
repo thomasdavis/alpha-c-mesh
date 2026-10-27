@@ -43,4 +43,10 @@ extern const mesh_field MESH_MEMBER_FIELDS[13];
 /* Member k's record. */
 static inline size_t mesh_member(uint32_t k) { return MESH_S_MEMBERS + MESH_MEMBER_BYTES * (size_t)k; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert((MESH_M_ROUND % 8 == 0), "M_ROUND.is_multiple_of(8)");
+_Static_assert(MESH_M_GPU + 32 <= MESH_M_ARCH, "M_GPU + 32 <= M_ARCH");
+_Static_assert(MESH_M_ARCH + 16 <= MESH_M_HOST, "M_ARCH + 16 <= M_HOST");
+_Static_assert(MESH_M_HOST + 32 <= MESH_MEMBER_BYTES, "M_HOST + 32 <= MEMBER_BYTES");
+
 #endif

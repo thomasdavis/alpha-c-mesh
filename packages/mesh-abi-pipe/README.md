@@ -23,6 +23,7 @@ The header is freestanding (`<stdint.h>`, `<stddef.h>`, `<stdbool.h>` only): it 
 ## Tests
 
 - `tests/constants.c`: every constant against the value the Rust prints (5 checks)
+- `tests/pipe.c`: the Rust's table-level pipe tests, one for one (host_push_pop_through_the_tables, hold_and_flight), plus every result's code, over an 8 MiB mailbox of C11 atomics
 
 ## Differences
 

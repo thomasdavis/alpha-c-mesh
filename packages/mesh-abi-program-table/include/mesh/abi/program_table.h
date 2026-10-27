@@ -73,4 +73,9 @@ extern const char *const MESH_PEER_MODES[2];
 /* Slot s's entry in the program table. */
 static inline size_t mesh_prog_entry(uint32_t slot) { return MESH_PROG_TABLE + MESH_PT_BYTES * (size_t)slot; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_POLICIES_LEN == MESH_POLICY_JOB  + 1, "POLICIES.len() == POLICY_JOB as usize + 1");
+_Static_assert(MESH_PT_LOADS + 4 <= MESH_PT_BYTES, "PT_LOADS + 4 <= PT_BYTES");
+_Static_assert((MESH_PT_PTX_HASH % 8 == 0), "PT_PTX_HASH.is_multiple_of(8)");
+
 #endif

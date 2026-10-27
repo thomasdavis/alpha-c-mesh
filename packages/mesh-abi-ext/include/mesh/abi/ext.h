@@ -81,4 +81,14 @@ extern const mesh_field MESH_EXT_FIELDS[15];
 /* Slot s's manifest extension. */
 static inline size_t mesh_prog_ext(uint32_t slot) { return MESH_PROG_EXT + MESH_PX_BYTES * (size_t)slot; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_PX_LOCAL + 4 <= MESH_PX_FIELDS, "PX_LOCAL + 4 <= PX_FIELDS");
+_Static_assert(MESH_PX_FIELDS + MESH_FIELD_BYTES * MESH_MAX_FIELDS <= MESH_PX_SHARED, "PX_FIELDS + FIELD_BYTES * MAX_FIELDS <= PX_SHARED");
+_Static_assert(MESH_PX_SCRATCH + 8 <= MESH_PX_BYTES, "PX_SCRATCH + 8 <= PX_BYTES");
+_Static_assert((MESH_PX_SCRATCH % 8 == 0), "PX_SCRATCH.is_multiple_of(8)");
+_Static_assert(MESH_PX_FIELD_COUNT < MESH_PX_PLACE_CAP, "PX_FIELD_COUNT < PX_PLACE_CAP");
+_Static_assert(MESH_PX_PLACE_SYS + 4 <= MESH_PX_PLACE_ASSIGN, "PX_PLACE_SYS + 4 <= PX_PLACE_ASSIGN");
+_Static_assert(MESH_FD_OFF + 4 <= MESH_FIELD_BYTES, "FD_OFF + 4 <= FIELD_BYTES");
+_Static_assert(MESH_FD_NAME + MESH_FD_NAME_MAX < MESH_FD_TYPE, "FD_NAME + FD_NAME_MAX < FD_TYPE");
+
 #endif

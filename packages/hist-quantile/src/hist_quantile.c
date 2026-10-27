@@ -1,4 +1,4 @@
-/* @ajax/hist-quantile: its tables and functions, and its compile-time layout checks. */
+/* @ajax/hist-quantile: its tables and functions. */
 #include "hist_quantile.h"
 
 uint32_t hist_quantile(const uint32_t *hist, size_t n, uint64_t per_mille) {

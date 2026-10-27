@@ -1,4 +1,4 @@
-/* @ajax/sha256-compress: its tables and functions, and its compile-time layout checks. */
+/* @ajax/sha256-compress: its tables and functions. */
 #include "sha256_compress.h"
 
 static const uint32_t K[64] = {

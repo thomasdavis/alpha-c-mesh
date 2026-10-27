@@ -37,4 +37,9 @@ extern const mesh_field MESH_MLOAD_FIELDS[15];
 /* Member k's load record. */
 static inline size_t mesh_mload(uint32_t k) { return MESH_S_MLOAD + MESH_MLOAD_BYTES * (size_t)k; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_ML_SHARE + MESH_LOADREP_BYTES == MESH_MLOAD_BYTES, "ML_SHARE + LOADREP_BYTES == MLOAD_BYTES");
+_Static_assert((MESH_S_MLOAD % 8 == 0), "S_MLOAD.is_multiple_of(8)");
+_Static_assert((MESH_MLOAD_BYTES % 8 == 0), "MLOAD_BYTES.is_multiple_of(8)");
+
 #endif

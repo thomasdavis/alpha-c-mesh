@@ -24,6 +24,7 @@ The header is freestanding (`<stdint.h>`, `<stddef.h>`, `<stdbool.h>` only): it 
 
 - `tests/constants.c`: every constant against the value the Rust prints (11 checks)
 - `tests/golden.c`: its functions against 267 vectors computed by the Rust on the same inputs
+- `tests/ring.c`: the Rust's ring tests, one for one (shape_and_laps, fifo_full_and_wrap, mpmc_threads_lose_and_duplicate_nothing with C11 threads, position_is_in_the_sum, reserve_push_is_bounded, skip_dead_waits_for_the_front), over C11 atomics (`tests/mem.h`)
 
 ## Differences
 

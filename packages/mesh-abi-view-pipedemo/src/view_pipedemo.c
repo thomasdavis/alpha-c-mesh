@@ -1,4 +1,4 @@
-/* @ajax/mesh-abi-view-pipedemo: its tables and functions, and its compile-time layout checks. */
+/* @ajax/mesh-abi-view-pipedemo: its tables and functions. */
 #include "mesh/abi/view_pipedemo.h"
 
 void mesh_pipedemo_msg(uint32_t seq, uint64_t stamp, uint32_t origin, uint32_t out[16]) {

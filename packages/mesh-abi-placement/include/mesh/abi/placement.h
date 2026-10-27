@@ -78,4 +78,9 @@ extern const char *const MESH_PLACES[3];
 /* The show region's bytes for out_bytes of output. */
 static inline uint32_t mesh_show_bytes(uint32_t out_bytes) { return (uint32_t)MESH_SH_DATA + 2 * out_bytes; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_SH_BUF + MESH_SH_BUF_BYTES * 2 <= MESH_SH_DATA, "SH_BUF + SH_BUF_BYTES * 2 <= SH_DATA");
+_Static_assert(MESH_SHB_SYS + 4 <= MESH_SH_BUF_BYTES, "SHB_SYS + 4 <= SH_BUF_BYTES");
+_Static_assert(MESH_PLACE_PARTS_MAX == 32, "PLACE_PARTS_MAX == 32");
+
 #endif

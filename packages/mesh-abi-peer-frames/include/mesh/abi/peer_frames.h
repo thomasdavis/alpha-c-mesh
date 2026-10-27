@@ -161,4 +161,10 @@ extern const uint8_t MESH_FRAMES[32];
 #define MESH_PEER_PING_MS UINT64_C(250)
 #define MESH_PEER_DEAD_MS UINT64_C(3000)
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_F_VIEW < MESH_F_JOB_AVAIL, "F_VIEW < F_JOB_AVAIL");
+_Static_assert(MESH_F_RESULT == MESH_F_JOB_AVAIL + 7, "F_RESULT == F_JOB_AVAIL + 7");
+_Static_assert(MESH_F_BLOB_PUT == MESH_F_RESULT + 1, "F_BLOB_PUT == F_RESULT + 1");
+_Static_assert(MESH_F_BLOB == MESH_F_BLOB_PUT + 3, "F_BLOB == F_BLOB_PUT + 3");
+
 #endif

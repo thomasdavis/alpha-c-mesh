@@ -95,4 +95,13 @@ static inline uint32_t mesh_doom_map_cell(size_t x, size_t y) {
     return c >= '1' && c <= '9' ? (uint32_t)(c - '0') : 0;
 }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_DOOM_D_DIST + 4 * MESH_DOOM_WIDTH + 0x10 + MESH_DOOM_INPUT_BYTES <= MESH_DOOM_VIEW_BYTES, "doom::D_DIST + 4 * doom::WIDTH + 0x10 + doom::INPUT_BYTES <= doom::VIEW_BYTES");
+_Static_assert(MESH_DOOM_D_MAP + 4 * 256 <= MESH_DOOM_D_HEIGHT, "doom::D_MAP + 4 * 256 <= doom::D_HEIGHT");
+_Static_assert(MESH_DOOM_D_KEYS + 4 <= MESH_DOOM_D_MAP, "doom::D_KEYS + 4 <= doom::D_MAP");
+_Static_assert((MESH_DOOM_WIDTH % 32 == 0), "doom::WIDTH.is_multiple_of(32)");
+_Static_assert(MESH_DOOM_D_DIST + 4 * MESH_DOOM_WIDTH <= MESH_DOOM_D_SHOW, "doom::D_DIST + 4 * doom::WIDTH <= doom::D_SHOW");
+_Static_assert(MESH_DOOM_SNAP_BYTES == 0x3100, "doom::SNAP_BYTES == 0x3100");
+_Static_assert(MESH_DOOM_SNAP_BYTES + 0x10 + MESH_DOOM_INPUT_BYTES <= MESH_DOOM_VIEW_BYTES, "doom::SNAP_BYTES + 0x10 + doom::INPUT_BYTES <= doom::VIEW_BYTES");
+
 #endif

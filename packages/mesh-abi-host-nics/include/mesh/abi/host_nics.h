@@ -36,4 +36,8 @@ static inline size_t mesh_nic(size_t i) { return MESH_S_NICS + MESH_NIC_BYTES * 
 /* Whether an interface name (len bytes, not NUL terminated) starts with one of NET_VIRTUAL's prefixes. */
 bool mesh_nic_virtual(const uint8_t *name, size_t len);
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert((MESH_S_NICS % 8 == 0), "S_NICS.is_multiple_of(8)");
+_Static_assert((MESH_NIC_BYTES % 8 == 0), "NIC_BYTES.is_multiple_of(8)");
+
 #endif

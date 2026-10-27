@@ -1,4 +1,4 @@
-/* @ajax/mesh-abi-host-mload: its tables and functions, and its compile-time layout checks. */
+/* @ajax/mesh-abi-host-mload: its tables and functions. */
 #include "mesh/abi/host_mload.h"
 
 const mesh_field MESH_MLOAD_FIELDS[15] = {
@@ -18,8 +18,3 @@ const mesh_field MESH_MLOAD_FIELDS[15] = {
     {MESH_ML_CPUS, 4},
     {MESH_ML_FLAGS, 4},
 };
-
-/* The Rust const asserts that only involve this package. */
-_Static_assert(MESH_ML_SHARE + MESH_LOADREP_BYTES == MESH_MLOAD_BYTES, "ML_SHARE + LOADREP_BYTES == MLOAD_BYTES");
-_Static_assert((MESH_S_MLOAD % 8 == 0), "S_MLOAD.is_multiple_of(8)");
-_Static_assert((MESH_MLOAD_BYTES % 8 == 0), "MLOAD_BYTES.is_multiple_of(8)");

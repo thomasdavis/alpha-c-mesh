@@ -51,4 +51,7 @@ static inline size_t mesh_section_bytes(uint32_t nodes, uint32_t view) {
     return MESH_SC_NODE_RECS + MESH_NODE_STRIDE * (size_t)nodes + ((size_t)view + 3) / 4 * 4;
 }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert((MESH_SC_NODE_RECS % 8 == 0), "SC_NODE_RECS.is_multiple_of(8)");
+
 #endif

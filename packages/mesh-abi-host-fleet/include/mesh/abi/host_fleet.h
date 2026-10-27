@@ -63,4 +63,13 @@ extern const mesh_field MESH_FMEMBER_FIELDS[5];
 /* Member k's fleet record. */
 static inline size_t mesh_fmember(uint32_t k) { return MESH_S_FMEMBERS + MESH_FMEMBER_BYTES * (size_t)k; }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_SG_AUTO_MS + 4 <= MESH_S_FLEET_END, "SG_AUTO_MS + 4 <= S_FLEET_END");
+_Static_assert((MESH_S_TERM % 8 == 0), "S_TERM.is_multiple_of(8)");
+_Static_assert((MESH_S_STATE_VER % 8 == 0), "S_STATE_VER.is_multiple_of(8)");
+_Static_assert((MESH_S_APPLIED_VER % 8 == 0), "S_APPLIED_VER.is_multiple_of(8)");
+_Static_assert((MESH_FM_APPLIED % 8 == 0), "FM_APPLIED.is_multiple_of(8)");
+_Static_assert((MESH_FMEMBER_BYTES % 8 == 0), "FMEMBER_BYTES.is_multiple_of(8)");
+_Static_assert((MESH_S_FMEMBERS % 8 == 0), "S_FMEMBERS.is_multiple_of(8)");
+
 #endif

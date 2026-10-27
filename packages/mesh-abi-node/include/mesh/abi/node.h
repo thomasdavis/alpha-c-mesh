@@ -27,4 +27,8 @@ static inline size_t mesh_node_rec(uint32_t slot, uint32_t node) {
     return MESH_PROG_NODES + MESH_PROG_NODES_BYTES * (size_t)slot + MESH_NODE_STRIDE * (size_t)node;
 }
 
+/* The Rust const asserts that only involve this package. */
+_Static_assert(MESH_N_LAST_OP + 4 <= MESH_N_BUSY_NS, "N_LAST_OP + 4 <= N_BUSY_NS");
+_Static_assert(MESH_N_BUSY_NS + 8 <= MESH_NODE_STRIDE, "N_BUSY_NS + 8 <= NODE_STRIDE");
+
 #endif
