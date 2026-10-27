@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-view-alloc",
+  "version": "0.1.0",
+  "description": "The view heap's first-fit page allocator (meshd gives each loaded program its view from it)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-view-alloc",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "view",
+    "heap",
+    "allocator"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-view-heap": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

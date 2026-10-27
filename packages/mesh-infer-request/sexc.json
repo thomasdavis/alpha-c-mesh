@@ -1,0 +1,26 @@
+{
+  "name": "@ajax/mesh-infer-request",
+  "version": "0.1.0",
+  "description": "An inference request: the control port's infer words and GET /infer's query, parsed; results as text",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-infer-request",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "inference",
+    "gpt2",
+    "request"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-infer-wire": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

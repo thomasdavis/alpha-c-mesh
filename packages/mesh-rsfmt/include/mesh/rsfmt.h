@@ -30,4 +30,23 @@ void mesh_rs_f64(mesh_buf *b, double v);
 /* `{:.p}` of an f64 (as Rust: round half to even on the exact value; NaN, inf). */
 void mesh_rs_fixed(mesh_buf *b, double v, int p);
 
+/* String::from_utf8_lossy: valid UTF-8 copied, each maximal invalid
+ * subsequence replaced by U+FFFD (as Rust and the Unicode standard do). */
+void mesh_rs_lossy(mesh_buf *b, const void *bytes, size_t n);
+/* str::from_utf8 succeeds. */
+int mesh_rs_utf8_valid(const void *bytes, size_t n);
+
+/* Rust's number parsing (str::parse), for byte-identical acceptance and errors.
+ * Return 0, or an error code whose text mesh_rs_parse_error gives:
+ * "cannot parse integer from empty string", "invalid digit found in string",
+ * "number too large to fit in target type", "invalid float literal",
+ * "cannot parse float from empty string". */
+enum { MESH_RS_EMPTY = 1, MESH_RS_INVALID, MESH_RS_OVERFLOW, MESH_RS_FLOAT_INVALID, MESH_RS_FLOAT_EMPTY };
+int mesh_rs_parse_u64(const char *s, size_t n, uint64_t *out);
+int mesh_rs_parse_u32(const char *s, size_t n, uint32_t *out);
+int mesh_rs_parse_i64(const char *s, size_t n, int64_t *out);
+int mesh_rs_parse_f32(const char *s, size_t n, float *out);
+int mesh_rs_parse_f64(const char *s, size_t n, double *out);
+const char *mesh_rs_parse_error(int code);
+
 #endif

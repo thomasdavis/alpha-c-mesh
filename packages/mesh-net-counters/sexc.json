@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-net-counters",
+  "version": "0.1.0",
+  "description": "meshd's live network counters: bytes and frames per peer link and kind, the control port's and the HTTP relay's",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-net-counters",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "network",
+    "counters"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-host-links": "workspace:*",
+    "@ajax/mesh-abi-host-net": "workspace:*",
+    "@ajax/mesh-abi-peer-frames": "workspace:*",
+    "@ajax/mesh-abi-snapshot": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

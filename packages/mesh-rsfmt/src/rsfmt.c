@@ -98,3 +98,157 @@ void mesh_rs_fixed(mesh_buf *b, double v, int p) {
     if (isinf(v)) { mesh_buf_puts(b, v < 0 ? "-inf" : "inf"); return; }
     mesh_buf_printf(b, "%.*f", p, v);
 }
+
+/* The length of the valid UTF-8 sequence at s (n bytes left), or 0 when it is
+ * invalid; *bad then holds the length of the maximal invalid prefix to replace. */
+static size_t utf8_seq(const unsigned char *s, size_t n, size_t *bad) {
+    unsigned c = s[0];
+    size_t need;
+    unsigned lo = 0x80, hi = 0xbf;
+    if (c < 0x80) return 1;
+    if (c >= 0xc2 && c <= 0xdf) need = 1;
+    else if (c >= 0xe0 && c <= 0xef) {
+        need = 2;
+        if (c == 0xe0) lo = 0xa0;
+        if (c == 0xed) hi = 0x9f;
+    } else if (c >= 0xf0 && c <= 0xf4) {
+        need = 3;
+        if (c == 0xf0) lo = 0x90;
+        if (c == 0xf4) hi = 0x8f;
+    } else { *bad = 1; return 0; }
+    size_t i = 1;
+    for (; i <= need; i++) {
+        if (i >= n) { *bad = i; return 0; }
+        unsigned x = s[i];
+        unsigned l = i == 1 ? lo : 0x80, h = i == 1 ? hi : 0xbf;
+        if (x < l || x > h) { *bad = i; return 0; }
+    }
+    return need + 1;
+}
+
+void mesh_rs_lossy(mesh_buf *b, const void *bytes, size_t n) {
+    const unsigned char *s = bytes;
+    size_t i = 0;
+    while (i < n) {
+        size_t bad = 0, k = utf8_seq(s + i, n - i, &bad);
+        if (k) { mesh_buf_put(b, s + i, k); i += k; }
+        else { mesh_buf_puts(b, "\xef\xbf\xbd"); i += bad; }
+    }
+}
+
+int mesh_rs_utf8_valid(const void *bytes, size_t n) {
+    const unsigned char *s = bytes;
+    size_t i = 0;
+    while (i < n) {
+        size_t bad = 0, k = utf8_seq(s + i, n - i, &bad);
+        if (!k) return 0;
+        i += k;
+    }
+    return 1;
+}
+
+const char *mesh_rs_parse_error(int code) {
+    switch (code) {
+    case MESH_RS_EMPTY: return "cannot parse integer from empty string";
+    case MESH_RS_INVALID: return "invalid digit found in string";
+    case MESH_RS_OVERFLOW: return "number too large to fit in target type";
+    case MESH_RS_FLOAT_EMPTY: return "cannot parse float from empty string";
+    default: return "invalid float literal";
+    }
+}
+
+int mesh_rs_parse_u64(const char *s, size_t n, uint64_t *out) {
+    if (n == 0) return MESH_RS_EMPTY;
+    size_t i = 0;
+    if (s[0] == '+' && n > 1) i = 1; /* a lone sign is an invalid digit */
+    uint64_t x = 0;
+    int big = 0;
+    for (; i < n; i++) {
+        if (s[i] < '0' || s[i] > '9') return MESH_RS_INVALID;
+        unsigned d = (unsigned)(s[i] - '0');
+        if (x > (UINT64_MAX - d) / 10) big = 1;
+        else x = x * 10 + d;
+    }
+    if (big) return MESH_RS_OVERFLOW;
+    *out = x;
+    return 0;
+}
+
+int mesh_rs_parse_u32(const char *s, size_t n, uint32_t *out) {
+    uint64_t x;
+    int r = mesh_rs_parse_u64(s, n, &x);
+    if (r == MESH_RS_OVERFLOW || (r == 0 && x > UINT32_MAX)) return MESH_RS_OVERFLOW;
+    if (r) return r;
+    *out = (uint32_t)x;
+    return 0;
+}
+
+int mesh_rs_parse_i64(const char *s, size_t n, int64_t *out) {
+    if (n == 0) return MESH_RS_EMPTY;
+    int neg = s[0] == '-';
+    size_t i = (s[0] == '+' || s[0] == '-') && n > 1;
+    if (i == 0 && (s[0] == '+' || s[0] == '-')) return MESH_RS_INVALID;
+    uint64_t x = 0;
+    int big = 0;
+    for (; i < n; i++) {
+        if (s[i] < '0' || s[i] > '9') return MESH_RS_INVALID;
+        unsigned d = (unsigned)(s[i] - '0');
+        if (x > (UINT64_MAX - d) / 10) big = 1;
+        else x = x * 10 + d;
+    }
+    if (big || x > (uint64_t)INT64_MAX + (uint64_t)neg) return MESH_RS_OVERFLOW;
+    *out = neg ? (int64_t)(0 - x) : (int64_t)x;
+    return 0;
+}
+
+static int ieq(const char *s, size_t n, const char *w) {
+    if (strlen(w) != n) return 0;
+    for (size_t i = 0; i < n; i++) {
+        char c = s[i];
+        if (c >= 'A' && c <= 'Z') c = (char)(c - 'A' + 'a');
+        if (c != w[i]) return 0;
+    }
+    return 1;
+}
+
+/* core::num::dec2flt's grammar; the value from strtod/strtof (both correctly rounded). */
+static int parse_float(const char *s, size_t n, double *d, float *f) {
+    if (n == 0) return MESH_RS_FLOAT_EMPTY;
+    size_t i = s[0] == '+' || s[0] == '-';
+    int neg = s[0] == '-';
+    const char *b = s + i;
+    size_t m = n - i;
+    if (ieq(b, m, "inf") || ieq(b, m, "infinity")) {
+        if (d) *d = neg ? -HUGE_VAL : HUGE_VAL;
+        if (f) *f = neg ? -HUGE_VALF : HUGE_VALF;
+        return 0;
+    }
+    if (ieq(b, m, "nan")) {
+        if (d) *d = NAN;
+        if (f) *f = NAN;
+        return 0;
+    }
+    size_t j = 0, intd = 0, frad = 0;
+    while (j < m && b[j] >= '0' && b[j] <= '9') { j++; intd++; }
+    if (j < m && b[j] == '.') {
+        j++;
+        while (j < m && b[j] >= '0' && b[j] <= '9') { j++; frad++; }
+    }
+    if (intd + frad == 0) return MESH_RS_FLOAT_INVALID;
+    if (j < m && (b[j] == 'e' || b[j] == 'E')) {
+        j++;
+        if (j < m && (b[j] == '+' || b[j] == '-')) j++;
+        size_t e = 0;
+        while (j < m && b[j] >= '0' && b[j] <= '9') { j++; e++; }
+        if (!e) return MESH_RS_FLOAT_INVALID;
+    }
+    if (j != m) return MESH_RS_FLOAT_INVALID;
+    char *t = mesh_xstrndup(s, n);
+    if (d) *d = strtod(t, NULL);
+    if (f) *f = strtof(t, NULL);
+    free(t);
+    return 0;
+}
+
+int mesh_rs_parse_f64(const char *s, size_t n, double *out) { return parse_float(s, n, out, NULL); }
+int mesh_rs_parse_f32(const char *s, size_t n, float *out) { return parse_float(s, n, NULL, out); }

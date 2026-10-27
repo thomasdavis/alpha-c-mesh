@@ -1,0 +1,30 @@
+{
+  "name": "@ajax/mesh-infer-wire",
+  "version": "0.1.0",
+  "description": "The gpt2 service protocol's wire: frames, key=value messages, checksummed KV layers",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-infer-wire",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "inference",
+    "gpt2",
+    "protocol",
+    "frames"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

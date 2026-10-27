@@ -1,0 +1,36 @@
+{
+  "name": "@ajax/mesh-load-host",
+  "version": "0.1.0",
+  "description": "This machine's load sample: the OS readers (CPU, PSI, memory, disk, thermal), rates between samples, the machine region and the member summary",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-load-host",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "host",
+    "telemetry",
+    "cpu",
+    "memory"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_DEFAULT_SOURCE"
+  ],
+  "dependencies": {
+    "@ajax/mesh-load-proc": "workspace:*",
+    "@ajax/mesh-load-share": "workspace:*",
+    "@ajax/mesh-abi-host-load": "workspace:*",
+    "@ajax/mesh-abi-host-mload": "workspace:*",
+    "@ajax/mesh-abi-host-pload": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "@ajax/mesh-rsfmt",
   "version": "0.1.0",
-  "description": "Rust's Debug and Display text in C: quoted strings, durations, shortest floats",
+  "description": "Rust's text rules in C: Debug-quoted strings, durations, shortest floats, number parsing, lossy UTF-8",
   "kind": "library",
   "license": "MIT",
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",

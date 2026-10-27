@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-load-share",
+  "version": "0.1.0",
+  "description": "The GPU share maths of the load sampler: node load record deltas, share, slices, gaps, and nearest-rank quantiles",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-load-share",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "gpu",
+    "share",
+    "telemetry"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
