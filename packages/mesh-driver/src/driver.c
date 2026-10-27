@@ -734,6 +734,7 @@ static void cmd_job_lease(mesh_driver *d, mesh_cmd *c) {
         q.setup = l->setup;
         q.nsetup = l->nsetup;
         q.items = l->items;
+        free(l->program); /* the queue keeps no name: the slot is the program */
         memset(l, 0, sizeof *l);
         djobslot *j = &d->jobw[s];
         PUSH(j->q, j->n, j->cap, q);
