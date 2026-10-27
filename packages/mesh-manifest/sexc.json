@@ -1,0 +1,42 @@
+{
+  "name": "@ajax/mesh-manifest",
+  "version": "0.1.0",
+  "description": "A program's manifest (program.toml): the struct, the parser and every validation, with the Rust's error messages",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-manifest",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "manifest",
+    "program",
+    "parser"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lm"
+  ],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-toml": "workspace:*",
+    "@ajax/mesh-manifest-needs": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-view-heap": "workspace:*",
+    "@ajax/mesh-abi-input-queue": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-placement": "workspace:*",
+    "@ajax/mesh-abi-peer-sizes": "workspace:*",
+    "@ajax/mesh-abi-pipe-ring": "workspace:*",
+    "@ajax/mesh-abi-name": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
