@@ -1,0 +1,30 @@
+{
+  "name": "@ajax/mesh-worker-ctx",
+  "version": "0.1.0",
+  "description": "What a native worker's init and task see: mesh-rt's Ctx on a CPU thread (views with fault recording, peer views, the input queue, pipes, the request window, counters)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-worker-ctx",
+  "keywords": ["mesh", "alphaos", "worker", "native", "ctx", "sdk"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-trace": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-input-queue": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-abi-pipe-ring": "workspace:*",
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

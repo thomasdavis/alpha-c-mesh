@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-worker-node",
+  "version": "0.1.0",
+  "description": "mesh-rt's node loop on CPU threads: claim published tickets, run init or task, complete them with results, marks, node records and traces",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-worker-node",
+  "keywords": ["mesh", "alphaos", "worker", "native", "node-loop", "sdk"],
+  "cflags": ["-D_GNU_SOURCE", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-trace": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
