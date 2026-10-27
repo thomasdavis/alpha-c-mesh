@@ -7,7 +7,13 @@
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
   "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-exec-wasm-imports",
-  "keywords": ["mesh", "alphaos", "wasm", "imports", "sandbox"],
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "imports",
+    "sandbox"
+  ],
   "dependencies": {
     "@ajax/wasm-interp": "workspace:*",
     "@ajax/mesh-lease": "workspace:*",
@@ -25,5 +31,8 @@
     "@ajax/mesh-check": "workspace:*",
     "@ajax/wasm-builder": "workspace:*"
   },
-  "cflags": ["-D_XOPEN_SOURCE=700"]
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-O2"
+  ]
 }
