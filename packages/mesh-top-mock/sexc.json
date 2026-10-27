@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/mesh-top-mock",
+  "version": "0.1.0",
+  "description": "A tiny mock of meshd's control port for mesh-top's tests and demo: synthesised snapshots, trace and log, a fake catalog, and a threaded TCP server",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-mock",
+  "keywords": ["mesh", "alphaos", "mesh-top", "mock", "testing"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off", "-pthread"],
+  "ldflags": ["-lm", "-lpthread"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-top-clock": "workspace:*",
+    "@ajax/mesh-top-snap": "workspace:*",
+    "@ajax/mesh-top-views": "workspace:*"
+  }
+}

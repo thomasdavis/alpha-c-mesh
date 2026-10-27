@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-top-ui-kit",
+  "version": "0.1.0",
+  "description": "What every mesh-top pane shares: the dark palette, label and value spans, the rounded panel, machine titles, Rust-exact number formats and the no-snapshot fallbacks",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-kit",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "palette"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-top-app": "workspace:*",
+    "@ajax/rsfmt": "workspace:*",
+    "@ajax/tui-block": "workspace:*",
+    "@ajax/tui-layout": "workspace:*",
+    "@ajax/tui-paragraph": "workspace:*",
+    "@ajax/tui-table": "workspace:*"
+  }
+}

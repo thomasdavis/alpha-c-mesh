@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui-mesh",
+  "version": "0.1.0",
+  "description": "mesh-top's Mesh tab: the cluster overview (a row per system, even one known only through its peers) and a panel per machine with its GPU, nodes, peers, program chips, sparkline, network, load and node grid",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-mesh",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "dashboard"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*", "@ajax/mesh-top-ui-load": "workspace:*", "@ajax/mesh-top-ui-net": "workspace:*", "@ajax/tui-sparkline": "workspace:*"}
+}

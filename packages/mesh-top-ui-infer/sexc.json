@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui-infer",
+  "version": "0.1.0",
+  "description": "mesh-top's Infer tab: every machine's model curve against the target samples, and the params infer's last run read",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-infer",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "inference"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*", "@ajax/tui-chart": "workspace:*"}
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-snap",
+  "version": "0.1.0",
+  "description": "mesh-top's view of a meshd snapshot: framing checks, sections, the host block (members, fleet, jobs, load, network), trace records",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-snap",
+  "keywords": ["mesh", "alphaos", "mesh-top", "snapshot"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-abi": "workspace:*", "@ajax/tui-utf8": "workspace:*"}
+}

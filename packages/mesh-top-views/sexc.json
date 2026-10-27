@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-views",
+  "version": "0.1.0",
+  "description": "meshd's fleet, jobs and pipes views (one record a line: kind key=value .. -- text), parsed as mesh-top reads them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-views",
+  "keywords": ["mesh", "alphaos", "mesh-top", "fleet", "views"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-top-clock": "workspace:*"}
+}

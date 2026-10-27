@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-utf8",
+  "version": "0.1.0",
+  "description": "UTF-8 decoding, encoding and repair exactly as Rust's String::from_utf8_lossy (one U+FFFD per maximal ill-formed subpart)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-utf8",
+  "keywords": ["utf8", "unicode", "lossy", "decode"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

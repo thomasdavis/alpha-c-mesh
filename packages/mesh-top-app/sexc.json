@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-top-app",
+  "version": "0.1.0",
+  "description": "mesh-top's viewer state: one machine per meshd endpoint with the history rates come from, tabs, focus, prompts, and every key binding",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-app",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "state"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-top-clock": "workspace:*",
+    "@ajax/mesh-top-snap": "workspace:*",
+    "@ajax/mesh-top-net": "workspace:*",
+    "@ajax/mesh-top-views": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/tui-input": "workspace:*",
+    "@ajax/tui-utf8": "workspace:*"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-top-tests",
+  "version": "0.1.0",
+  "description": "Not published: crates/mesh-top's integration tests against the mock meshd (client, render, cluster, fleet, views, net, load) and the --print frames checked byte for byte against the Rust",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-lm",
+    "-lpthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-top-mock": "workspace:*",
+    "@ajax/mesh-top-client": "workspace:*",
+    "@ajax/mesh-top-ui": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*"
+  }
+}

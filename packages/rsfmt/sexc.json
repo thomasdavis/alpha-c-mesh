@@ -1,0 +1,26 @@
+{
+  "name": "@ajax/rsfmt",
+  "version": "0.1.0",
+  "description": "Numbers and padding formatted exactly as Rust's format! does: {:.N}, {:+.N}, {:.Ne}, NaN/inf, and width by characters",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/rsfmt",
+  "keywords": [
+    "format",
+    "rust",
+    "printf",
+    "float",
+    "padding"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  },
+  "ldflags": [
+    "-lm"
+  ]
+}

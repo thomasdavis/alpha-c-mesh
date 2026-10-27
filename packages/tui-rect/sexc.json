@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-rect",
+  "version": "0.1.0",
+  "description": "Rectangles of terminal cells with saturating u16 arithmetic, as ratatui's Rect",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-rect",
+  "keywords": ["tui", "terminal", "rect", "layout", "ratatui"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/tui-sparkline",
+  "version": "0.1.0",
+  "description": "A one-row-per-eighth bar sparkline of u64 values, as ratatui's Sparkline",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-sparkline",
+  "keywords": ["tui", "terminal", "sparkline", "ratatui"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/tui-block": "workspace:*"}
+}

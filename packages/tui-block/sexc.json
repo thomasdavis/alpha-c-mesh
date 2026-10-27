@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-block",
+  "version": "0.1.0",
+  "description": "A bordered, titled box around a widget, as ratatui's Block",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-block",
+  "keywords": ["tui", "terminal", "block", "border", "ratatui"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/tui-text": "workspace:*"}
+}

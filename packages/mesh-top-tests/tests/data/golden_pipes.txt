@@ -1,0 +1,5 @@
+pipes system=0 inboxes=2
+inbox consumer=pipehash type=msg cap=1024 rec=64 depth=1020 fill=0.996 pushed=7028988 popped=7027968 refused=189515 empty=748 fed_by=pipesrc in_s=8800.0 out_s=8799.4 refused_s=1210.5
+inbox consumer=pipesink-w type=digest cap=4096 rec=48 depth=4 fill=0.001 pushed=7027939 popped=7027935 refused=0 empty=399346 fed_by=pipehash,pipesrc in_s=8799.4 out_s=8799.4 refused_s=0.0
+feed producer=pipehash consumers=pipesink-w
+feed producer=pipesrc consumers=pipehash,pipesink-w
