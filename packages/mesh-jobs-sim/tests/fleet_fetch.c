@@ -22,7 +22,7 @@ static void a_leader_fetches_a_payload_it_lacks(void) {
     p->n = strlen(nowhere);
     uint64_t lease;
     const mj_lease *x = momap_first(mj_node_leases(s.m[0].node), &lease);
-    uint64_t item;
+    uint64_t item = 0;
     CHECK(x && mj_ranges_first(&x->out, &item));
     mj_item_res r = {.lease = lease, .job = id, .item = item, .status = MESH_JOBS_RS_OK, .result = (uint32_t)(item * 7 + 1), .has_blob = true,
                      .blob = {h, 9216, 0}};
