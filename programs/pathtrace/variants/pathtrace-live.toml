@@ -1,0 +1,27 @@
+# pathtrace-live: programs/pathtrace's images run progressively on one meshd
+# (`policy = "periodic"`, a batch at most every 1/60 s: while rendering the batches
+# run back to back, ~800 items/s on a GB10, and once the image is done each batch
+# is 32 no-op tasks instead of a continuous spin): work item w = pass x tiles + tile, the task arg
+# V_NEXT + index (V_NEXT advances once per item done), fanout 32 distinct tiles a
+# batch; the whole image appears at once and refines pass by pass.  The same bits
+# as the job program's tiles (pathtrace-core: a tile's accumulator is the pass sums
+# added in pass order).
+name       = "pathtrace-live"
+abi        = 6
+view_bytes = 0x41a000
+view_abi   = 2
+snap_bytes = 0x5600
+nodes      = "fit"
+warps      = 24
+shared_bytes = 0x3400
+policy     = "periodic"
+hz         = 60
+arg        = "view_u32:0x4"
+fanout     = 32
+request    = "0xa00:0x1000,0x1a00:0x100"
+counters   = ["items", "tiles", "passes", "retones"]
+fields     = ["tiles:u32:0x10", "done:u32:0x14", "next:u32:0x4", "tonemap:u32:0x8", "gen:u32:0xc", "width:u32:0x18", "height:u32:0x1c", "spp:u32:0x20", "passes:u32:0x24", "last_tile:u32:0x28", "last_system:u32:0x2c", "items:u32:0x38"]
+autostart  = false
+backends   = ["cuda", "metal", "wasm"]
+# wasm: one pass of a tile on one CPU lane.
+task_ms    = 20000

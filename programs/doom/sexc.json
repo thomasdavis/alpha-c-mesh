@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-prog-doom",
+  "version": "0.1.0",
+  "description": "doom, a DDA raycaster as a resident mesh GPU program (one lane a column, the pose and keys on the GPU, split across machines), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/doom",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "raycaster", "doom"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-doom": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,23 @@
+# pathtrace-cpu: programs/pathtrace's wasm image on the CPU lanes beside a member's
+# GPU, as a second job program for the same item set: `job submit
+# pathtrace,pathtrace-cpu items N op 6 setup ..` leases the fleet job's items to
+# members running either (jobs.rs: a job of several programs).  A lane renders
+# a whole tile's pass (pathtrace-core in mesh-ref's Z: the CPU reference's own
+# code), the same pass sums as every GPU's, so its payloads mix with theirs.
+name        = "pathtrace-cpu"
+abi         = 6
+view_bytes  = 0x96000
+view_abi    = 2
+snap_bytes  = 0x5600
+nodes       = 8
+policy      = "job"
+fanout      = 8
+job_base    = 0x100
+job_out     = "0x200:32"
+job_payload = "0x6000:9216"
+request     = "0xa00:0x1000,0x1a00:0x100"
+counters    = ["items", "tiles", "passes", "retones"]
+fields      = ["tiles:u32:0x10", "done:u32:0x14", "next:u32:0x4", "tonemap:u32:0x8", "gen:u32:0xc", "width:u32:0x18", "height:u32:0x1c", "spp:u32:0x20", "passes:u32:0x24", "last_tile:u32:0x28", "last_system:u32:0x2c", "items:u32:0x38"]
+autostart   = false
+backends    = ["wasm"]
+task_ms     = 20000

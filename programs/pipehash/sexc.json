@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-prog-pipehash",
+  "version": "0.1.0",
+  "description": "pipehash, the pipe demo's GPU stage: pops msgs from a CPU source, sha256d's them a lane each, pushes digests to a CPU sink, as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pipehash",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "pipes", "sha256"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-words-host": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,14 @@
+# http: an HTTP/1.0 GET server rendered on the GPU, generic over the program
+# table (layout: mesh_abi::v2::views::http; docs/plan-program-loading.md §3.6)
+name       = "http"
+abi        = 6
+view_bytes = 0xa9400
+view_abi   = 2
+snap_bytes = 0x40
+nodes      = 1
+policy     = "on_demand"
+reads      = ["*"]
+request    = "0x100:0x100,0x400:0xa9000"
+counters   = ["", "", "", ""]
+fields     = ["served:u32:0x0", "last_code:u32:0x4", "load_seq:u32:0x8", "load_ack:u32:0xc", "load_result:u32:0x10"]
+autostart  = true

@@ -1,0 +1,15 @@
+# tick-r: a variant of tick (scripts/build-programs.sh copies tick's images under this name). two replicas, spread over the members.
+name       = "tick-r"
+abi        = 6
+view_bytes = 0x10000
+view_abi   = 1
+snap_bytes = 0x40
+nodes      = 1
+policy     = "periodic"
+hz         = 50
+counters   = ["ticks", "inits", "", ""]
+fields     = ["magic:u32:0x0", "ticks:u32:0x4", "inits:u32:0x8", "mismatches:u32:0xc"]
+autostart  = false
+backends   = ["cuda", "metal", "wasm"]
+task_ms    = 2000
+replicas   = 2

@@ -1,0 +1,32 @@
+{
+  "name": "@ajax/mesh-prog-pipesrc-n",
+  "version": "0.1.0",
+  "kind": "executable",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "description": "pipesrc-n, the pipe demo's source as a native mesh worker: msgs into pipehash or digests straight to a sink, with backpressure",
+  "bin": "pipesrc-n",
+  "main": "src/main.c",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pipesrc-n",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "native",
+    "worker",
+    "program"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-worker": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-worker-node": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-view-pipedemo": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
