@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-occupancy",
+  "version": "0.1.0",
+  "description": "Co-residency of resident CUDA kernels: whether every program's nodes fit on the GPU at once, and how many more do",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-occupancy",
+  "keywords": ["mesh", "alphaos", "cuda", "occupancy", "scheduler"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
