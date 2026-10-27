@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-fleet-core",
+  "version": "0.1.0",
+  "description": "The fleet's election and commit state machine (Raft's rules with PreVote and CheckQuorum, no log; a pair has a fixed coordinator), sans-IO",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-fleet-core",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "fleet",
+    "raft",
+    "election",
+    "consensus"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-persist": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
+  }
+}

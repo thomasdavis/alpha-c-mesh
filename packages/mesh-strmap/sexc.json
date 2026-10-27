@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-strmap",
+  "version": "0.1.0",
+  "description": "A sorted map from strings to strings (Rust's BTreeMap<String, String>)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-strmap",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "map",
+    "string"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*"
+  }
+}

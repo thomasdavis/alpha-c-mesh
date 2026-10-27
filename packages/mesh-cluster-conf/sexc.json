@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-cluster-conf",
+  "version": "0.1.0",
+  "description": "A fleet's cluster config (key = value): every member's peer address, this member's links, and its timing",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-cluster-conf",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "cluster",
+    "config",
+    "topology"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-place-compose",
+  "version": "0.1.0",
+  "description": "A placed program's state and frame parts moved through its view, and whole frames composed from parts that arrive from several machines",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-place-compose",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "placement",
+    "frames",
+    "compose"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-place-spec": "workspace:*", "@ajax/mesh-place-wire": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-place-wire",
+  "version": "0.1.0",
+  "description": "The placement peer frames: F_PLACE (a placement change), F_FRAME (a frame's state and parts), F_INPUT (input to the program's owner)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-place-wire",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "placement",
+    "wire",
+    "frames"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-place-mode": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-name": "workspace:*", "@ajax/mesh-abi-placement": "workspace:*", "@ajax/mesh-abi-place-ops": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*"
+  }
+}
