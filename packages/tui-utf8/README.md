@@ -8,8 +8,12 @@ so a frame drawn in C is the same, cell for cell, as the Rust one.
 
 ## Ported from
 
-See below.
+[alpha-rust-mesh](https://github.com/rsafier/alpha-rust-mesh) (Richard Safier, MIT)'s `mesh-top` depends on it through ratatui: Rust's `String::from_utf8_lossy` and `char_indices`.
 
 ## Tests
 
-See `tests/`.
+`tests/utf8.c`.
+
+## Licence
+
+MIT. See the repository's LICENSE.

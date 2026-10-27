@@ -8,8 +8,12 @@ so a frame drawn in C is the same, cell for cell, as the Rust one.
 
 ## Ported from
 
-See below.
+[alpha-rust-mesh](https://github.com/rsafier/alpha-rust-mesh) (Richard Safier, MIT)'s `mesh-top` depends on it through ratatui: unicode-segmentation 1.13.3 (extended grapheme clusters, UAX #29 with the InCB conjunct rule), tables generated from its source.
 
 ## Tests
 
-See `tests/`.
+`tests/graphemes.c`: the boundaries of `tests/data/mixed.txt` (1768 clusters) hash as the Rust's.
+
+## Licence
+
+MIT. See the repository's LICENSE.

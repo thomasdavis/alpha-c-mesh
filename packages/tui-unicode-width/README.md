@@ -8,8 +8,12 @@ so a frame drawn in C is the same, cell for cell, as the Rust one.
 
 ## Ported from
 
-See below.
+[alpha-rust-mesh](https://github.com/rsafier/alpha-rust-mesh) (Richard Safier, MIT)'s `mesh-top` depends on it through ratatui: unicode-width 0.2.2, tables generated from its source.
 
 ## Tests
 
-See `tests/`.
+`tests/width.c`: the width of every code point hashes as the Rust's.
+
+## Licence
+
+MIT. See the repository's LICENSE.
