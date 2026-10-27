@@ -1,0 +1,9 @@
+{
+  "name": "@ajax/pathtrace-scene",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's scene format: the u32 header and records, the layout, validation, settable parameters and tiles",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "pathtrace", "scene", "format"]
+}

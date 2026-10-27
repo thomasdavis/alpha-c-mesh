@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/pathtrace-view",
+  "version": "0.1.0",
+  "description": "The view of programs/pathtrace: offsets, job records, tile meta, payload ring and ops that the program, kcheck, mesh-top and http agree on",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "pathtrace", "view", "abi"],
+  "dependencies": {"@ajax/pathtrace-scene": "workspace:*"}
+}

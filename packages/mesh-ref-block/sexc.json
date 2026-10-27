@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/mesh-ref-block",
+  "version": "0.1.0",
+  "description": "The block collectives of a multi-warp node on the CPU: warp butterflies and scans, block reduce and scan, step for step as the GPU",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "reference", "reduce", "scan", "warp"],
+  "dependencies": {"@ajax/mesh-ftz": "workspace:*"},
+  "cflags": ["-ffp-contract=off"]
+}
