@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/mesh-top",
+  "version": "0.1.0",
+  "description": "A terminal dashboard for meshd clusters: one poller per endpoint, every tab of crates/mesh-top (mesh, programs, doom, train, infer, http, net, load, fleet, jobs, pipes, render), and --print for one frame as text",
+  "kind": "executable",
+  "bin": "mesh-top",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-top",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "dashboard"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-pthread"],
+  "ldflags": ["-lm", "-lpthread"],
+  "dependencies": {
+    "@ajax/mesh-top-client": "workspace:*",
+    "@ajax/mesh-top-ui": "workspace:*",
+    "@ajax/tui-render": "workspace:*",
+    "@ajax/tui-term": "workspace:*"
+  }
+}
