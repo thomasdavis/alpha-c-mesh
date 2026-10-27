@@ -19,7 +19,8 @@
   },
   "cflags": [
     "-ffp-contract=off",
-    "-D_XOPEN_SOURCE=700"
+    "-D_XOPEN_SOURCE=700",
+    "-O2"
   ],
   "ldflags": [
     "-lpthread"

@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/mesh-ref-gpt2-attend",
+  "version": "0.1.0",
+  "description": "GPT-2's attention for one head and query: scaled dots, block-tree max and sum, softmax, the 4-group value sum, in Z",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-block": "workspace:*",
+    "@ajax/mesh-ref-gpt2-shape": "workspace:*",
+    "@ajax/mesh-ref-gpt2-scalar": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off",
+    "-O2"
+  ]
+}

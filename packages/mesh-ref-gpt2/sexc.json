@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-ref-gpt2",
+  "version": "0.1.0",
+  "description": "GPT-2 124M in the cluster float mode on the CPU: the forward pass, prefill and decode, greedy generation, bitwise equal to the GPU kernels",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "reference", "gpt2", "determinism"],
+  "dependencies": {"@ajax/mesh-ftz": "workspace:*", "@ajax/mesh-ref-matmul": "workspace:*", "@ajax/mesh-ref-gpt2-shape": "workspace:*", "@ajax/mesh-ref-gpt2-linear": "workspace:*", "@ajax/mesh-ref-gpt2-norm": "workspace:*", "@ajax/mesh-ref-gpt2-attend": "workspace:*", "@ajax/mesh-ref-gpt2-logits": "workspace:*", "@ajax/mesh-ref-gpt2-kv": "workspace:*", "@ajax/mesh-ref-gpt2-weights": "workspace:*"},
+  "targets": ["host"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lpthread"]
+}
