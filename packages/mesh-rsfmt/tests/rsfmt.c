@@ -88,7 +88,7 @@ int main(void) {
     CHECK_S(s(), "\"caf\xc3\xa9\\u{7f}\"");
     /* from_utf8_lossy, as rustc 1.88 prints String::from_utf8_lossy of the same bytes. */
     mesh_buf_clear(&b);
-    mesh_rs_lossy(&b, "a\xff" "b\xe2\x82" "c\xf0\x9f\x98\x80\xed\xa0\x80\xc3", 17);
+    mesh_rs_lossy(&b, "a\xff" "b\xe2\x82" "c\xf0\x9f\x98\x80\xed\xa0\x80\xc3", 15);
     CHECK_S(s(), "a\xef\xbf\xbd" "b\xef\xbf\xbd" "c\xf0\x9f\x98\x80\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd\xef\xbf\xbd");
     CHECK(mesh_rs_utf8_valid("caf\xc3\xa9", 5));
     CHECK(!mesh_rs_utf8_valid("\xc3", 1));

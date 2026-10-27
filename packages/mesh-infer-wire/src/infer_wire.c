@@ -153,6 +153,7 @@ int mesh_infer_msg_decode(const void *bytes, size_t n, mesh_infer_msg *out, char
     if (!mesh_rs_utf8_valid(bytes, n) || memchr(bytes, 0, n)) {
         /* A NUL is valid UTF-8 in Rust; C strings cannot hold it: refused the same way. */
         *err = mesh_xstrdup("a message that is not UTF-8");
+        mesh_infer_msg_free(out);
         return -1;
     }
     char *s = mesh_xstrndup(bytes, n);

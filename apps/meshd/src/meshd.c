@@ -333,6 +333,7 @@ _Noreturn int meshd_main(int argc, char **argv) {
     /* A fail-stop: the fleet state or the job log could not be made durable. */
     if (atomic_load(&sh->fatal)) code = 3;
     mesh_backend_cleanup();
+    mesh_driver_free(d); /* the executors with it; the port threads only use sh, which lives until exit */
     uint64_t dropped = mesh_log_dropped();
     if (dropped) mesh_info("exit %d (%llu log lines were not written to stderr)", code, (unsigned long long)dropped);
     else mesh_info("exit %d", code);
