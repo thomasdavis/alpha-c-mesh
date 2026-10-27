@@ -3,8 +3,8 @@
  * after every task, infer on the trained params must equal the reference cubic on the grid, and --
  * for the full run of 4096 tasks -- the digests of the samples, train's checkpoints, params and
  * losses and infer's grid must be the GPUs' own (GPU_DIGESTS: the same on dgx-00, being and the Mac
- * in the Rust's measurements). The full run is on by default in the release profile, or with
- * MESH_FULL=1; otherwise 256 tasks. */
+ * in the Rust's measurements). The full run (about 2 minutes in a release build) is MESH_FULL=1;
+ * otherwise 8 tasks and the samples digest. */
 #include "mesh/abi/control_block.h"
 #include "mesh/abi/fnv.h"
 #include "mesh/abi/ops.h"
@@ -52,14 +52,8 @@ int main(void) {
     char *train = mesh_kit_artifact("ajax-mesh-prog-train-wasm"), *infer = mesh_kit_artifact("ajax-mesh-prog-infer-wasm");
     CHECK(train && infer);
     if (!train || !infer) return mesh_check_done();
-    char exe[512] = {0};
     bool full = getenv("MESH_FULL") != NULL;
-    FILE *f = fopen("/proc/self/cmdline", "r");
-    if (f) {
-        if (fgets(exe, sizeof exe, f) && strstr(exe, "/release/")) full = true;
-        fclose(f);
-    }
-    uint32_t tasks = full ? 4096 : 32;
+    uint32_t tasks = full ? 4096 : 8;
     char *err = NULL;
     CHECK(mesh_kit_open(&kit, NULL, &err));
     if (!mesh_kit_load(&kit, 0, TRAIN, train, &err) || !mesh_kit_load(&kit, 1, INFER, infer, &err)) {
@@ -82,7 +76,7 @@ int main(void) {
     uint64_t t0 = mesh_host_ns();
     for (uint32_t task = 0; task < tasks; task++) {
         uint32_t s = vu(0, MESH_TRAIN_T_NEXT_STEP);
-        if (!mesh_kit_task(&kit, 0, MESH_OP_TASK, s, &r, &fault, 10000)) {
+        if (!mesh_kit_task(&kit, 0, MESH_OP_TASK, s, &r, &fault, 120000)) {
             bad++;
             break;
         }

@@ -4,6 +4,8 @@
 #include "mesh/abi/base.h"
 #include "mesh/abi/control_block.h"
 #include "mesh/abi/ext.h"
+#include "mesh/abi/ops.h"
+#include "mesh/abi/pipe_table.h"
 #include "mesh/abi/program_table.h"
 #include "mesh/abi/ring.h"
 #include "mesh/abi/view_heap.h"
@@ -141,6 +143,12 @@ bool mesh_kit_load_bytes(mesh_kit *kit, uint32_t slot, const char *manifest, con
         mesh_mailbox_set(mb, e + MESH_PT_RESP_OFF, m.request.resp_off);
         mesh_mailbox_set(mb, e + MESH_PT_RESP_MAX, m.request.resp_max);
     }
+    mesh_mailbox_zero(mb, mesh_pipe_entry(slot), MESH_PP_BYTES);
+    if (m.inbox) {
+        mesh_mailbox_set(mb, mesh_pipe_entry(slot) + MESH_PP_IN_OFF, m.inbox->off);
+        mesh_mailbox_set(mb, mesh_pipe_entry(slot) + MESH_PP_IN_CAP, m.inbox->cap);
+        mesh_mailbox_set(mb, mesh_pipe_entry(slot) + MESH_PP_IN_REC, m.inbox->rec);
+    }
     mesh_mailbox_set(mb, mesh_prog_ext(slot) + MESH_PX_PARAM, m.param);
     mesh_mailbox_set(mb, mesh_prog_ext(slot) + MESH_PX_EXEC, MESH_BACKEND_WASM);
     /* reads = [names]: the slots holding them now ("*": all). */
@@ -165,6 +173,12 @@ bool mesh_kit_load_bytes(mesh_kit *kit, uint32_t slot, const char *manifest, con
         sched_yield();
     }
     return true;
+}
+
+void mesh_kit_connect(mesh_kit *kit, uint32_t producer, uint32_t consumer) {
+    size_t p = mesh_pipe_entry(producer), c = mesh_pipe_entry(consumer);
+    mesh_mailbox_set(kit->mb, p + MESH_PP_FEEDS_MASK, mesh_mailbox_get(kit->mb, p + MESH_PP_FEEDS_MASK) | 1u << consumer);
+    mesh_mailbox_set(kit->mb, c + MESH_PP_FED_MASK, mesh_mailbox_get(kit->mb, c + MESH_PP_FED_MASK) | 1u << producer);
 }
 
 static void publish(mesh_kit *kit, uint32_t slot, uint32_t op, uint32_t arg) {
@@ -213,6 +227,24 @@ bool mesh_kit_tasks(mesh_kit *kit, uint32_t slot, uint32_t op, uint32_t arg, uin
     for (uint32_t i = n > MESH_PROG_RING ? n - MESH_PROG_RING : 0; i < n; i++)
         if (!wait_mark(kit, slot, first + i, fault, timeout_ms)) return false;
     return true;
+}
+
+long mesh_kit_request(mesh_kit *kit, uint32_t slot, const void *req, uint32_t n, char *out, size_t cap, unsigned timeout_ms) {
+    mesh_mailbox mb = kit->mb;
+    size_t e = mesh_prog_entry(slot), c = mesh_prog_ctl(slot);
+    size_t req_at = kit->slot[slot].view + mesh_mailbox_get(mb, e + MESH_PT_REQ_OFF);
+    size_t resp_at = kit->slot[slot].view + mesh_mailbox_get(mb, e + MESH_PT_RESP_OFF);
+    uint32_t req_max = mesh_mailbox_get(mb, e + MESH_PT_REQ_MAX);
+    if (n > req_max) n = req_max;
+    mesh_mailbox_write(mb, req_at, req, n, (n + 3) & ~3u);
+    mesh_mailbox_set(mb, c + MESH_P_REQ_LEN, n);
+    mesh_mailbox_publish64(mb, c + MESH_P_REQ_SEQ, mesh_mailbox_get64(mb, c + MESH_P_REQ_SEQ) + 1);
+    uint32_t r, fault;
+    if (!mesh_kit_task(kit, slot, MESH_OP_REQ, 0, &r, &fault, timeout_ms)) return -1;
+    uint32_t len = mesh_mailbox_get(mb, c + MESH_P_RESP_LEN);
+    if (len > cap) len = (uint32_t)cap;
+    for (uint32_t i = 0; i < len; i++) out[i] = (char)mesh_mailbox_get8(mb, resp_at + i);
+    return len;
 }
 
 void mesh_kit_unload(mesh_kit *kit, uint32_t slot) {

@@ -46,12 +46,20 @@ bool mesh_kit_load_bytes(mesh_kit *kit, uint32_t slot, const char *manifest, con
 /* Sets a slot's reads mask (PT_READS_MASK) under its PT_GEN seqlock. */
 void mesh_kit_reads(mesh_kit *kit, uint32_t slot, uint32_t mask);
 
+/* Connects a pipe: producer may push into consumer's inbox (PP_FEEDS_MASK, PP_FED_MASK). The
+ * consumer's inbox comes from its manifest (`inbox`) at load. */
+void mesh_kit_connect(mesh_kit *kit, uint32_t producer, uint32_t consumer);
+
 /* Publishes (op, arg) and waits for its completion (at most timeout_ms): true with *result; false
  * on a fault (*fault holds P_FAULT) or a timeout (*fault 0). */
 bool mesh_kit_task(mesh_kit *kit, uint32_t slot, uint32_t op, uint32_t arg, uint32_t *result, uint32_t *fault,
                    unsigned timeout_ms);
 /* Publishes n tickets of (op, arg) back to back and waits for them all (a throughput run). */
 bool mesh_kit_tasks(mesh_kit *kit, uint32_t slot, uint32_t op, uint32_t arg, uint32_t n, uint32_t *fault, unsigned timeout_ms);
+
+/* OP_REQ: writes req into the slot's request window (P_REQ_LEN, P_REQ_SEQ + 1), runs it, and copies
+ * the response (P_RESP_LEN bytes, at most cap) into out: its length, or -1 on a fault or timeout. */
+long mesh_kit_request(mesh_kit *kit, uint32_t slot, const void *req, uint32_t n, char *out, size_t cap, unsigned timeout_ms);
 
 /* P_SHUTDOWN, waits for the lanes to halt, unloads, clears the slot's entry and control block. */
 void mesh_kit_unload(mesh_kit *kit, uint32_t slot);

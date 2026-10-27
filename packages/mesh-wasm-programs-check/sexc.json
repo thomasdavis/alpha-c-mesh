@@ -23,7 +23,14 @@
     "@ajax/mesh-abi-view-train": "workspace:*",
     "@ajax/mesh-abi-view-infer": "workspace:*",
     "@ajax/mesh-abi-fnv": "workspace:*",
-    "@ajax/mesh-ftz": "workspace:*"
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/mesh-abi-view-pipedemo": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-pipe-table": "workspace:*"
   },
   "cflags": [
     "-D_XOPEN_SOURCE=700"

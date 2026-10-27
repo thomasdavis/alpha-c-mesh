@@ -133,6 +133,17 @@ static void *lane_main(void *arg) {
     return NULL;
 }
 
+/* ---- every open executor, for meshd's exit path (MESH_CLEANUP_WASM) ---- */
+
+static pthread_mutex_t open_mu = PTHREAD_MUTEX_INITIALIZER;
+static pthread_once_t cleanup_once = PTHREAD_ONCE_INIT;
+static void *open_backends[8];
+
+/* Asks every running lane to halt (P_SHUTDOWN): it ends at its next turn. Doesn't wait. */
+static void cleanup(void);
+
+static void register_cleanup(void) { mesh_backend_on_cleanup(MESH_CLEANUP_WASM, cleanup); }
+
 /* ---- the backend ---- */
 
 static const mesh_caps *b_caps(const mesh_backend *b) { return &((backend *)b->self)->caps; }
@@ -330,8 +341,34 @@ static bool b_module_scope(const mesh_backend *b, bool has_slot, uint32_t slot, 
     return true;
 }
 
+static void track(backend *x, bool add) {
+    pthread_mutex_lock(&open_mu);
+    for (size_t i = 0; i < sizeof open_backends / sizeof open_backends[0]; i++) {
+        if (add && !open_backends[i]) {
+            open_backends[i] = x;
+            break;
+        }
+        if (!add && open_backends[i] == x) open_backends[i] = NULL;
+    }
+    pthread_mutex_unlock(&open_mu);
+}
+
+static void cleanup(void) {
+    pthread_mutex_lock(&open_mu);
+    for (size_t i = 0; i < sizeof open_backends / sizeof open_backends[0]; i++) {
+        backend *x = open_backends[i];
+        if (!x) continue;
+        pthread_mutex_lock(&x->mu);
+        for (uint32_t s = 0; s < MESH_PROG_SLOTS; s++)
+            if (running(&x->lanes[s])) mesh_mailbox_publish(x->mb, mesh_prog_ctl(s) + MESH_P_SHUTDOWN, 1);
+        pthread_mutex_unlock(&x->mu);
+    }
+    pthread_mutex_unlock(&open_mu);
+}
+
 static void b_destroy(mesh_backend *b) {
     backend *x = b->self;
+    track(x, false);
     for (uint32_t s = 0; s < MESH_PROG_SLOTS; s++) {
         if (x->lanes[s].h && running(&x->lanes[s])) {
             /* Lanes still running at exit: ask them to halt and wait. */
@@ -404,6 +441,8 @@ bool mesh_wasm_backend_open(uint8_t *mailbox, const char *cache, mesh_backend **
     pthread_mutex_init(&x->mu, NULL);
     b->ops = &OPS;
     b->self = x;
+    pthread_once(&cleanup_once, register_cleanup);
+    track(x, true);
     *out = b;
     return true;
 }

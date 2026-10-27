@@ -7,7 +7,12 @@
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
   "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-exec-wasm-testkit",
-  "keywords": ["mesh", "alphaos", "wasm", "testing"],
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "testing"
+  ],
   "dependencies": {
     "@ajax/mesh-exec-wasm": "workspace:*",
     "@ajax/mesh-abi-program-table": "workspace:*",
@@ -17,7 +22,11 @@
     "@ajax/mesh-abi-ext": "workspace:*",
     "@ajax/mesh-abi-base": "workspace:*",
     "@ajax/mesh-log": "workspace:*",
-    "@ajax/mesh-check": "workspace:*"
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-abi-pipe-table": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*"
   },
-  "cflags": ["-D_XOPEN_SOURCE=700"]
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ]
 }
