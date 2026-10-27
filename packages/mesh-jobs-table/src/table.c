@@ -74,14 +74,17 @@ mj_job *mj_job_clone(const mj_job *j) {
 /* Two maps equal key by key, values compared by eq (or bytes). */
 static bool map_eq(const momap *a, const momap *b, bool (*eq)(const void *, const void *)) {
     if (momap_len(a) != momap_len(b)) return false;
-    uint64_t ka[MOMAP_MAX_KEY], kb[MOMAP_MAX_KEY];
-    const void *va = momap_first(a, ka), *vb = momap_first(b, kb);
+    momap_iter ia, ib;
+    momap_iter_init(&ia, a);
+    momap_iter_init(&ib, b);
+    const uint64_t *ka, *kb;
     unsigned kw = momap_key_words(a);
+    const void *va = momap_iter_next(&ia, &ka), *vb = momap_iter_next(&ib, &kb);
     while (va && vb) {
         if (memcmp(ka, kb, 8 * kw) != 0) return false;
         if (eq ? !eq(va, vb) : memcmp(va, vb, momap_val_size(a)) != 0) return false;
-        va = momap_next(a, ka, ka);
-        vb = momap_next(b, kb, kb);
+        va = momap_iter_next(&ia, &ka);
+        vb = momap_iter_next(&ib, &kb);
     }
     return !va && !vb;
 }
@@ -150,7 +153,9 @@ mj_ranges mj_job_left(const mj_job *j) {
     mj_ranges r = mj_ranges_clone(&j->spec.items);
     mj_ranges_subtract(&r, &j->done);
     uint64_t x;
-    for (const void *v = momap_first(j->failed, &x); v; v = momap_next(j->failed, &x, &x)) mj_ranges_take(&r, x);
+    momap_iter it1_;
+    momap_iter_init(&it1_, j->failed);
+    for (const void *v = momap_iter_next1(&it1_, &x); v; v = momap_iter_next1(&it1_, &x)) mj_ranges_take(&r, x);
     return r;
 }
 
@@ -164,7 +169,9 @@ static void fold(mj_job *j) {
     if (s != first || w <= j->fold_end) return;
     momap *keep = momap_split_off(j->runs, &w);
     uint64_t a;
-    for (const mj_run *r = momap_first(j->runs, &a); r; r = momap_next(j->runs, &a, &a)) count_add(j->folded, r->member, r->end - a);
+    momap_iter it2_;
+    momap_iter_init(&it2_, j->runs);
+    for (const mj_run *r = momap_iter_next1(&it2_, &a); r; r = momap_iter_next1(&it2_, &a)) count_add(j->folded, r->member, r->end - a);
     momap_free(j->runs);
     j->runs = keep;
     j->fold_end = w;
@@ -228,7 +235,9 @@ static void done_run(mj_job *j, const mj_op *op) {
     mj_ranges_free(&span);
     mj_ranges_subtract(&fresh, &j->done);
     uint64_t x;
-    for (const void *v = momap_first(j->failed, &x); v; v = momap_next(j->failed, &x, &x)) mj_ranges_take(&fresh, x);
+    momap_iter it3_;
+    momap_iter_init(&it3_, j->failed);
+    for (const void *v = momap_iter_next1(&it3_, &x); v; v = momap_iter_next1(&it3_, &x)) mj_ranges_take(&fresh, x);
     for (size_t i = 0; i < fresh.n; i++) {
         uint64_t a = fresh.v[i][0], b = fresh.v[i][1];
         mj_ranges_insert(&j->done, a, b);
@@ -259,26 +268,36 @@ static void apply_fold(mj_job *j, const mj_op *op) {
     /* Its runs below `upto` are in the tally now (and the items they did not cover are done there). */
     momap *keep = momap_split_off(j->runs, &op->upto);
     uint64_t a;
-    for (const mj_run *r = momap_first(j->runs, &a); r; r = momap_next(j->runs, &a, &a)) {
+    momap_iter it4_;
+    momap_iter_init(&it4_, j->runs);
+    for (const mj_run *r = momap_iter_next1(&it4_, &a); r; r = momap_iter_next1(&it4_, &a)) {
         uint64_t *c = momap_get1(j->by_member, r->member);
         if (c) *c = *c > r->end - a ? *c - (r->end - a) : 0;
     }
     momap_free(j->runs);
     j->runs = keep;
     uint64_t m;
-    for (const uint64_t *n = momap_first(j->folded, &m); n; n = momap_next(j->folded, &m, &m)) {
+    momap_iter it5_;
+    momap_iter_init(&it5_, j->folded);
+    for (const uint64_t *n = momap_iter_next1(&it5_, &m); n; n = momap_iter_next1(&it5_, &m)) {
         uint64_t *c = momap_get1(j->by_member, m);
         if (c) *c = *c > *n ? *c - *n : 0;
     }
     momap_clear(j->folded);
     for (size_t i = 0; i < op->ntally; i++) *(uint64_t *)momap_put1(j->folded, op->tally[i].member, NULL) = op->tally[i].n;
-    for (const uint64_t *n = momap_first(j->folded, &m); n; n = momap_next(j->folded, &m, &m)) count_add(j->by_member, (uint32_t)m, *n);
+    momap_iter it6_;
+    momap_iter_init(&it6_, j->folded);
+    for (const uint64_t *n = momap_iter_next1(&it6_, &m); n; n = momap_iter_next1(&it6_, &m)) count_add(j->by_member, (uint32_t)m, *n);
     mj_ranges span = mj_ranges_of(first, op->upto);
     mj_ranges r = mj_ranges_intersect(&span, &j->spec.items);
     mj_ranges_free(&span);
     uint64_t x;
-    for (const void *v = momap_first(j->failed, &x); v; v = momap_next(j->failed, &x, &x)) mj_ranges_take(&r, x);
-    for (const void *v = momap_first(j->results, &x); v; v = momap_next(j->results, &x, &x)) mj_ranges_take(&r, x);
+    momap_iter it7_;
+    momap_iter_init(&it7_, j->failed);
+    for (const void *v = momap_iter_next1(&it7_, &x); v; v = momap_iter_next1(&it7_, &x)) mj_ranges_take(&r, x);
+    momap_iter it8_;
+    momap_iter_init(&it8_, j->results);
+    for (const void *v = momap_iter_next1(&it8_, &x); v; v = momap_iter_next1(&it8_, &x)) mj_ranges_take(&r, x);
     mj_ranges_union(&j->done, &r);
     mj_ranges_free(&r);
     j->fold_end = op->upto;
@@ -360,20 +379,30 @@ void mj_table_ops(const mj_table *t, mj_ops *out) {
         mj_job_id job = j->spec.id;
         mj_ops_push(out, mj_op_submit(&j->spec));
         uint64_t k;
-        for (const mj_res *r = momap_first(j->results, &k); r; r = momap_next(j->results, &k, &k)) mj_ops_push(out, mj_op_done(job, k, r));
-        for (const mj_failed *f = momap_first(j->failed, &k); f; f = momap_next(j->failed, &k, &k))
+        momap_iter it9_;
+        momap_iter_init(&it9_, j->results);
+        for (const mj_res *r = momap_iter_next1(&it9_, &k); r; r = momap_iter_next1(&it9_, &k)) mj_ops_push(out, mj_op_done(job, k, r));
+        momap_iter it10_;
+        momap_iter_init(&it10_, j->failed);
+        for (const mj_failed *f = momap_iter_next1(&it10_, &k); f; f = momap_iter_next1(&it10_, &k))
             mj_ops_push(out, mj_op_fail(job, k, f->tries, f->why));
         /* After the results and failures (the fold's range is done but for those), before the runs above it. */
         if (j->fold_end > 0) {
             size_t n = momap_len(j->folded), i = 0;
             mj_tally *tl = n ? mxalloc(n * sizeof *tl) : NULL;
-            for (const uint64_t *c = momap_first(j->folded, &k); c; c = momap_next(j->folded, &k, &k)) tl[i++] = (mj_tally){(uint32_t)k, *c};
+            momap_iter it11_;
+            momap_iter_init(&it11_, j->folded);
+            for (const uint64_t *c = momap_iter_next1(&it11_, &k); c; c = momap_iter_next1(&it11_, &k)) tl[i++] = (mj_tally){(uint32_t)k, *c};
             mj_op o = {.kind = MJ_OP_FOLD, .job = job, .upto = j->fold_end, .tally = tl, .ntally = n};
             mj_ops_push(out, o);
         }
-        for (const mj_run *r = momap_first(j->runs, &k); r; r = momap_next(j->runs, &k, &k))
+        momap_iter it12_;
+        momap_iter_init(&it12_, j->runs);
+        for (const mj_run *r = momap_iter_next1(&it12_, &k); r; r = momap_iter_next1(&it12_, &k))
             mj_ops_push(out, mj_op_done_run(job, k, r->end, r->lease, r->member));
-        for (const uint32_t *tr = momap_first(j->fails, &k); tr; tr = momap_next(j->fails, &k, &k)) mj_ops_push(out, mj_op_fails(job, k, *tr));
+        momap_iter it13_;
+        momap_iter_init(&it13_, j->fails);
+        for (const uint32_t *tr = momap_iter_next1(&it13_, &k); tr; tr = momap_iter_next1(&it13_, &k)) mj_ops_push(out, mj_op_fails(job, k, *tr));
         if (j->dupes > 0) mj_ops_push(out, mj_op_dupes(job, j->dupes));
         if (j->cancel) mj_ops_push(out, mj_op_cancel(job, j->cancel));
         if (j->finished) mj_ops_push(out, mj_op_finish(job, j->finish_at, j->finish_state));

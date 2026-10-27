@@ -80,6 +80,16 @@ static void same(const momap *m) {
         CHECK_U(**v, ref[i].v);
     }
     CHECK_U(i, nref);
+    /* The cursor walks the same entries in the same order. */
+    momap_iter it;
+    momap_iter_init(&it, m);
+    const uint64_t *ik;
+    i = 0;
+    for (uint64_t **v = momap_iter_next(&it, &ik); v; v = momap_iter_next(&it, &ik), i++) {
+        if (!CHECK(i < nref)) break;
+        CHECK(kcmp(ik, ref[i].k) == 0 && **v == ref[i].v);
+    }
+    CHECK_U(i, nref);
     i = nref;
     for (uint64_t **v = momap_last(m, k); v; v = momap_prev(m, k, k)) {
         i--;

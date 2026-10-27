@@ -275,3 +275,28 @@ momap *momap_split_off(momap *m, const uint64_t *at) {
     }
     return o;
 }
+
+static void push_left(momap_iter *it, const node *n) {
+    for (; n; n = n->l) it->stack[it->top++] = n;
+}
+
+void momap_iter_init(momap_iter *it, const momap *m) {
+    it->top = 0;
+    it->m = m;
+    push_left(it, m->root);
+}
+
+void *momap_iter_next(momap_iter *it, const uint64_t **key) {
+    if (!it->top) return NULL;
+    const node *n = it->stack[--it->top];
+    push_left(it, n->r);
+    if (key) *key = n->data;
+    return val_of(it->m, n);
+}
+
+void *momap_iter_next1(momap_iter *it, uint64_t *key) {
+    const uint64_t *k;
+    void *v = momap_iter_next(it, &k);
+    if (v && key) *key = k[0];
+    return v;
+}

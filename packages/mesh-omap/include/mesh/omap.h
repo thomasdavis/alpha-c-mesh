@@ -47,6 +47,19 @@ void *momap_prev(const momap *m, const uint64_t *before, uint64_t *key_out);  /*
 void *momap_floor(const momap *m, const uint64_t *at, uint64_t *key_out);     /* largest <= at */
 void *momap_ceil(const momap *m, const uint64_t *at, uint64_t *key_out);      /* smallest >= at */
 
+/* A cursor over every entry in key order, O(1) per step: for walks that don't change the map's keys
+ * (values may change). momap_iter_init then, while momap_iter_next gives a value, use it. */
+typedef struct {
+    const void *stack[96];
+    int top;
+    const momap *m;
+} momap_iter;
+void momap_iter_init(momap_iter *it, const momap *m);
+/* The next entry's value (its key in *key when key is not NULL), or NULL at the end. */
+void *momap_iter_next(momap_iter *it, const uint64_t **key);
+/* The same, copying a one-word key into *key. */
+void *momap_iter_next1(momap_iter *it, uint64_t *key);
+
 /* Moves every entry with key >= at into a new map (Rust's split_off). */
 momap *momap_split_off(momap *m, const uint64_t *at);
 

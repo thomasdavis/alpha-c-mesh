@@ -27,7 +27,11 @@
     "@ajax/pathtrace-scene": "workspace:*",
     "@ajax/pathtrace-view": "workspace:*",
     "@ajax/pathtrace-digest": "workspace:*",
-    "@ajax/mesh-ftz": "workspace:*"
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-jobs-sched": "workspace:*",
+    "@ajax/mesh-sched-member": "workspace:*",
+    "@ajax/mesh-sched-needs": "workspace:*",
+    "@ajax/mesh-sched-weights": "workspace:*"
   },
   "cflags": [
     "-O2"
