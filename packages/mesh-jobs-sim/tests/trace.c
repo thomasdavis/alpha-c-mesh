@@ -625,6 +625,64 @@ static void scenario(int id, msb *all) {
         step(&s, 6000);
         break;
     }
+    case 4: {
+        sim_init(&s, 3, 31, false);
+        progs(&s, (uint32_t[]){0, 1, 2}, 3, 8);
+        step(&s, 400);
+        ask(&s, 0, "submit p items 9000 attempts 2");
+        step(&s, 1000);
+        s.m[1].speed = 0.0;
+        step(&s, 12000);
+        s.m[1].speed = 1.0;
+        s.unix_ms -= 600000;
+        crash(&s, 2);
+        step(&s, 2000);
+        restart(&s, 2);
+        progs(&s, (uint32_t[]){2}, 1, 8);
+        step(&s, 5000);
+        break;
+    }
+    case 5: {
+        sim_init(&s, 5, 41, false);
+        progs(&s, (uint32_t[]){0, 1, 2, 3, 4}, 5, 8);
+        step(&s, 300);
+        ask(&s, 0, "submit p items 20000");
+        s.drop = 200;
+        step(&s, 3000);
+        s.drop = 0;
+        crash(&s, 3);
+        step(&s, 2000);
+        restart(&s, 3);
+        progs(&s, (uint32_t[]){3}, 1, 8);
+        step(&s, 1000);
+        s.m[0].crash_after = true;
+        step(&s, 4000);
+        restart(&s, 0);
+        progs(&s, (uint32_t[]){0}, 1, 8);
+        step(&s, 5000);
+        break;
+    }
+    case 6: {
+        sim_init(&s, 3, 61, true);
+        progs(&s, (uint32_t[]){0, 1, 2}, 3, 8);
+        step(&s, 300);
+        ask(&s, 0, "submit p items 1500");
+        step(&s, 3000);
+        ask(&s, 0, "submit p items 1500");
+        step(&s, 1500);
+        crash(&s, 0);
+        step(&s, 3000);
+        uint32_t l = s.leader;
+        ask(&s, l, "forget 1.1");
+        ask(&s, l, "submit p items 2000");
+        step(&s, 500);
+        ask(&s, l, "cancel 2.1");
+        step(&s, 1500);
+        restart(&s, 0);
+        progs(&s, (uint32_t[]){0}, 1, 8);
+        step(&s, 4000);
+        break;
+    }
     default: {
         sim_init(&s, 2, 51, false);
         progs(&s, (uint32_t[]){0, 1}, 2, 8);
@@ -650,7 +708,7 @@ static void scenario(int id, msb *all) {
 
 int main(void) {
     msb all = {0};
-    for (int id = 0; id < 4; id++) scenario(id, &all);
+    for (int id = 0; id < 7; id++) scenario(id, &all);
     size_t g = 0, ng = sizeof GOLD / sizeof *GOLD, first_bad = SIZE_MAX;
     char *text = msb_take(&all);
     for (char *line = strtok(text, "\n"); line; line = strtok(NULL, "\n"), g++) {
