@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-prog-tick-wasm",
+  "version": "0.1.0",
+  "description": "tick for meshd's wasm executor: a pattern region of the view ticked one word a task and verified by sampling",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/tick-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

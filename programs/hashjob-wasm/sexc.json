@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-prog-hashjob-wasm",
+  "version": "0.1.0",
+  "description": "hashjob: a CPU job program (job arrays) for meshd's wasm executor: per item, folded sha256d of LE8(i * K + j)",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/hashjob-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

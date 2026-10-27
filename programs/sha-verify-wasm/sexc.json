@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-prog-sha-verify-wasm",
+  "version": "0.1.0",
+  "description": "sha-verify: re-hashes sha256d's shares on the CPU beside the GPU, reading its view through reads",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/sha-verify-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

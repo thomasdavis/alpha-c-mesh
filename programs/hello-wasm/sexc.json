@@ -7,6 +7,17 @@
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
   "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/hello-wasm",
-  "keywords": ["mesh", "alphaos", "wasm", "program", "hello"],
-  "dependencies": {"@ajax/mesh-rt-wasm": "workspace:*"}
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program",
+    "hello"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
 }

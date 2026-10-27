@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-prog-pathtrace-wasm",
+  "version": "0.1.0",
+  "description": "pathtrace for meshd's wasm executor: tiles of the deterministic path tracer in the cluster float mode, bit for bit a GPU's tile",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pathtrace-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program",
+    "pathtrace",
+    "renderer"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/mesh-prog-infer-wasm",
+  "version": "0.1.0",
+  "description": "infer for meshd's wasm executor: the trained cubic over a 64-point grid, reading train's params as a peer view, in the cluster float mode",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/infer-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/mesh-ref-cubic": "workspace:*",
+    "@ajax/mesh-abi-view-infer": "workspace:*",
+    "@ajax/mesh-abi-view-train": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}
