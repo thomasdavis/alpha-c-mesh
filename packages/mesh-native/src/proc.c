@@ -40,10 +40,25 @@ void proc_unref(proc *p) {
     free(p);
 }
 
+/* True when SIGPIPE is pending for this thread or the process. */
+static bool sigpipe_pending(void) {
+    sigset_t pending;
+    return sigpending(&pending) == 0 && sigismember(&pending, SIGPIPE) == 1;
+}
+
+/* A worker that has exited has closed its stdin, and writing to it raises SIGPIPE, which by
+ * default kills the whole process. Rust ignores SIGPIPE from startup, so the Rust executor only
+ * sees EPIPE; a library can't assume its host program does the same, so SIGPIPE is blocked
+ * around the write and one raised by this write is consumed before it is unblocked. */
 bool proc_send(proc *p, const char *line) {
     pthread_mutex_lock(&p->stdin_mu);
     bool ok = false;
     if (p->stdin_fd >= 0) {
+        sigset_t pipe_set, old;
+        sigemptyset(&pipe_set);
+        sigaddset(&pipe_set, SIGPIPE);
+        pthread_sigmask(SIG_BLOCK, &pipe_set, &old);
+        bool was_pending = sigpipe_pending();
         char *l = mesh_fmt("%s\n", line);
         size_t n = strlen(l), off = 0;
         ok = true;
@@ -52,11 +67,16 @@ bool proc_send(proc *p, const char *line) {
             if (k > 0) off += (size_t)k;
             else if (k < 0 && errno == EINTR) continue;
             else {
+                if (k < 0 && errno == EPIPE && !was_pending) {
+                    struct timespec zero = {0, 0};
+                    while (sigtimedwait(&pipe_set, NULL, &zero) < 0 && errno == EINTR) {}
+                }
                 ok = false;
                 break;
             }
         }
         free(l);
+        pthread_sigmask(SIG_SETMASK, &old, NULL);
     }
     pthread_mutex_unlock(&p->stdin_mu);
     return ok;
