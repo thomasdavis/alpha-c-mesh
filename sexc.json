@@ -1,0 +1,14 @@
+{
+  "name": "alpha-c-mesh",
+  "private": true,
+  "description": "AlphaOS mesh in C: resident GPU programs, a fleet daemon, and every piece as its own sexc package",
+  "workspaces": ["packages/*", "programs/*", "apps/*"],
+  "cflags": ["-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Werror"],
+  "profiles": {
+    "debug": {"cflags": ["-g", "-O0", "-fsanitize=undefined", "-fno-sanitize-recover=undefined"],
+              "ldflags": ["-fsanitize=undefined"]},
+    "release": {"cflags": ["-O2", "-DNDEBUG"]},
+    "asan": {"cflags": ["-g", "-O1", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"],
+             "ldflags": ["-fsanitize=address,undefined"]}
+  }
+}
