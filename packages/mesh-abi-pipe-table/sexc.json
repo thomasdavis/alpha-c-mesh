@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-abi-pipe-table",
+  "version": "0.1.0",
+  "description": "The pipe block (PP_*): a slot's inbox, connected feeds and pushes in flight",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-pipe-table",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "pipe",
+    "table"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

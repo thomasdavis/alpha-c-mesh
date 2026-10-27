@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-abi-pipe",
+  "version": "0.1.0",
+  "description": "Pipes between programs: push into a connected inbox, pop your own",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-pipe",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "pipe"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-pipe-table": "workspace:*",
+    "@ajax/mesh-abi-pipe-ring": "workspace:*",
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-abi-pipe-hash": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

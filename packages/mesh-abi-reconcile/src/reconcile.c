@@ -1,0 +1,4 @@
+/* @ajax/mesh-abi-reconcile: its tables and functions, and its compile-time layout checks. */
+#include "mesh/abi/reconcile.h"
+
+const char *const MESH_RS_NAMES[4] = {"-", "in-sync", "pending", "failed"};

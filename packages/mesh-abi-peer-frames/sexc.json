@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-peer-frames",
+  "version": "0.1.0",
+  "description": "Peer link frame types (F_*), the link version and port, and liveness timing",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-peer-frames",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "peer",
+    "frames"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

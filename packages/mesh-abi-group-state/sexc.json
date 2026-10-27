@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-group-state",
+  "version": "0.1.0",
+  "description": "A member's lockstep group state (GL_*)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-group-state",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "group",
+    "state"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-view-gpt2x",
+  "version": "0.1.0",
+  "description": "programs/gpt2x's view: GPT-2 exact-mode kernels' parameter block, ops and epilogues",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-view-gpt2x",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "view",
+    "gpt2x"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

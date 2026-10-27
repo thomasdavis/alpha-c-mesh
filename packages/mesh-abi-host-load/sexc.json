@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-host-load",
+  "version": "0.1.0",
+  "description": "This machine's load (S_LOAD..): GPU share, CPU, PSI, memory, meshd, disk, thermal, cores",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-host-load",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "host",
+    "load"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

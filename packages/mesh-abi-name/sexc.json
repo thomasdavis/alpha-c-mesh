@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-name",
+  "version": "0.1.0",
+  "description": "Valid program names: [a-z0-9-]{1,15}",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-name",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "name"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

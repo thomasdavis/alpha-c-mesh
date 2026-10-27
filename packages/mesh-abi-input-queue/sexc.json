@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-input-queue",
+  "version": "0.1.0",
+  "description": "A program's input queue in its view (IQ_*)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-input-queue",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "input",
+    "queue"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

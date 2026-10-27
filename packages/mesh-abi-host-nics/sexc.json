@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-abi-host-nics",
+  "version": "0.1.0",
+  "description": "NIC records (NI_*) and the virtual interfaces left out of the total",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-host-nics",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "host",
+    "nics"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-abi-node-load",
+  "version": "0.1.0",
+  "description": "Node load records (NL_*): how much of the GPU the nodes got, measured from inside",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-node-load",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "node",
+    "load"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

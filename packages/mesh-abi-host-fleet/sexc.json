@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-abi-host-fleet",
+  "version": "0.1.0",
+  "description": "The fleet region: leader, term, versions, members' reconcile status, the lockstep group",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-host-fleet",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "host",
+    "fleet"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

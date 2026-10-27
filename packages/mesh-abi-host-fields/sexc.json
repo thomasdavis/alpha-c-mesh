@@ -1,0 +1,34 @@
+{
+  "name": "@ajax/mesh-abi-host-fields",
+  "version": "0.1.0",
+  "description": "Every field of the host status block, as (offset, bytes): the table the layout checks run over",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-host-fields",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "host",
+    "fields"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-host-status": "workspace:*",
+    "@ajax/mesh-abi-host-members": "workspace:*",
+    "@ajax/mesh-abi-host-net": "workspace:*",
+    "@ajax/mesh-abi-host-links": "workspace:*",
+    "@ajax/mesh-abi-host-nics": "workspace:*",
+    "@ajax/mesh-abi-host-load": "workspace:*",
+    "@ajax/mesh-abi-host-mload": "workspace:*",
+    "@ajax/mesh-abi-host-fleet": "workspace:*",
+    "@ajax/mesh-abi-host-sched": "workspace:*",
+    "@ajax/mesh-abi-host-jobs": "workspace:*",
+    "@ajax/mesh-abi-host-pload": "workspace:*",
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

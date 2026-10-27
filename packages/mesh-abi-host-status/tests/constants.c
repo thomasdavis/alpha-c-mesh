@@ -1,0 +1,43 @@
+/* Every constant of @ajax/mesh-abi-host-status equals the Rust's (values printed by the Rust itself), and the
+ * Rust const asserts that need a function call hold. Generated from alpha-rust-mesh. */
+#include "mesh/abi/host_status.h"
+#include "mesh/check.h"
+
+#include <stdint.h>
+#include <string.h>
+
+int main(void) {
+    CHECK_U(MESH_S_UPTIME_MS, UINT64_C(0));
+    CHECK_U(MESH_S_EPOCH, UINT64_C(8));
+    CHECK_U(MESH_S_SYSTEM, UINT64_C(12));
+    CHECK_U(MESH_S_PEER_STATE, UINT64_C(16));
+    CHECK_U(MESH_S_PROGRAMS, UINT64_C(20));
+    CHECK_U(MESH_S_SMS_TOTAL, UINT64_C(24));
+    CHECK_U(MESH_S_GREEN, UINT64_C(28));
+    CHECK_U(MESH_S_TASKS_PER_S, UINT64_C(32));
+    CHECK_U(MESH_S_HEAP_FREE, UINT64_C(36));
+    CHECK_U(MESH_S_SMS, UINT64_C(40));
+    CHECK_U(MESH_S_PEER_RTT_US, UINT64_C(44));
+    CHECK_U(MESH_S_LOCK_STEP, UINT64_C(48));
+    CHECK_U(MESH_S_HTTP_REQUESTS, UINT64_C(56));
+    CHECK_U(MESH_S_BLINK_US, UINT64_C(60));
+    CHECK_U(MESH_S_HOSTNAME, UINT64_C(64));
+    CHECK_U(MESH_S_GPU, UINT64_C(96));
+    CHECK_U(MESH_S_PROGRAMS_DIR, UINT64_C(128));
+    CHECK_U(MESH_S_LAST_HTTP, UINT64_C(192));
+    CHECK_U(MESH_S_HTTP_ADDR, UINT64_C(256));
+    CHECK_U(MESH_S_LOCK_VIEW, UINT64_C(320));
+    CHECK_U(MESH_S_LOCK_NAME, UINT64_C(352));
+    CHECK_U(MESH_S_RATES, UINT64_C(368));
+    CHECK_U(MESH_S_LAST_BLINK_MS, UINT64_C(496));
+    CHECK_U(MESH_S_ISOLATION, UINT64_C(504));
+    CHECK_U(MESH_ISOLATION_BLINK, UINT64_C(0));
+    CHECK_U(MESH_S_SYSTEMS, UINT64_C(512));
+    CHECK_U(MESH_S_LINKED, UINT64_C(516));
+    CHECK_U(MESH_S_ARCH, UINT64_C(528));
+    CHECK_U(MESH_S_LOCK_WAIT_US, UINT64_C(544));
+    CHECK_U(MESH_S_SESSIONS, UINT64_C(548));
+    CHECK_U(MESH_ISOLATION_MPS, UINT64_C(1));
+    CHECK_U(MESH_ISOLATION_LEASE, UINT64_C(2));
+    return mesh_check_done();
+}
