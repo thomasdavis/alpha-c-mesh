@@ -30,7 +30,10 @@
     "@ajax/pathtrace-view": "workspace:*",
     "@ajax/mesh-abi-view-pipedemo": "workspace:*",
     "@ajax/mesh-abi-ring": "workspace:*",
-    "@ajax/mesh-abi-pipe-table": "workspace:*"
+    "@ajax/mesh-abi-pipe-table": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-lease": "workspace:*"
   },
   "cflags": [
     "-D_XOPEN_SOURCE=700"
