@@ -4,7 +4,7 @@
  * widened), so the C and Rust schedulers decide the same from the same inputs. */
 #include "mesh/sched_score.h"
 #include "mesh/abi/base.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <math.h>
 #include <stdlib.h>

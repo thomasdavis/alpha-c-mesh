@@ -2,7 +2,7 @@
  * 4: nothing leaves without its persist. */
 #include "mesh/check.h"
 #include "mesh/fleet_core.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

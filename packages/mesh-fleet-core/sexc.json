@@ -18,6 +18,6 @@
   ],
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-persist": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-persist": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
   }
 }

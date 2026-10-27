@@ -5,7 +5,7 @@
 #include "mesh/abi/peer_sizes.h"
 #include "mesh/abi/place_ops.h"
 #include "mesh/rust_fmt.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

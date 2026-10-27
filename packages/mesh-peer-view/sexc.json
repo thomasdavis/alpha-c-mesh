@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-peer-view",
+  "version": "0.1.0",
+  "description": "A migration's view arriving in chunks from its source (bounded, sizes checked, duplicates counted once), and a member's smoothed load",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-peer-view",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "peer",
+    "migration",
+    "view",
+    "load"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/range-set": "workspace:*", "@ajax/mesh-sched-member": "workspace:*"
+  }
+}

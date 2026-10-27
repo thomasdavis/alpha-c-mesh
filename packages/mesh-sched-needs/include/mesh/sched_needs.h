@@ -9,7 +9,7 @@
 #define MESH_SCHED_NEEDS_H
 
 #include "mesh/sched_member.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdbool.h>
 #include <stdint.h>

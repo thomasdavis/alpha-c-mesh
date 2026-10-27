@@ -1,6 +1,6 @@
 /* fleet.rs: new_epoch, group_policy, reform. */
 #include "mesh/fleet_groups.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 void mfg_new_epoch(mfd_group *g, ml_list members) {
     g->epoch += 1;

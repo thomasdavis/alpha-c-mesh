@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-fleet-store",
+  "version": "0.1.0",
+  "description": "A fleet member's state file, written whole, synced and renamed into place before any vote, acknowledgement or commit leaves",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-fleet-store",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "fleet",
+    "persist",
+    "fsync"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-fleet-persist": "workspace:*"
+  }
+}

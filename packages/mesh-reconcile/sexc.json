@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-reconcile",
+  "version": "0.1.0",
+  "description": "The fleet reconciler: makes this member's programs match the committed document (loads, upgrades, migrations with views, the lockstep group's epochs and cycles, placement)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-reconcile",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "fleet",
+    "reconcile",
+    "lockstep",
+    "migration"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lpthread"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-plan": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-peer-codec": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*"
+  }
+}

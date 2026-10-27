@@ -16,7 +16,7 @@
 #include "mesh/place_mode.h"
 #include "mesh/place_spec.h"
 #include "mesh/place_wire.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdbool.h>
 #include <stdint.h>

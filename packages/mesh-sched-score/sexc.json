@@ -18,6 +18,6 @@
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "ldflags": ["-lm"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
   }
 }
