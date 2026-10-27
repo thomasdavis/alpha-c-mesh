@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-log",
+  "version": "0.1.0",
+  "description": "A member's job log: its records (leadership, snapshot, entry, commit), the replica they replay to, and replay with torn-tail handling",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-log",
+  "keywords": ["mesh", "alphaos", "jobs", "log", "replication"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-wire": "workspace:*",
+    "@ajax/mesh-jobs-op": "workspace:*", "@ajax/mesh-jobs-table": "workspace:*"
+  }
+}
