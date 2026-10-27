@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/rust-fmt",
+  "version": "0.1.0",
+  "description": "Rust-compatible text formatting in C: a float's Display (shortest round-trip, no exponent) and a string's Debug",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/rust-fmt",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "rust",
+    "format",
+    "float"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-sched-member",
+  "version": "0.1.0",
+  "description": "One fleet member as the scheduler sees it (capabilities, live load, link RTT, failures) and a program's measured performance on it",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-sched-member",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "scheduler",
+    "member",
+    "performance"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-strmap": "workspace:*", "@ajax/mesh-abi-base": "workspace:*"
+  }
+}
