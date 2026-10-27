@@ -1,0 +1,40 @@
+{
+  "name": "@ajax/mesh-inferd",
+  "version": "0.1.0",
+  "description": "meshd's side of an inference request: which members serve it, the call to their gpt2 worker, the answer",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-inferd",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "inference",
+    "gpt2",
+    "fleet"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-shared": "workspace:*",
+    "@ajax/mesh-infer-wire": "workspace:*",
+    "@ajax/mesh-infer-request": "workspace:*",
+    "@ajax/mesh-infer-svc": "workspace:*",
+    "@ajax/mesh-prog-table": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

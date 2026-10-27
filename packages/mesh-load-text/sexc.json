@@ -1,0 +1,37 @@
+{
+  "name": "@ajax/mesh-load-text",
+  "version": "0.1.0",
+  "description": "The control port's load request: this machine's load and every program's, as key value lines",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-load-text",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "telemetry",
+    "control"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-shared": "workspace:*",
+    "@ajax/mesh-prog-table": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
