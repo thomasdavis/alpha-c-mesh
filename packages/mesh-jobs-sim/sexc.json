@@ -34,9 +34,14 @@
     "@ajax/mesh-sched-weights": "workspace:*"
   },
   "cflags": [
-    "-O2"
+    "-O2",
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
   ],
   "targets": [
     "host"
+  ],
+  "ldflags": [
+    "-pthread"
   ]
 }

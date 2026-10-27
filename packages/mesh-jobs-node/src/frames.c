@@ -58,7 +58,9 @@ static mj_held *held_now(const mj_node *n, size_t *count) {
     size_t nh = momap_len(n->held), i = 0;
     mj_held *v = nh ? mxalloc(nh * sizeof *v) : NULL;
     uint64_t k;
-    for (const mj_held *h = momap_first(n->held, &k); h; h = momap_next(n->held, &k, &k)) v[i++] = mj_held_clone(h);
+    momap_iter cur1_;
+    momap_iter_init(&cur1_, n->held);
+    for (const mj_held *h = momap_iter_next1(&cur1_, &k); h; h = momap_iter_next1(&cur1_, &k)) v[i++] = mj_held_clone(h);
     *count = nh;
     return v;
 }

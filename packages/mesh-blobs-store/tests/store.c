@@ -268,7 +268,47 @@ static void eviction(void) {
     }
 }
 
+/* The index under churn: thousands of blobs over many jobs, jobs dropped at random, every blob's presence
+ * and the byte count checked against a plain list (deletions shift probe runs back). */
+static void churn(void) {
+    mb_store *s = mb_open(NULL, (uint64_t)1 << 40, NULL);
+    enum { N = 3000 };
+    static mj_hash hs[N];
+    static mj_job_id job[N];
+    static bool alive[N];
+    uint64_t r = 0x2545f4914f6cdd1du;
+    for (int i = 0; i < N; i++) {
+        uint8_t b[16];
+        memcpy(b, &i, sizeof i);
+        memset(b + sizeof i, 7, sizeof b - sizeof i);
+        hs[i] = sha(b, sizeof b);
+        r ^= r << 13;
+        r ^= r >> 7;
+        r ^= r << 17;
+        job[i] = r % 40;
+        mb_reserved rv;
+        CHECK(mb_reserve(s, job[i], hs[i], 16, listed, NULL, &rv, NULL));
+        mb_reserved_free(&rv);
+        mb_put_mem(s, job[i], hs[i], b, sizeof b);
+        alive[i] = true;
+    }
+    for (mj_job_id j = 0; j < 40; j += 3) {
+        mb_refs g = mb_drop_job(s, j);
+        mb_refs_free(&g);
+        for (int i = 0; i < N; i++)
+            if (job[i] == j) alive[i] = false;
+    }
+    uint64_t want = 0;
+    for (int i = 0; i < N; i++) {
+        CHECK(mb_has(s, &hs[i]) == alive[i]);
+        want += alive[i] ? 16 : 0;
+    }
+    CHECK_U(mb_bytes(s), want);
+    mb_store_free(s);
+}
+
 int main(void) {
+    churn();
     write_rename_durability();
     hash_verification();
     two_jobs();

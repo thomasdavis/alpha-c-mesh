@@ -31,8 +31,9 @@ static void *xalloc(size_t n) {
 
 static void *val_of(const momap *m, const node *n) { return (void *)(n->data + m->kw); }
 
-static int cmp(const momap *m, const uint64_t *a, const uint64_t *b) {
-    for (unsigned i = 0; i < m->kw; i++)
+static inline int cmp(const momap *m, const uint64_t *a, const uint64_t *b) {
+    if (a[0] != b[0]) return a[0] < b[0] ? -1 : 1;
+    for (unsigned i = 1; i < m->kw; i++)
         if (a[i] != b[i]) return a[i] < b[i] ? -1 : 1;
     return 0;
 }
@@ -139,6 +140,15 @@ size_t momap_val_size(const momap *m) { return m->vsize; }
 
 void *momap_get(const momap *m, const uint64_t *key) {
     const node *n = m->root;
+    if (m->kw == 1) {
+        uint64_t k = key[0];
+        while (n) {
+            uint64_t x = n->data[0];
+            if (k == x) return val_of(m, n);
+            n = k < x ? n->l : n->r;
+        }
+        return NULL;
+    }
     while (n) {
         int c = cmp(m, key, n->data);
         if (c == 0) return val_of(m, n);

@@ -12,13 +12,26 @@
 #include "payload.h"
 #include "pathtrace/digest.h"
 
-static inline void done_jobs_assemble(uint64_t seed) {
-    mj_setup setup[5];
-    fpay *pays;
-    size_t items;
-    fs_small_scene(setup, &pays, &items);
+/* The scene's payloads and reference digests, computed once (as the Rust computes them once, before its
+ * seed loop); each seed's sim gets a copy of the payloads. */
+static mj_setup g_setup[5];
+static fpay *g_pays;
+static size_t g_items;
+static uint64_t g_acc, g_rgb;
+
+/* The small scene's reference digests (accumulators, pixels) after 64 passes, as mesh-ref's renderer
+ * gives them: fleet_assemble_0 renders the reference and checks these; the other seeds use them. */
+#define REF_ACC 0xff7f387eca86cb49u
+#define REF_RGB 0x6babf0f12f7483b0u
+
+static inline void scene_once_with(bool render) {
+    if (g_pays) return;
+    fs_small_scene(g_setup, &g_pays, &g_items);
+    g_acc = REF_ACC;
+    g_rgb = REF_RGB;
+    if (!render) return;
     uint32_t sc[PT_DEFAULT_SCENE_WORDS];
-    masm_job_scene(setup, 5, sc, NULL);
+    masm_job_scene(g_setup, 5, sc, NULL);
     uint32_t tiles = pt_tiles(sc), ts[64];
     for (uint32_t t = 0; t < tiles; t++) ts[t] = t;
     mesh_pt_tile *ref = mxalloc(tiles * sizeof *ref);
@@ -30,9 +43,31 @@ static inline void done_jobs_assemble(uint64_t seed) {
         mesh_pt_tile_free(&ref[t]);
     }
     free(ref);
-    uint64_t want_acc = pt_fnv_words(acc, (size_t)tiles * 3 * PT_TILE_PIX), want_rgb = pt_fnv_words(rgb, (size_t)tiles * PT_TILE_PIX);
+    g_acc = pt_fnv_words(acc, (size_t)tiles * 3 * PT_TILE_PIX);
+    g_rgb = pt_fnv_words(rgb, (size_t)tiles * PT_TILE_PIX);
+    CHECK_U(g_acc, REF_ACC);
+    CHECK_U(g_rgb, REF_RGB);
     free(acc);
     free(rgb);
+}
+
+static inline void scene_free(void) {
+    for (size_t i = 0; i < g_items; i++) free(g_pays[i].b);
+    free(g_pays);
+    g_pays = NULL;
+}
+
+static inline void done_jobs_assemble(uint64_t seed) {
+    scene_once_with(seed == 0);
+    mj_setup *setup = g_setup;
+    size_t items = g_items;
+    uint64_t want_acc = g_acc, want_rgb = g_rgb;
+    fpay *pays = mxalloc(items * sizeof *pays);
+    for (size_t i = 0; i < items; i++) {
+        pays[i] = g_pays[i];
+        pays[i].b = mxalloc(g_pays[i].n);
+        memcpy(pays[i].b, g_pays[i].b, g_pays[i].n);
+    }
     uint64_t len = pays[0].n;
     fsim s;
     fs_init(&s, 4, 1000 + seed);

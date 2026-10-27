@@ -21,9 +21,11 @@
 #include "pathtrace/view.h"
 #include "pathtrace/z.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define NMAX 8
 
@@ -585,7 +587,9 @@ static inline void fs_record(fsim *s, uint32_t k) {
     for (const mj_job *j = mj_table_first(t, &id); j; j = mj_table_next(t, &id)) {
         bool forgotten = fs_forgotten_any(s, id);
         uint64_t item;
-        for (const mj_res *res = momap_first(j->results, &item); res; res = momap_next(j->results, &item, &item)) {
+        momap_iter cur17_;
+        momap_iter_init(&cur17_, j->results);
+        for (const mj_res *res = momap_iter_next1(&cur17_, &item); res; res = momap_iter_next1(&cur17_, &item)) {
             uint64_t key[2] = {id, item};
             bool fresh;
             uint32_t *v = momap_put(s->seen, key, &fresh);
@@ -914,31 +918,51 @@ static inline masm *fs_assemble(fsim *s, uint32_t k, mj_job_id id, const mj_setu
 }
 
 /* A small pathtrace scene's setup (6 tiles, 64 passes of 1 spp: 384 items) and every item's real
- * payload (its pass sums) with its pass-sum digest. */
-static inline void fs_small_scene(mj_setup setup[5], fpay **pays, size_t *n) {
-    setup[0] = (mj_setup){5, 0};
-    setup[1] = (mj_setup){7, pt_set_arg(PT_H_WIDTH, 96)};
-    setup[2] = (mj_setup){7, pt_set_arg(PT_H_HEIGHT, 48)};
-    setup[3] = (mj_setup){7, pt_set_arg(PT_H_PASSES, 64)};
-    setup[4] = (mj_setup){7, pt_set_arg(PT_H_SPP, 1)};
-    uint32_t sc[PT_DEFAULT_SCENE_WORDS];
-    if (!masm_job_scene(setup, 5, sc, NULL)) abort();
-    uint32_t tiles = pt_tiles(sc), passes = sc[PT_H_PASSES];
-    *n = (size_t)tiles * passes;
-    *pays = mxalloc(*n * sizeof **pays);
+ * payload (its pass sums) with its pass-sum digest, rendered on a few threads (each item independent). */
+typedef struct {
+    const uint32_t *sc;
+    uint32_t tiles;
+    fpay *pays;
+    size_t from, to;
+} fs_render_job;
+
+static inline void *fs_render(void *arg) {
+    fs_render_job *j = arg;
     pt_v *part = mxalloc(PT_TILE_PIX * sizeof *part);
-    for (size_t w = 0; w < *n; w++) {
+    for (size_t w = j->from; w < j->to; w++) {
         memset(part, 0, PT_TILE_PIX * sizeof *part);
-        uint64_t d = pt_tile_pass_z(sc, (uint32_t)(w % tiles), (uint32_t)(w / tiles), part);
+        uint64_t d = pt_tile_pass_z(j->sc, (uint32_t)(w % j->tiles), (uint32_t)(w / j->tiles), part);
         uint8_t *b = mxalloc(PT_PAYLOAD);
         for (size_t i = 0; i < PT_TILE_PIX; i++) {
             uint32_t ws[3] = {mesh_ftz_bits(part[i].x), mesh_ftz_bits(part[i].y), mesh_ftz_bits(part[i].z)};
             for (int c = 0; c < 3; c++)
                 for (int k = 0; k < 4; k++) b[12 * i + 4 * (size_t)c + (size_t)k] = (uint8_t)(ws[c] >> 8 * k);
         }
-        (*pays)[w] = (fpay){b, PT_PAYLOAD, d};
+        j->pays[w] = (fpay){b, PT_PAYLOAD, d};
     }
     free(part);
+    return NULL;
+}
+
+static inline void fs_small_scene(mj_setup setup[5], fpay **pays, size_t *n) {
+    setup[0] = (mj_setup){5, 0};
+    setup[1] = (mj_setup){7, pt_set_arg(PT_H_WIDTH, 96)};
+    setup[2] = (mj_setup){7, pt_set_arg(PT_H_HEIGHT, 48)};
+    setup[3] = (mj_setup){7, pt_set_arg(PT_H_PASSES, 64)};
+    setup[4] = (mj_setup){7, pt_set_arg(PT_H_SPP, 1)};
+    static uint32_t sc[PT_DEFAULT_SCENE_WORDS];
+    if (!masm_job_scene(setup, 5, sc, NULL)) abort();
+    uint32_t tiles = pt_tiles(sc), passes = sc[PT_H_PASSES];
+    *n = (size_t)tiles * passes;
+    *pays = mxalloc(*n * sizeof **pays);
+    enum { T = 2 };
+    pthread_t th[T];
+    fs_render_job jobs[T];
+    for (size_t t = 0; t < T; t++) {
+        jobs[t] = (fs_render_job){sc, tiles, *pays, *n * t / T, *n * (t + 1) / T};
+        if (pthread_create(&th[t], NULL, fs_render, &jobs[t]) != 0) abort();
+    }
+    for (size_t t = 0; t < T; t++) pthread_join(th[t], NULL);
 }
 
 #endif

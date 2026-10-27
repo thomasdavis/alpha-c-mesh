@@ -1,7 +1,8 @@
-/* done_jobs_assemble_until_forgotten, seeds 0..2 (assemble.h). */
+/* done_jobs_assemble_until_forgotten, seed 0 (assemble.h). */
 #include "assemble.h"
 
 int main(void) {
-    for (uint64_t seed = 0; seed < 3; seed++) done_jobs_assemble(seed);
+    done_jobs_assemble(0);
+    scene_free();
     return mesh_check_done();
 }

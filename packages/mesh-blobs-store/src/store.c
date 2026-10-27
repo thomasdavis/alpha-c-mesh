@@ -24,10 +24,23 @@ typedef struct {
     size_t n;
 } bytes;
 
+/* The index: blob hash -> entry, open addressing with linear probing (a sha256 is its own hash), as
+ * the Rust's HashMap; deletion shifts the run back so no tombstones are left. */
+typedef struct {
+    bool used;
+    mj_hash h;
+    entry e;
+} slot;
+
+typedef struct {
+    slot *v;
+    size_t cap, n;
+} table;
+
 struct mb_store {
     char *dir;
     uint64_t cap;
-    momap *index; /* hash words -> entry */
+    table index;
     momap *jobs;  /* job -> uint64_t references (pending included) */
     uint64_t total;
     momap *mem;   /* hash words -> bytes (no directory) */
@@ -36,7 +49,70 @@ struct mb_store {
     void *log_ctx;
 };
 
-static void entry_free(void *v) { momap_free(((entry *)v)->refs); }
+static size_t home(const table *t, const mj_hash *h) {
+    uint64_t x;
+    memcpy(&x, h->b, 8);
+    return (size_t)(x & (t->cap - 1));
+}
+
+static slot *tfind(const table *t, const mj_hash *h) {
+    if (!t->cap) return NULL;
+    for (size_t i = home(t, h);; i = (i + 1) & (t->cap - 1)) {
+        slot *s = &t->v[i];
+        if (!s->used) return NULL;
+        if (mj_hash_eq(&s->h, h)) return s;
+    }
+}
+
+static void tgrow(table *t);
+
+/* The entry for h, inserted (zeroed) if absent. */
+static entry *tput(table *t, const mj_hash *h, bool *fresh) {
+    slot *s = tfind(t, h);
+    if (s) {
+        *fresh = false;
+        return &s->e;
+    }
+    if ((t->n + 1) * 10 > t->cap * 7) tgrow(t);
+    size_t i = home(t, h);
+    while (t->v[i].used) i = (i + 1) & (t->cap - 1);
+    t->v[i] = (slot){true, *h, {0}};
+    t->n++;
+    *fresh = true;
+    return &t->v[i].e;
+}
+
+static void tgrow(table *t) {
+    table o = *t;
+    t->cap = o.cap ? 2 * o.cap : 64;
+    t->v = mxalloc(t->cap * sizeof *t->v);
+    t->n = 0;
+    for (size_t i = 0; i < o.cap; i++)
+        if (o.v[i].used) {
+            bool f;
+            *tput(t, &o.v[i].h, &f) = o.v[i].e;
+        }
+    free(o.v);
+}
+
+/* Removes h's slot (its entry's refs already freed), shifting the probe run back. */
+static void tdel(table *t, const mj_hash *h) {
+    slot *s = tfind(t, h);
+    if (!s) return;
+    size_t i = (size_t)(s - t->v);
+    t->v[i].used = false;
+    t->n--;
+    for (size_t j = (i + 1) & (t->cap - 1); t->v[j].used; j = (j + 1) & (t->cap - 1)) {
+        size_t k = home(t, &t->v[j].h);
+        /* Move j back to i when its home is not cyclically in (i, j]. */
+        bool between = i <= j ? (i < k && k <= j) : (i < k || k <= j);
+        if (!between) {
+            t->v[i] = t->v[j];
+            t->v[j].used = false;
+            i = j;
+        }
+    }
+}
 static void bytes_free(void *v) { free(((bytes *)v)->p); }
 
 void mb_refs_free(mb_refs *r) {
@@ -56,10 +132,8 @@ void mb_reserved_free(mb_reserved *r) {
 }
 
 static void add_ref(mb_store *s, mj_job_id job, const mj_hash *h, uint32_t len, uint8_t st) {
-    uint64_t k[4];
-    mj_hash_words(h, k);
     bool fresh;
-    entry *e = momap_put(s->index, k, &fresh);
+    entry *e = tput(&s->index, h, &fresh);
     if (fresh) {
         s->total += len;
         e->len = len;
@@ -74,7 +148,6 @@ static void add_ref(mb_store *s, mj_job_id job, const mj_hash *h, uint32_t len, 
 mb_store *mb_open(const char *dir, uint64_t cap, char **err) {
     mb_store *s = mxalloc(sizeof *s);
     s->cap = cap;
-    s->index = momap_new(4, sizeof(entry), entry_free, NULL);
     s->jobs = momap_new(1, sizeof(uint64_t), NULL, NULL);
     s->mem = momap_new(4, sizeof(bytes), bytes_free, NULL);
     if (!dir) return s;
@@ -122,7 +195,9 @@ mb_store *mb_open(const char *dir, uint64_t cap, char **err) {
 void mb_store_free(mb_store *s) {
     if (!s) return;
     free(s->dir);
-    momap_free(s->index);
+    for (size_t i = 0; i < s->index.cap; i++)
+        if (s->index.v[i].used) momap_free(s->index.v[i].e.refs);
+    free(s->index.v);
     momap_free(s->jobs);
     momap_free(s->mem);
     mb_refs_free(&s->lost);
@@ -137,7 +212,7 @@ void mb_set_log(mb_store *s, void (*log)(void *ctx, const char *line), void *ctx
 uint64_t mb_cap(const mb_store *s) { return s->cap; }
 bool mb_persisted(const mb_store *s) { return s->dir != NULL; }
 uint64_t mb_bytes(const mb_store *s) { return s->total; }
-size_t mb_count(const mb_store *s) { return momap_len(s->index); }
+size_t mb_count(const mb_store *s) { return s->index.n; }
 
 uint64_t mb_refs_total(const mb_store *s) {
     uint64_t t = 0, k;
@@ -146,9 +221,8 @@ uint64_t mb_refs_total(const mb_store *s) {
 }
 
 static entry *entry_of(const mb_store *s, const mj_hash *h) {
-    uint64_t k[4];
-    mj_hash_words(h, k);
-    return momap_get(s->index, k);
+    slot *x = tfind(&s->index, h);
+    return x ? &x->e : NULL;
 }
 
 /* The first reference (in job order) that is present. */
@@ -181,9 +255,10 @@ bool mb_known_ref(const mb_store *s, mj_job_id job, const mj_hash *h) {
 
 mb_refs mb_all(const mb_store *s) {
     mb_refs r = {0};
-    uint64_t k[4];
-    for (const entry *e = momap_first(s->index, k); e; e = momap_next(s->index, k, k)) {
-        mj_hash h = mj_hash_of_words(k);
+    for (size_t i = 0; i < s->index.cap; i++) {
+        if (!s->index.v[i].used) continue;
+        const entry *e = &s->index.v[i].e;
+        mj_hash h = s->index.v[i].h;
         uint64_t j;
         for (const uint8_t *st = momap_first(e->refs, &j); st; st = momap_next(e->refs, &j, &j))
             if (*st == PRESENT) refs_push(&r, j, &h);
@@ -212,7 +287,7 @@ static char *path_of(const mb_store *s, mj_job_id job, const mj_hash *h) {
 static void unref(mb_store *s, mj_job_id job, const mj_hash *h) {
     uint64_t k[4];
     mj_hash_words(h, k);
-    entry *e = momap_get(s->index, k);
+    entry *e = entry_of(s, h);
     if (!e || !momap_del1(e->refs, job)) return;
     char *p = path_of(s, job, h);
     if (p) unlink(p);
@@ -221,19 +296,16 @@ static void unref(mb_store *s, mj_job_id job, const mj_hash *h) {
     if (c && --*c == 0) momap_del1(s->jobs, job);
     if (momap_len(e->refs) == 0) {
         s->total -= e->len;
-        momap_del(s->index, k);
+        momap_free(e->refs);
+        tdel(&s->index, h);
         momap_del(s->mem, k);
     }
 }
 
 mb_refs mb_drop_job(mb_store *s, mj_job_id job) {
     mb_refs hs = {0};
-    uint64_t k[4];
-    for (const entry *e = momap_first(s->index, k); e; e = momap_next(s->index, k, k))
-        if (momap_get1(e->refs, job)) {
-            mj_hash h = mj_hash_of_words(k);
-            refs_push(&hs, job, &h);
-        }
+    for (size_t i = 0; i < s->index.cap; i++)
+        if (s->index.v[i].used && momap_get1(s->index.v[i].e.refs, job)) refs_push(&hs, job, &s->index.v[i].h);
     for (size_t i = 0; i < hs.n; i++) unref(s, job, &hs.v[i].h);
     momap_del1(s->jobs, job);
     char *d = mb_dir_of(s, job);

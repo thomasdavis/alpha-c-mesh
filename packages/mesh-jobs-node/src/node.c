@@ -188,7 +188,10 @@ size_t mj_node_parked(const mj_node *n) {
     if (!n->lead) return 0;
     size_t total = 0;
     uint64_t k[5];
-    for (const mj_parked_list *p = momap_first(n->lead->parked, k); p; p = momap_next(n->lead->parked, k, k)) total += p->n;
+    momap_iter cur4_;
+    momap_iter_init(&cur4_, n->lead->parked);
+    const uint64_t *cur4_k;
+    for (const mj_parked_list *p = momap_iter_next(&cur4_, &cur4_k); p && (memcpy(k, cur4_k, sizeof k), 1); p = momap_iter_next(&cur4_, &cur4_k)) total += p->n;
     return total;
 }
 
@@ -260,7 +263,10 @@ mj_outs mj_node_set_view(mj_node *n, mj_view v, uint64_t now, uint64_t unix_ms) 
     if (!same_leader) {
         n->avail_dirty = true;
         uint64_t k[3];
-        for (mj_outbox_entry *e = momap_first(n->outbox, k); e; e = momap_next(n->outbox, k, k)) e->at = 0;
+        momap_iter cur5_;
+        momap_iter_init(&cur5_, n->outbox);
+        const uint64_t *cur5_k;
+        for (mj_outbox_entry *e = momap_iter_next(&cur5_, &cur5_k); e && (memcpy(k, cur5_k, sizeof k), 1); e = momap_iter_next(&cur5_, &cur5_k)) e->at = 0;
     }
     mj_node_pump(n, now, unix_ms, &out);
     return out;
@@ -311,7 +317,10 @@ mj_outs mj_node_blob_stored(mj_node *n, mj_job_id job, mj_hash hash, uint64_t no
     momap_put(n->have, hk, NULL);
     uint32_t me = n->cfg.me;
     uint64_t k[3];
-    for (mj_staged *s = momap_first(n->staged, k); s; s = momap_next(n->staged, k, k))
+    momap_iter cur6_;
+    momap_iter_init(&cur6_, n->staged);
+    const uint64_t *cur6_k;
+    for (mj_staged *s = momap_iter_next(&cur6_, &cur6_k); s && (memcpy(k, cur6_k, sizeof k), 1); s = momap_iter_next(&cur6_, &cur6_k))
         if (staged_for(s, job, &hash)) s->acked |= (uint32_t)1 << me;
     if (n->lead && n->lead->active) {
         mj_lead *l = n->lead;
@@ -347,7 +356,10 @@ void mj_node_blob_gone(mj_node *n, mj_job_id job, const mj_hash *hash) {
 
 void mj_node_blob_acked(mj_node *n, uint32_t from, mj_job_id job, mj_hash hash, bool ok) {
     uint64_t k[3];
-    for (mj_staged *s = momap_first(n->staged, k); s; s = momap_next(n->staged, k, k))
+    momap_iter cur7_;
+    momap_iter_init(&cur7_, n->staged);
+    const uint64_t *cur7_k;
+    for (mj_staged *s = momap_iter_next(&cur7_, &cur7_k); s && (memcpy(k, cur7_k, sizeof k), 1); s = momap_iter_next(&cur7_, &cur7_k))
         if (staged_for(s, job, &hash)) {
             if (ok) s->acked |= (uint32_t)1 << from;
             else s->refused |= (uint32_t)1 << from;
@@ -530,7 +542,10 @@ static void stage(mj_node *n, uint64_t now, mj_outs *out) {
     uint64_t k[3];
     uint64_t (*ready)[3] = NULL;
     size_t nready = 0;
-    for (mj_staged *s = momap_first(n->staged, k); s; s = momap_next(n->staged, k, k)) {
+    momap_iter cur8_;
+    momap_iter_init(&cur8_, n->staged);
+    const uint64_t *cur8_k;
+    for (mj_staged *s = momap_iter_next(&cur8_, &cur8_k); s && (memcpy(k, cur8_k, sizeof k), 1); s = momap_iter_next(&cur8_, &cur8_k)) {
         if (!s->r.has_blob) continue;
         uint32_t want;
         if (!mj_copies_for(me, cnt, n->view.has_leader, n->view.leader, alive, s->refused, &want)) continue;
@@ -611,7 +626,9 @@ mj_outs mj_node_tick(mj_node *n, uint64_t now, uint64_t unix_ms) {
             size_t nh = momap_len(n->held), i = 0;
             mj_held *held = nh ? mxalloc(nh * sizeof *held) : NULL;
             uint64_t k;
-            for (const mj_held *h = momap_first(n->held, &k); h; h = momap_next(n->held, &k, &k)) held[i++] = mj_held_clone(h);
+            momap_iter cur9_;
+            momap_iter_init(&cur9_, n->held);
+            for (const mj_held *h = momap_iter_next1(&cur9_, &k); h; h = momap_iter_next1(&cur9_, &k)) held[i++] = mj_held_clone(h);
             mj_node_send(n, leader, mj_frame_avail(mj_node_lid(n), mj_progs_clone(n->progs, n->nprogs), n->nprogs, held, nh), &out);
         }
         stage(n, now, &out);
@@ -619,7 +636,10 @@ mj_outs mj_node_tick(mj_node *n, uint64_t now, uint64_t unix_ms) {
         uint64_t k[3];
         mj_item_res *batch = NULL;
         size_t nb = 0;
-        for (mj_outbox_entry *e = momap_first(n->outbox, k); e; e = momap_next(n->outbox, k, k)) {
+        momap_iter cur10_;
+        momap_iter_init(&cur10_, n->outbox);
+        const uint64_t *cur10_k;
+        for (mj_outbox_entry *e = momap_iter_next(&cur10_, &cur10_k); e && (memcpy(k, cur10_k, sizeof k), 1); e = momap_iter_next(&cur10_, &cur10_k)) {
             if (!(e->at == 0 || (now > e->at ? now - e->at : 0) >= MESH_JOBS_RESEND_MS)) continue;
             e->at = now > 1 ? now : 1;
             if (!batch) batch = mxalloc(4096 * sizeof *batch);

@@ -57,7 +57,9 @@ void mj_node_start_lead(mj_node *n, uint64_t term, uint64_t now, uint64_t unix_m
     l->answers[me] = mxalloc(sizeof(mj_answer));
     *l->answers[me] = mj_answer_of(&n->rep);
     uint64_t k;
-    for (const mj_held *h = momap_first(n->held, &k); h; h = momap_next(n->held, &k, &k)) {
+    momap_iter cur2_;
+    momap_iter_init(&cur2_, n->held);
+    for (const mj_held *h = momap_iter_next1(&cur2_, &k); h; h = momap_iter_next1(&cur2_, &k)) {
         if (l->nadopt == l->capadopt) {
             l->capadopt = l->capadopt ? 2 * l->capadopt : 8;
             l->adopt = mxrealloc(l->adopt, l->capadopt * sizeof *l->adopt);
@@ -167,7 +169,9 @@ void mj_node_flush(mj_node *n, mj_outs *out) {
     if (!l || !l->active) return;
     /* Dupes counted this tick: one op per job. */
     uint64_t job;
-    for (const uint64_t *cnt = momap_first(l->dupes, &job); cnt; cnt = momap_next(l->dupes, &job, &job)) {
+    momap_iter cur3_;
+    momap_iter_init(&cur3_, l->dupes);
+    for (const uint64_t *cnt = momap_iter_next1(&cur3_, &job); cnt; cnt = momap_iter_next1(&cur3_, &job)) {
         mj_job *j = mj_table_get(&l->working, job);
         if (!j) continue;
         uint64_t total = j->dupes > *cnt ? j->dupes : *cnt;

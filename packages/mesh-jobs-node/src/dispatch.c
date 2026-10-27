@@ -94,7 +94,9 @@ void mj_node_on_results(mj_node *n, uint32_t from, mj_item_res *items, size_t co
                 momap_take(l->disp.leases, &r->lease, &gone);
                 bool last = true;
                 uint64_t id;
-                for (const mj_lease *y = momap_first(l->disp.leases, &id); y; y = momap_next(l->disp.leases, &id, &id))
+                momap_iter cur11_;
+                momap_iter_init(&cur11_, l->disp.leases);
+                for (const mj_lease *y = momap_iter_next1(&cur11_, &id); y; y = momap_iter_next1(&cur11_, &id))
                     if (y->member == from && strcmp(y->program, gone.program) == 0) last = false;
                 mj_rate_lease_done(&mj_mpmap_put(&l->disp.rates, from, gone.program)->rate, gone.size, gone.issued, now, last);
                 free_lease(&gone);
@@ -227,7 +229,9 @@ static const mj_pick *pick_of(const momap *picks, mj_job_id job, uint32_t m) {
 static double best_of(const momap *picks, uint32_t m) {
     double best = -1.7976931348623157e308;
     uint64_t job;
-    for (const mj_picks *p = momap_first(picks, &job); p; p = momap_next(picks, &job, &job)) {
+    momap_iter cur12_;
+    momap_iter_init(&cur12_, picks);
+    for (const mj_picks *p = momap_iter_next1(&cur12_, &job); p; p = momap_iter_next1(&cur12_, &job)) {
         for (size_t i = 0; i < p->n; i++)
             if (p->v[i].member == m) {
                 if (p->v[i].ok) best = fmax(best, p->v[i].score.total);
@@ -329,7 +333,9 @@ void mj_node_dispatch(mj_node *n, uint64_t now, uint64_t unix_ms, mj_outs *out) 
         if (!(mj_job_active(j) && mj_job_complete(j))) continue;
         bool leased = false;
         uint64_t lk;
-        for (const mj_lease *x = momap_first(l->disp.leases, &lk); x; x = momap_next(l->disp.leases, &lk, &lk))
+        momap_iter cur13_;
+        momap_iter_init(&cur13_, l->disp.leases);
+        for (const mj_lease *x = momap_iter_next1(&cur13_, &lk); x; x = momap_iter_next1(&cur13_, &lk))
             if (x->job == id) leased = true;
         if (leased) continue;
         mj_op op = mj_op_finish(id, unix_ms, MESH_JOBS_FIN_DONE);
@@ -378,7 +384,9 @@ void mj_node_dispatch(mj_node *n, uint64_t now, uint64_t unix_ms, mj_outs *out) 
             uint64_t outstanding = 0;
             size_t held = 0;
             uint64_t lk;
-            for (const mj_lease *x = momap_first(l->disp.leases, &lk); x; x = momap_next(l->disp.leases, &lk, &lk))
+            momap_iter cur14_;
+            momap_iter_init(&cur14_, l->disp.leases);
+            for (const mj_lease *x = momap_iter_next1(&cur14_, &lk); x; x = momap_iter_next1(&cur14_, &lk))
                 if (x->member == m && strcmp(x->program, p->name) == 0) {
                     outstanding += mj_ranges_len(&x->out);
                     held++;
@@ -440,7 +448,9 @@ void mj_node_dispatch(mj_node *n, uint64_t now, uint64_t unix_ms, mj_outs *out) 
                 }
                 mj_ranges_subtract(&items, &j->done);
                 uint64_t fx;
-                for (const void *v = momap_first(j->failed, &fx); v; v = momap_next(j->failed, &fx, &fx)) mj_ranges_take(&items, fx);
+                momap_iter cur15_;
+                momap_iter_init(&cur15_, j->failed);
+                for (const void *v = momap_iter_next1(&cur15_, &fx); v; v = momap_iter_next1(&cur15_, &fx)) mj_ranges_take(&items, fx);
                 if (mj_ranges_is_empty(&items)) {
                     mj_ranges_free(&items);
                     continue;
@@ -462,7 +472,9 @@ void mj_node_dispatch(mj_node *n, uint64_t now, uint64_t unix_ms, mj_outs *out) 
                 bool have_v = false, vgone = false;
                 uint64_t vid = 0;
                 double vsecs = 0, vr = 0;
-                for (const mj_lease *x = momap_first(l->disp.leases, &lk); x; x = momap_next(l->disp.leases, &lk, &lk)) {
+                momap_iter cur16_;
+                momap_iter_init(&cur16_, l->disp.leases);
+                for (const mj_lease *x = momap_iter_next1(&cur16_, &lk); x; x = momap_iter_next1(&cur16_, &lk)) {
                     if (x->member == m || mj_ranges_len(&x->out) < 2) continue;
                     const mj_job *xj = mj_table_get(&l->working, x->job);
                     if (!xj || !mj_spec_runs(&xj->spec, p->name)) continue;
