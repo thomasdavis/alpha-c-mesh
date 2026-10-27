@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/mesh-jobs-node",
+  "version": "0.1.0",
+  "description": "A meshd's job node, sans IO: its replica of the fleet's job table, the leader's dispatcher (leases, rates, stealing, retries, deadlines, exactly-once results, payload copies) and the member side",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-node",
+  "keywords": ["mesh", "alphaos", "jobs", "replication", "scheduler", "exactly-once"],
+  "ldflags": ["-lm"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-omap": "workspace:*",
+    "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-jobs-ranges": "workspace:*",
+    "@ajax/mesh-jobs-spec": "workspace:*", "@ajax/mesh-jobs-op": "workspace:*", "@ajax/mesh-jobs-table": "workspace:*",
+    "@ajax/mesh-jobs-lid": "workspace:*", "@ajax/mesh-jobs-frame": "workspace:*", "@ajax/mesh-jobs-req": "workspace:*",
+    "@ajax/mesh-jobs-log": "workspace:*", "@ajax/mesh-jobs-out": "workspace:*", "@ajax/mesh-jobs-copies": "workspace:*",
+    "@ajax/mesh-jobs-rate": "workspace:*", "@ajax/mesh-jobs-merge": "workspace:*", "@ajax/mesh-jobs-select": "workspace:*"
+  }
+}
