@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-jobs-req",
+  "version": "0.1.0",
+  "description": "Job changes as control words: job submit (items, op, priority, attempts, deadline, results, setup, members), cancel, forget, tone",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-req",
+  "keywords": ["mesh", "alphaos", "jobs", "control", "parser"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-debug-str": "workspace:*",
+    "@ajax/mesh-rs-parse": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-name": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*", "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-jobs-ranges": "workspace:*",
+    "@ajax/mesh-jobs-spec": "workspace:*"
+  }
+}

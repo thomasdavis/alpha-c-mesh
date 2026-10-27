@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-jobs-frame",
+  "version": "0.1.0",
+  "description": "The job frames on the peer links (F_JOB_AVAIL, F_JOB_STATE, F_JOB_ACK, F_JOB_PULL, F_JOB_HAVE, F_LEASE, F_LEASE_CUT, F_RESULT): types, encoding, decoding",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-frame",
+  "keywords": ["mesh", "alphaos", "jobs", "frames", "protocol"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*",
+    "@ajax/mesh-abi-peer-sizes": "workspace:*", "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-jobs-ranges": "workspace:*",
+    "@ajax/mesh-jobs-wire": "workspace:*", "@ajax/mesh-jobs-spec": "workspace:*", "@ajax/mesh-jobs-op": "workspace:*"
+  }
+}
