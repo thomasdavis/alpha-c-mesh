@@ -4,10 +4,25 @@
   "description": "programs/pathtrace's tiles: a column's pass sums and digests, the fold into accumulators, re-toning, whole tiles; and the header that instantiates the renderer",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "tiles", "template"],
-  "dependencies": {"@ajax/pathtrace-math": "workspace:*", "@ajax/pathtrace-scene": "workspace:*",
-                   "@ajax/pathtrace-digest": "workspace:*", "@ajax/pathtrace-intersect": "workspace:*",
-                   "@ajax/pathtrace-sample": "workspace:*", "@ajax/pathtrace-tonemap": "workspace:*"},
-  "cflags": ["-ffp-contract=off"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-tile",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "tiles",
+    "template"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-math": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-digest": "workspace:*",
+    "@ajax/pathtrace-intersect": "workspace:*",
+    "@ajax/pathtrace-sample": "workspace:*",
+    "@ajax/pathtrace-tonemap": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
 }

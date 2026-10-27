@@ -1,0 +1,14 @@
+# tick-m: a variant of tick (scripts/build-programs.sh copies tick's images under this name). metal only: it can only land on the Mac.
+name       = "tick-m"
+abi        = 6
+view_bytes = 0x10000
+view_abi   = 1
+snap_bytes = 0x40
+nodes      = 1
+policy     = "periodic"
+hz         = 50
+counters   = ["ticks", "inits", "", ""]
+fields     = ["magic:u32:0x0", "ticks:u32:0x4", "inits:u32:0x8", "mismatches:u32:0xc"]
+autostart  = false
+replicas   = 1
+backends   = ["metal"]

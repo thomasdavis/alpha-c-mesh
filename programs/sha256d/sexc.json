@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-prog-sha256d",
+  "version": "0.1.0",
+  "description": "sha256d, Bitcoin-style double SHA-256 nonce grinding as a mesh GPU job program (multi-warp nodes), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/sha256d",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "sha256", "bitcoin"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/sha256-compress": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

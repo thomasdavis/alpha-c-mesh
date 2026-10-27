@@ -1,0 +1,16 @@
+# infer: the trained cubic on a 64-point grid, reading train's view
+# (layout: mesh_abi::v2::views::infer; docs/plan-program-loading.md §3.8)
+name       = "infer"
+abi        = 6
+view_bytes = 0x1000
+view_abi   = 1
+snap_bytes = 0x400
+nodes      = 1
+policy     = "periodic"
+hz         = 10
+fanout     = 1
+reads      = ["train"]
+counters   = ["runs", "", "", ""]
+fields     = ["a:f32:0x0", "b:f32:0x4", "c:f32:0x8", "d:f32:0xc", "runs:u32:0x10", "train_step:u32:0x14"]
+autostart  = true
+backends   = ["cuda", "metal", "wasm"]

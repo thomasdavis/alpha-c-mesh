@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-rt-sim-mailbox",
+  "version": "0.1.0",
+  "description": "A host mailbox with one mesh program slot and the host side of its ticket ring, request window and input queue, for testing programs on the CPU simulator",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-sim-mailbox",
+  "keywords": ["mesh", "alphaos", "gpu", "simulator", "testing", "mailbox"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-rt-sim": "workspace:*"
+  }
+}

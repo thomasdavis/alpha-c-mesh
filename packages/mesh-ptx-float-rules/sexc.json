@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-ptx-float-rules",
+  "version": "0.1.0",
+  "description": "The mesh cluster float mode's rules on PTX text: FTZ, correctly rounded, unfused float instructions only",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ptx-float-rules",
+  "keywords": ["mesh", "alphaos", "ptx", "ftz", "float", "lint"],
+  "targets": ["host"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

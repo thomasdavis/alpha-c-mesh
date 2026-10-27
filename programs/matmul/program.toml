@@ -1,0 +1,28 @@
+# matmul: a deterministic shared-memory tiled f32 matrix multiply and
+# matrix-vector product on the GPU (CUDA and Metal), in exact mode: every f32
+# op correctly rounded and FTZ, never fused, and a fixed accumulation order
+# (C[i][j] = ((0 + a0 b0) + a1 b1) + .. in k order; y[i]: lane l sums k = l,
+# l + 32, .. in order, then the warp butterfly), so the bits equal
+# mesh-ref::matmul's CPU reference on every GPU (kcheck GM*).  The seed of GPU
+# inference (docs/plan-disagg-inference.md); tensor cores are the later fast mode.
+# The matrices live in the program's scratch (device memory: A, B, C of up to
+# 3072 x 3072, then x and y), generated on the device from a counter hash
+# (mesh_ref::matmul::value), copied to the view's window on request.
+# Ops: 3 SET arg = field << 24 | value (0 M, 1 K, 2 N: 1..=3072; 3 seed of A,
+# 4 seed of B and x); 4 GEN arg = which << 24 | chunk (0 A, 1 B, 2 x; 65536
+# elements a chunk); 5 MM arg = C tile (64 x 64, row-major tiles); 6 MV arg =
+# 64-row block of y = A x (A M x K); 7 COPY arg = which << 24 | chunk (0 C, 1 y:
+# 65536 floats into the window at 0x1000).
+# View: 0x0 magic, 0x4 M, 0x8 K, 0xc N, 0x10 seed A, 0x14 seed B, 0x18 tiles done.
+name          = "matmul"
+abi           = 6
+view_bytes    = 0x41000
+nodes         = "fit"
+warps         = 8
+shared_bytes  = 0x2000
+scratch_bytes = 0x6c08000
+policy        = "on_demand"
+fanout        = 32
+counters      = ["tiles", "rows", "gens", "copies"]
+fields        = ["m:u32:0x4", "k:u32:0x8", "n:u32:0xc", "seed_a:u32:0x10", "seed_b:u32:0x14", "tiles:u32:0x18"]
+backends      = ["cuda", "metal"]

@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-source-hash",
+  "version": "0.1.0",
+  "description": "A native mesh program's source identity: SHA-256 of its source files as path\\0content in byte order, 16 hex digits",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-source-hash",
+  "keywords": ["mesh", "alphaos", "catalog", "hash", "build"],
+  "targets": ["host"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/sha256-stream": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

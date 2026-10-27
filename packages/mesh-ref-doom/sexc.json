@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-ref-doom",
+  "version": "0.1.0",
+  "description": "programs/doom's CPU reference: the DDA ray of a column, its wall height, the map, and the player's pose under keys, op for op in Z",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-doom",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "doom",
+    "raycaster"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-abi-view-doom": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
+}

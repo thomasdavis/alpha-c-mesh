@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/cuda-driver-fake",
+  "version": "0.1.0",
+  "description": "A simulated CUDA device behind the cuda-driver table: modules, globals, streams and launches whose kernels run as C functions on CPU threads, for testing without a GPU",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/cuda-driver-fake",
+  "keywords": ["mesh", "alphaos", "cuda", "fake", "testing", "gpu"],
+  "cflags": ["-D_GNU_SOURCE", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {
+    "@ajax/cuda-driver": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

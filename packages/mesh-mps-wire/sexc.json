@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-mps-wire",
+  "version": "0.1.0",
+  "description": "The frames between meshd and its MPS worker processes: a length, an op, its body",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-mps-wire",
+  "keywords": ["mesh", "alphaos", "cuda", "mps", "wire", "protocol"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

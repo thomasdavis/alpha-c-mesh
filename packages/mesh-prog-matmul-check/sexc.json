@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-prog-matmul-check",
+  "version": "0.1.0",
+  "description": "Tests of programs/matmul on the CPU simulator against the host-only matmul reference (sexc has no test-only dependencies)",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "test"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-linalg": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-matmul": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

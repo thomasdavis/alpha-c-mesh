@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-prog-hello",
+  "version": "0.1.0",
+  "description": "hello, the smallest mesh GPU program (task = arg * 3 + 7), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/hello",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program"],
+  "cflags": ["-ffp-contract=off"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

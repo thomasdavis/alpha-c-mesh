@@ -1,0 +1,30 @@
+{
+  "name": "@ajax/mesh-prog-pathtrace",
+  "version": "0.1.0",
+  "description": "pathtrace, a deterministic path tracer as a mesh GPU job program (bit-identical images on every GPU and CPU), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pathtrace",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "gpu",
+    "ptx",
+    "program",
+    "pathtracer",
+    "deterministic"
+  ],
+  "cflags": [
+    "-ffp-contract=off"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/pathtrace-tile": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*",
+    "@ajax/pathtrace-digest": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*"
+  }
+}

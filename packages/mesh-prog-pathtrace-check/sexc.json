@@ -1,0 +1,34 @@
+{
+  "name": "@ajax/mesh-prog-pathtrace-check",
+  "version": "0.1.0",
+  "description": "Tests of programs/pathtrace on the CPU simulator against the host-only pathtrace reference (sexc has no test-only dependencies)",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "test"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-pathtrace": "workspace:*",
+    "@ajax/pathtrace-job-scene": "workspace:*",
+    "@ajax/pathtrace-tile": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*",
+    "@ajax/pathtrace-digest": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

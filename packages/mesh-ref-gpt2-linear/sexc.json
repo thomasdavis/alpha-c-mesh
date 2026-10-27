@@ -4,7 +4,9 @@
   "description": "GPT-2's linear layer, one output row: sequential dots over k from +0 in Z, then bias, bias-GELU or a residual add",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-linear",
   "keywords": [
     "alphaos",
     "mesh",

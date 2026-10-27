@@ -1,0 +1,12 @@
+# blocks with 4 warps a node (a variant of programs/blocks: the same image): the tree is the 1024-leaf one
+# whatever the warps, so its results for the first 128 threads are checked the same way.
+name         = "blocks-w4"
+abi          = 6
+view_bytes   = 0x41000
+nodes        = 8
+warps        = 4
+shared_bytes = 0x200
+policy       = "on_demand"
+counters     = ["tasks", "early", "", ""]
+fields       = ["magic:u32:0x0", "tasks:u32:0x4"]
+backends     = ["cuda", "metal"]

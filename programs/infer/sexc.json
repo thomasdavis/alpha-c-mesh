@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-prog-infer",
+  "version": "0.1.0",
+  "description": "infer, the mesh program that evaluates train's cubic over a grid through a peer view, as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/infer",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-cubic": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
