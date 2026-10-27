@@ -25,7 +25,7 @@
     "-pthread"
   ],
   "dependencies": {
-    "@ajax/mesh-mailbox-shim": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
     "@ajax/mesh-abi": "workspace:*",
     "@ajax/mesh-prog-table": "workspace:*",
     "@ajax/mesh-host-block": "workspace:*",

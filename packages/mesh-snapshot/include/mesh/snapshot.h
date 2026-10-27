@@ -11,6 +11,6 @@
 #include "mesh/mailbox.h"
 
 /* Appends one snapshot to out. */
-void mesh_snapshot(mesh_buf *out, const mesh_mailbox *mb, mesh_host_block *host);
+void mesh_snapshot(mesh_buf *out, mesh_mailbox mb, mesh_host_block *host);
 
 #endif

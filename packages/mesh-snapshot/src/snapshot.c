@@ -8,13 +8,13 @@
 
 static uint32_t w32(const uint8_t *b, size_t o) { return (uint32_t)b[o] | (uint32_t)b[o + 1] << 8 | (uint32_t)b[o + 2] << 16 | (uint32_t)b[o + 3] << 24; }
 
-static void mb_append(mesh_buf *out, const mesh_mailbox *mb, size_t off, size_t len) {
+static void mb_append(mesh_buf *out, mesh_mailbox mb, size_t off, size_t len) {
     size_t at = out->len;
     mesh_buf_zeros(out, len);
-    mesh_mailbox_read(mb, off, out->data + at, len);
+    mesh_mailbox_read(mb, off, (uint8_t *)out->data + at, len);
 }
 
-void mesh_snapshot(mesh_buf *s, const mesh_mailbox *mb, mesh_host_block *host) {
+void mesh_snapshot(mesh_buf *s, mesh_mailbox mb, mesh_host_block *host) {
     size_t start = s->len;
     mesh_buf_zeros(s, MESH_SN_HEAD_BYTES);
     mb_append(s, mb, 0, MESH_H_BYTES);

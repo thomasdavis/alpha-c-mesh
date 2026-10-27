@@ -71,9 +71,9 @@ void mesh_pring_free(mesh_pring *r); /* drops outstanding waiters unanswered */
 uint32_t mesh_pring_room(const mesh_pring *r);
 bool mesh_pring_can_publish(const mesh_pring *r);
 /* Publishes; true with *ticket. False when full: the kind stays the caller's. */
-bool mesh_pring_publish(mesh_pring *r, const mesh_mailbox *mb, uint32_t op, uint32_t arg, mesh_kind kind, uint32_t *ticket);
+bool mesh_pring_publish(mesh_pring *r, mesh_mailbox mb, uint32_t op, uint32_t arg, mesh_kind kind, uint32_t *ticket);
 /* Completed tickets with their results, in publication order: *done (free it), *n. */
-void mesh_pring_collect(mesh_pring *r, const mesh_mailbox *mb, mesh_done **done, size_t *n);
+void mesh_pring_collect(mesh_pring *r, mesh_mailbox mb, mesh_done **done, size_t *n);
 bool mesh_pring_idle(const mesh_pring *r);
 uint32_t mesh_pring_auto_in_flight(const mesh_pring *r);
 uint32_t mesh_pring_follow_in_flight(const mesh_pring *r);
@@ -82,16 +82,16 @@ bool mesh_pring_has_req(const mesh_pring *r);
 bool mesh_pring_has_init(const mesh_pring *r);
 /* Every node halted: the outstanding tickets will never run. They are
  * returned (*outs, free it), and P_RING_HEAD goes back to the tail. */
-void mesh_pring_rewind(mesh_pring *r, const mesh_mailbox *mb, mesh_out **outs, size_t *n);
+void mesh_pring_rewind(mesh_pring *r, mesh_mailbox mb, mesh_out **outs, size_t *n);
 
 /* How many auto tasks the policy wants published now (of a batch of n);
  * advances *last (the periodic clock, ns) when it publishes. */
 uint32_t mesh_due(const mesh_manifest *m, uint32_t n, const mesh_pring *r, int64_t *last, int64_t now);
 /* Publishes what due asks for; returns the count. A batch goes out whole or
  * waits for ring room; in_flight = "free" publishes what fits. */
-uint32_t mesh_publish_auto(const mesh_mailbox *mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last, int64_t now);
+uint32_t mesh_publish_auto(mesh_mailbox mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last, int64_t now);
 /* publish_auto for the args in `parts` (bit b: arg b) of each batch only, ascending. */
-uint32_t mesh_publish_parts(const mesh_mailbox *mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last,
+uint32_t mesh_publish_parts(mesh_mailbox mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last,
                             int64_t now, uint32_t parts);
 
 #endif

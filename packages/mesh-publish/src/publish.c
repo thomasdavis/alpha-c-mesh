@@ -27,7 +27,7 @@ uint32_t mesh_pring_room(const mesh_pring *r) {
 
 bool mesh_pring_can_publish(const mesh_pring *r) { return mesh_pring_room(r) > 0; }
 
-bool mesh_pring_publish(mesh_pring *r, const mesh_mailbox *mb, uint32_t op, uint32_t arg, mesh_kind kind, uint32_t *ticket) {
+bool mesh_pring_publish(mesh_pring *r, mesh_mailbox mb, uint32_t op, uint32_t arg, mesh_kind kind, uint32_t *ticket) {
     if (!mesh_pring_can_publish(r)) return false;
     uint32_t t = r->tail;
     size_t e = entry(r, t);
@@ -48,7 +48,7 @@ bool mesh_pring_publish(mesh_pring *r, const mesh_mailbox *mb, uint32_t op, uint
     return true;
 }
 
-void mesh_pring_collect(mesh_pring *r, const mesh_mailbox *mb, mesh_done **done, size_t *n) {
+void mesh_pring_collect(mesh_pring *r, mesh_mailbox mb, mesh_done **done, size_t *n) {
     *done = NULL;
     *n = 0;
     if (!r->n) return;
@@ -83,7 +83,7 @@ size_t mesh_pring_in_flight(const mesh_pring *r) { return r->n; }
 bool mesh_pring_has_req(const mesh_pring *r) { return count(r, MESH_TK_REQ) > 0; }
 bool mesh_pring_has_init(const mesh_pring *r) { return count(r, MESH_TK_INIT) > 0; }
 
-void mesh_pring_rewind(mesh_pring *r, const mesh_mailbox *mb, mesh_out **outs, size_t *n) {
+void mesh_pring_rewind(mesh_pring *r, mesh_mailbox mb, mesh_out **outs, size_t *n) {
     mesh_mailbox_set(mb, r->ctl + MESH_P_RING_HEAD, r->tail);
     mesh_mailbox_set(mb, r->ctl + MESH_P_ONLINE, 0);
     mesh_mailbox_set(mb, r->ctl + MESH_P_HALTED, 0);
@@ -110,7 +110,7 @@ uint32_t mesh_due(const mesh_manifest *m, uint32_t n, const mesh_pring *r, int64
     }
 }
 
-uint32_t mesh_publish_auto(const mesh_mailbox *mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last, int64_t now) {
+uint32_t mesh_publish_auto(mesh_mailbox mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last, int64_t now) {
     uint32_t k = m->fanout;
     if (m->batch && mesh_pring_room(r) < k) return 0;
     uint32_t n = mesh_due(m, k, r, last, now);
@@ -123,7 +123,7 @@ uint32_t mesh_publish_auto(const mesh_mailbox *mb, const mesh_manifest *m, uint3
     return sent;
 }
 
-uint32_t mesh_publish_parts(const mesh_mailbox *mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last,
+uint32_t mesh_publish_parts(mesh_mailbox mb, const mesh_manifest *m, uint32_t view_off, mesh_pring *r, int64_t *last,
                             int64_t now, uint32_t parts) {
     uint32_t k = 0;
     for (int b = 0; b < 32; b++) k += (parts >> b) & 1u;
