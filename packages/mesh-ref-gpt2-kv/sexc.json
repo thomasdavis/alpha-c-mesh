@@ -4,9 +4,26 @@
   "description": "GPT-2's KV cache: per layer, K and V rows of the full width for each position, and its digest",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "reference", "gpt2", "determinism"],
-  "dependencies": {"@ajax/mesh-ftz": "workspace:*", "@ajax/mesh-ref-gpt2-shape": "workspace:*", "@ajax/mesh-ref-gpt2-logits": "workspace:*"},
-  "targets": ["host"],
-  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-kv",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-gpt2-shape": "workspace:*",
+    "@ajax/mesh-ref-gpt2-logits": "workspace:*"
+  },
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ]
 }

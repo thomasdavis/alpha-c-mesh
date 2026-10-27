@@ -4,9 +4,24 @@
   "description": "programs/pathtrace's camera sample: one path's radiance with next-event estimation, diffuse, metal and glass, Russian roulette (template over a float's ops)",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "path-tracing", "brdf", "template"],
-  "dependencies": {"@ajax/pathtrace-math": "workspace:*", "@ajax/pathtrace-scene": "workspace:*",
-                   "@ajax/pathtrace-rng": "workspace:*", "@ajax/pathtrace-intersect": "workspace:*"},
-  "cflags": ["-ffp-contract=off"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-sample",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "path-tracing",
+    "brdf",
+    "template"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-math": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-rng": "workspace:*",
+    "@ajax/pathtrace-intersect": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
 }

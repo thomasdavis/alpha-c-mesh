@@ -4,6 +4,14 @@
   "description": "programs/pathtrace's counter-based random numbers: the PCG output hash of (seed, pixel, sample, dimension)",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "rng", "pcg"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-rng",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "rng",
+    "pcg"
+  ]
 }

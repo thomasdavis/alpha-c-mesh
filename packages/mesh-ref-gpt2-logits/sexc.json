@@ -4,8 +4,20 @@
   "description": "GPT-2's logits helpers: the greedy pick (first largest, FTZ compare) and the FNV-1a 64 digest over every step's logits",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "reference", "gpt2", "determinism"],
-  "dependencies": {"@ajax/mesh-ftz": "workspace:*"},
-  "cflags": ["-ffp-contract=off"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-logits",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
 }

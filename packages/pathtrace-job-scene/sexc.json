@@ -4,8 +4,18 @@
   "description": "A pathtrace fleet job's scene: the default scene with the job's setup tasks (OP_DEFAULT, OP_SET) applied in order",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "jobs"],
-  "dependencies": {"@ajax/pathtrace-scene": "workspace:*", "@ajax/pathtrace-view": "workspace:*",
-                   "@ajax/pathtrace-default-scene": "workspace:*"}
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-job-scene",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "jobs"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*"
+  }
 }

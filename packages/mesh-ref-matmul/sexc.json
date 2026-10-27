@@ -4,7 +4,9 @@
   "description": "programs/matmul's exact mode on the CPU: counter-hash matrices, C = A B and y = A x in the GPU's summation order, the FNV digest",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-matmul",
   "keywords": [
     "alphaos",
     "mesh",
@@ -17,6 +19,9 @@
     "@ajax/mesh-ftz": "workspace:*",
     "@ajax/mesh-ref-block": "workspace:*"
   },
+  "targets": [
+    "host"
+  ],
   "cflags": [
     "-ffp-contract=off",
     "-D_XOPEN_SOURCE=700",
@@ -24,8 +29,5 @@
   ],
   "ldflags": [
     "-lpthread"
-  ],
-  "targets": [
-    "host"
   ]
 }
