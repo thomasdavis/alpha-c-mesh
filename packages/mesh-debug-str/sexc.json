@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-debug-str",
+  "version": "0.1.0",
+  "description": "A string quoted as Rust's {:?} prints it, for error messages that match the Rust's",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-debug-str",
+  "keywords": ["mesh", "alphaos", "rust", "debug", "quote"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*"}
+}

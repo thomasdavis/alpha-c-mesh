@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-jobs-lid",
+  "version": "0.1.0",
+  "description": "Job-table leadership ids (fleet term and count) and the lease ids each leadership hands out",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-lid",
+  "keywords": ["mesh", "alphaos", "jobs", "leadership", "lease"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

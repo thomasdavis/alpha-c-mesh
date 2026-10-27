@@ -1,0 +1,31 @@
+{
+  "name": "@ajax/mesh-ref-pathtrace",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's CPU reference: tiles rendered in Z on every core with their digests, the image raster from tiles, and its PPM",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "pathtrace",
+    "ppm"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-digest": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*"
+  },
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lpthread"
+  ]
+}

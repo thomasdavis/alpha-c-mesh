@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-spec",
+  "version": "0.1.0",
+  "description": "A job's spec (program, op, items, priority, attempts, deadline, result mode, setup, members) and its one-line text form",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-spec",
+  "keywords": ["mesh", "alphaos", "jobs", "spec"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-debug-str": "workspace:*",
+    "@ajax/mesh-rs-parse": "workspace:*", "@ajax/mesh-jobs-ranges": "workspace:*", "@ajax/mesh-jobs-id": "workspace:*"
+  }
+}

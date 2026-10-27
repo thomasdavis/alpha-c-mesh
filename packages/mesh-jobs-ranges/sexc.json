@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-jobs-ranges",
+  "version": "0.1.0",
+  "description": "A set of u64 job items as disjoint half-open ranges: insert, remove, intersect, take, nth, and its a-b,c- text form",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-ranges",
+  "keywords": ["mesh", "alphaos", "jobs", "ranges", "intervals"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-debug-str": "workspace:*"}
+}
