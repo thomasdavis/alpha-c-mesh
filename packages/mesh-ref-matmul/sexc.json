@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-ref-matmul",
+  "version": "0.1.0",
+  "description": "programs/matmul's exact mode on the CPU: counter-hash matrices, C = A B and y = A x in the GPU's summation order, the FNV digest",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "reference", "matmul", "gemv", "determinism"],
+  "dependencies": {"@ajax/mesh-ftz": "workspace:*", "@ajax/mesh-ref-block": "workspace:*"},
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lpthread"]
+}
