@@ -1,0 +1,51 @@
+{
+  "name": "@ajax/mesh-native",
+  "version": "0.1.0",
+  "description": "The native executor: programs that are executables run as worker processes on the shared mailbox, with limits, crash reports and a process per image",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-native",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "native",
+    "executor",
+    "worker",
+    "process"
+  ],
+  "cflags": [
+    "-D_GNU_SOURCE",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-shm": "workspace:*",
+    "@ajax/mesh-spawn": "workspace:*",
+    "@ajax/mesh-proc-usage": "workspace:*",
+    "@ajax/mesh-native-limits": "workspace:*",
+    "@ajax/mesh-cpuuse": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-native": "workspace:*",
+    "@ajax/mesh-abi-fnv": "workspace:*",
+    "@ajax/mesh-abi-host-status": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*"
+  }
+}

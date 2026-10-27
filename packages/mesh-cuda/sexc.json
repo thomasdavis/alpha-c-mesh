@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-cuda",
+  "version": "0.1.0",
+  "description": "meshd's CUDA: a primary or green context, eager module loading, the pinned mailbox, cubin modules, streams and resident-kernel launches",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-cuda",
+  "keywords": ["mesh", "alphaos", "cuda", "gpu", "context", "kernel"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/cuda-driver": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/cuda-driver-fake": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
