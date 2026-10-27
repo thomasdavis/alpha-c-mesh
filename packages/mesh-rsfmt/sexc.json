@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-rsfmt",
+  "version": "0.1.0",
+  "description": "Rust's Debug and Display text in C: quoted strings, durations, shortest floats",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rsfmt",
+  "keywords": ["mesh", "alphaos", "format", "rust"],
+  "targets": ["host"],
+  "dependencies": {"@ajax/mesh-buf": "workspace:*", "@ajax/mesh-check": "workspace:*"}
+}
