@@ -48,7 +48,7 @@ int mesh_nic_parse_proc_net_dev(const char *text, mesh_nic_raw **out, size_t *n,
         lineno++;
         if (lineno > 2) {
             const char *colon = memchr(l, ':', (size_t)(end - l));
-            if (!colon) { *err = mesh_fmt("/proc/net/dev line %zu: no ':'", lineno); free(*out); *out = NULL; *n = 0; return -1; }
+            if (!colon) { *err = mesh_buf_fmt("/proc/net/dev line %zu: no ':'", lineno); free(*out); *out = NULL; *n = 0; return -1; }
             const char *ns = l, *ne = colon;
             trim(&ns, &ne);
             uint64_t f[32];
@@ -73,13 +73,13 @@ int mesh_nic_parse_proc_net_dev(const char *text, mesh_nic_raw **out, size_t *n,
                 }
                 if (ok && !big) f[k < 32 ? k : 31] = x;
                 if (!ok || big) {
-                    *err = mesh_fmt("/proc/net/dev line %zu: %s", lineno, ok ? "number too large to fit in target type" : "invalid digit found in string");
+                    *err = mesh_buf_fmt("/proc/net/dev line %zu: %s", lineno, ok ? "number too large to fit in target type" : "invalid digit found in string");
                     free(*out); *out = NULL; *n = 0;
                     return -1;
                 }
                 k++;
             }
-            if (k < 16) { *err = mesh_fmt("/proc/net/dev line %zu: %zu fields, want 16", lineno, k); free(*out); *out = NULL; *n = 0; return -1; }
+            if (k < 16) { *err = mesh_buf_fmt("/proc/net/dev line %zu: %zu fields, want 16", lineno, k); free(*out); *out = NULL; *n = 0; return -1; }
             if (*n == cap) { cap = cap ? 2 * cap : 16; *out = mesh_xrealloc(*out, cap * sizeof **out); }
             mesh_nic_raw *r = &(*out)[(*n)++];
             memset(r, 0, sizeof *r);
@@ -98,7 +98,7 @@ int mesh_nic_parse_proc_net_dev(const char *text, mesh_nic_raw **out, size_t *n,
 #if defined(__linux__)
 int mesh_nic_read(mesh_nic_raw **out, size_t *n, char **err) {
     FILE *f = fopen("/proc/net/dev", "r");
-    if (!f) { *err = mesh_fmt("/proc/net/dev: %s", strerror(errno)); return -1; }
+    if (!f) { *err = mesh_buf_fmt("/proc/net/dev: %s", strerror(errno)); return -1; }
     mesh_buf b = MESH_BUF_INIT;
     char chunk[4096];
     size_t got;
@@ -122,11 +122,11 @@ int mesh_nic_read(mesh_nic_raw **out, size_t *n, char **err) {
     size_t got = 0;
     for (int tries = 0; tries < 4 && !buf; tries++) {
         size_t len = 0;
-        if (sysctl(mib, 6, NULL, &len, NULL, 0) != 0) { *err = mesh_fmt("sysctl NET_RT_IFLIST2 size: %s", strerror(errno)); return -1; }
+        if (sysctl(mib, 6, NULL, &len, NULL, 0) != 0) { *err = mesh_buf_fmt("sysctl NET_RT_IFLIST2 size: %s", strerror(errno)); return -1; }
         buf = mesh_xmalloc(len + 4096);
         got = len + 4096;
         if (sysctl(mib, 6, buf, &got, NULL, 0) == 0) break;
-        if (errno != ENOMEM) { *err = mesh_fmt("sysctl NET_RT_IFLIST2: %s", strerror(errno)); free(buf); return -1; }
+        if (errno != ENOMEM) { *err = mesh_buf_fmt("sysctl NET_RT_IFLIST2: %s", strerror(errno)); free(buf); return -1; }
         free(buf);
         buf = NULL;
     }
@@ -136,10 +136,10 @@ int mesh_nic_read(mesh_nic_raw **out, size_t *n, char **err) {
     size_t cap = 0, at = 0;
     while (at + 4 <= got) {
         size_t msglen = (size_t)((unsigned char)buf[at] | (unsigned char)buf[at + 1] << 8);
-        if (msglen == 0 || at + msglen > got) { *err = mesh_fmt("sysctl NET_RT_IFLIST2: bad message length %zu at %zu", msglen, at); free(buf); free(*out); return -1; }
+        if (msglen == 0 || at + msglen > got) { *err = mesh_buf_fmt("sysctl NET_RT_IFLIST2: bad message length %zu at %zu", msglen, at); free(buf); free(*out); return -1; }
         if (buf[at + 3] == RTM_IFINFO2) {
             struct if_msghdr2 m;
-            if (msglen < sizeof m) { *err = mesh_fmt("sysctl NET_RT_IFLIST2: RTM_IFINFO2 of %zu bytes", msglen); free(buf); free(*out); return -1; }
+            if (msglen < sizeof m) { *err = mesh_buf_fmt("sysctl NET_RT_IFLIST2: RTM_IFINFO2 of %zu bytes", msglen); free(buf); free(*out); return -1; }
             memcpy(&m, buf + at, sizeof m);
             char name[IF_NAMESIZE];
             if (if_indextoname(m.ifm_index, name)) {
@@ -172,10 +172,10 @@ int mesh_nic_iface_of(const char *ip, char name[MESH_NIC_NAME_MAX], char **err) 
     int fam = AF_INET;
     if (inet_pton(AF_INET, ip, want) != 1) {
         fam = AF_INET6;
-        if (inet_pton(AF_INET6, ip, want) != 1) { *err = mesh_fmt("invalid IP address syntax: %s", ip); return -1; }
+        if (inet_pton(AF_INET6, ip, want) != 1) { *err = mesh_buf_fmt("invalid IP address syntax: %s", ip); return -1; }
     }
     struct ifaddrs *list = NULL;
-    if (getifaddrs(&list) != 0) { *err = mesh_fmt("getifaddrs: %s", strerror(errno)); return -1; }
+    if (getifaddrs(&list) != 0) { *err = mesh_buf_fmt("getifaddrs: %s", strerror(errno)); return -1; }
     int found = 0;
     for (struct ifaddrs *a = list; a && !found; a = a->ifa_next) {
         if (!a->ifa_addr || a->ifa_addr->sa_family != fam) continue;
@@ -190,7 +190,7 @@ int mesh_nic_iface_of(const char *ip, char name[MESH_NIC_NAME_MAX], char **err) 
     if (!found) {
         char canon[64];
         inet_ntop(fam, want, canon, sizeof canon);
-        *err = mesh_fmt("no interface holds %s", canon);
+        *err = mesh_buf_fmt("no interface holds %s", canon);
         return -1;
     }
     return 0;

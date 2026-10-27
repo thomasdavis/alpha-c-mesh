@@ -28,7 +28,7 @@ int main(void) {
     char *s = mesh_buf_take(&b);
     CHECK(b.data == NULL && b.len == 0);
     free(s);
-    char *f = mesh_fmt("%s=%d", "a", 7);
+    char *f = mesh_buf_fmt("%s=%d", "a", 7);
     CHECK_S(f, "a=7");
     free(f);
     char *d = mesh_xstrndup("hello", 3);

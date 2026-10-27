@@ -45,6 +45,6 @@ void *mesh_xrealloc(void *p, size_t n);
 char *mesh_xstrdup(const char *s);
 char *mesh_xstrndup(const char *s, size_t n);
 /* A new string from printf. */
-char *mesh_fmt(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+char *mesh_buf_fmt(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 #endif

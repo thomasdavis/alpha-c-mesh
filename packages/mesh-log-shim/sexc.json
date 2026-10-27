@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-log-shim",
+  "version": "0.1.0",
+  "description": "PRIVATE stand-in for exec's mesh-log while it is being written (same API)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-log-shim",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "log"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  },
+  "private": true
+}

@@ -51,7 +51,7 @@ int mesh_infer_svc_cluster(mesh_infer_svc *s, const char *(*get)(void *, const c
         char key[32];
         snprintf(key, sizeof key, "%u.peer", k);
         const char *a = get(ctx, key);
-        if (!a) { *err = mesh_fmt("cluster: no %u.peer", k); return -1; }
+        if (!a) { *err = mesh_buf_fmt("cluster: no %u.peer", k); return -1; }
         if (split_hp(a, s->hosts[k], sizeof s->hosts[k], &s->bases[k], err)) return -1;
         snprintf(key, sizeof key, "%u.lan", k);
         const char *lan = get(ctx, key);

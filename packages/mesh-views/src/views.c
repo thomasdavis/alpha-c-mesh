@@ -258,7 +258,7 @@ int mesh_views_format_of(const char *query, bool *json, char **err) {
             size_t vn = n - 7;
             if (vn == 4 && strncmp(v, "json", 4) == 0) { *json = true; return 0; }
             if (vn == 4 && strncmp(v, "text", 4) == 0) { *json = false; return 0; }
-            *err = mesh_fmt("format=%.*s: json or text", (int)vn, v);
+            *err = mesh_buf_fmt("format=%.*s: json or text", (int)vn, v);
             return -1;
         }
         if (n == 7 && strncmp(p, "format=", 7) == 0) { *err = mesh_xstrdup("format=: json or text"); return -1; }

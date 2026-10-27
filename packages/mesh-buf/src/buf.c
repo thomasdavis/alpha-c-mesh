@@ -119,7 +119,7 @@ void mesh_buf_free(mesh_buf *b) {
     b->len = b->cap = 0;
 }
 
-char *mesh_fmt(const char *fmt, ...) {
+char *mesh_buf_fmt(const char *fmt, ...) {
     mesh_buf b = MESH_BUF_INIT;
     va_list ap;
     va_start(ap, fmt);

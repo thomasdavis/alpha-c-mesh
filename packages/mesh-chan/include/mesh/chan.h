@@ -51,6 +51,8 @@ size_t mesh_chan_len(mesh_chan *c);
 int64_t mesh_mono_ms(void);
 /* Microseconds on the monotonic clock. */
 int64_t mesh_mono_us(void);
+/* Nanoseconds on the monotonic clock (Rust's Instant). */
+int64_t mesh_mono_ns(void);
 /* Sleeps (EINTR resumed). */
 void mesh_sleep_us(int64_t us);
 

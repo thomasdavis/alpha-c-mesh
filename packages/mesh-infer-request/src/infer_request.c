@@ -50,7 +50,7 @@ static int u32_of(const char *s, size_t n, uint32_t *out) {
 
 static int num(const char *w, size_t wn, const char *v, size_t vn, uint32_t *out, char **err) {
     if (u32_of(v, vn, out) == 0) return 0;
-    *err = mesh_fmt("%.*s: not a number (%s)", (int)wn, w, MESH_INFER_USAGE);
+    *err = mesh_buf_fmt("%.*s: not a number (%s)", (int)wn, w, MESH_INFER_USAGE);
     return -1;
 }
 
@@ -108,10 +108,10 @@ int mesh_infer_parse(const char *arg, mesh_infer_request *r, char **err) {
         n -= back;
     }
     r->prompt = mesh_xstrndup(rest, n);
-    if (!n) { *err = mesh_fmt("no prompt (%s)", MESH_INFER_USAGE); return -1; }
-    if (r->max == 0 || r->max > 1000) { *err = mesh_fmt("max %u: 1..=1000", r->max); return -1; }
-    if (r->has_mono && (r->has_prefill || r->has_decode)) { *err = mesh_fmt("mono= or prefill=/decode=, not both (%s)", MESH_INFER_USAGE); return -1; }
-    if (r->has_prefill != r->has_decode) { *err = mesh_fmt("prefill= and decode= go together (%s)", MESH_INFER_USAGE); return -1; }
+    if (!n) { *err = mesh_buf_fmt("no prompt (%s)", MESH_INFER_USAGE); return -1; }
+    if (r->max == 0 || r->max > 1000) { *err = mesh_buf_fmt("max %u: 1..=1000", r->max); return -1; }
+    if (r->has_mono && (r->has_prefill || r->has_decode)) { *err = mesh_buf_fmt("mono= or prefill=/decode=, not both (%s)", MESH_INFER_USAGE); return -1; }
+    if (r->has_prefill != r->has_decode) { *err = mesh_buf_fmt("prefill= and decode= go together (%s)", MESH_INFER_USAGE); return -1; }
     return 0;
 }
 
@@ -189,7 +189,7 @@ int mesh_infer_from_query(const char *q, mesh_infer_request *r, bool *full, char
     }
     if (rc == 0 && !prompt) { *err = mesh_xstrdup("no prompt= parameter"); rc = -1; }
     if (rc == 0) {
-        char *line = mesh_fmt("%s %s", mesh_buf_str(&words), prompt);
+        char *line = mesh_buf_fmt("%s %s", mesh_buf_str(&words), prompt);
         rc = mesh_infer_parse(line, r, err);
         free(line);
     } else memset(r, 0, sizeof *r);

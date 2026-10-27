@@ -41,7 +41,7 @@ int mesh_infer_write_frame(int fd, uint8_t kind, const void *body, size_t len) {
 /* std's io::Error text for a failed read_exact. */
 static char *io_err(int e, int eof) {
     if (eof) return mesh_xstrdup("read: failed to fill whole buffer");
-    return mesh_fmt("read: %s (os error %d)", strerror(e), e);
+    return mesh_buf_fmt("read: %s (os error %d)", strerror(e), e);
 }
 
 static int read_exact(int fd, void *p, size_t n, char **err) {
@@ -61,7 +61,7 @@ int mesh_infer_read_frame(int fd, uint8_t *kind, mesh_buf *body, int64_t *wire_u
     if (read_exact(fd, head, 5, err) != 0) return -1;
     int64_t t0 = mesh_mono_us();
     uint32_t n = (uint32_t)head[0] | (uint32_t)head[1] << 8 | (uint32_t)head[2] << 16 | (uint32_t)head[3] << 24;
-    if (n == 0 || n - 1 > MESH_INFER_MAX_FRAME) { *err = mesh_fmt("read: a frame of %u bytes", n); return -1; }
+    if (n == 0 || n - 1 > MESH_INFER_MAX_FRAME) { *err = mesh_buf_fmt("read: a frame of %u bytes", n); return -1; }
     size_t at = body->len;
     mesh_buf_zeros(body, n - 1);
     if (read_exact(fd, body->data + at, n - 1, err) != 0) { mesh_buf_truncate(body, at); return -1; }
@@ -125,7 +125,7 @@ const char *mesh_infer_msg_get(const mesh_infer_msg *m, const char *k) {
 
 int mesh_infer_msg_num(const mesh_infer_msg *m, const char *k, uint64_t *out, char **err) {
     const char *v = mesh_infer_msg_get(m, k);
-    if (!v) { *err = mesh_fmt("missing %s", k); return -1; }
+    if (!v) { *err = mesh_buf_fmt("missing %s", k); return -1; }
     const char *p = v + (*v == '+');
     uint64_t x = 0;
     int ok = *p != 0;
@@ -133,7 +133,7 @@ int mesh_infer_msg_num(const mesh_infer_msg *m, const char *k, uint64_t *out, ch
         ok = *p >= '0' && *p <= '9' && x <= (UINT64_MAX - (uint64_t)(*p - '0')) / 10;
         x = x * 10 + (uint64_t)(*p - '0');
     }
-    if (!ok) { *err = mesh_fmt("%s: not a number", k); return -1; }
+    if (!ok) { *err = mesh_buf_fmt("%s: not a number", k); return -1; }
     *out = x;
     return 0;
 }
@@ -215,7 +215,7 @@ int mesh_infer_parse_layer(const void *bytes, size_t n, uint32_t *layer, uint32_
     uint64_t sum = 0;
     for (int i = 0; i < 4; i++) { l |= (uint32_t)b[i] << (8 * i); r |= (uint32_t)b[4 + i] << (8 * i); }
     for (int i = 0; i < 8; i++) sum |= (uint64_t)b[8 + i] << (8 * i);
-    if (mesh_infer_layer_sum(b + 16, n - 16) != sum) { *err = mesh_fmt("KV layer %u: checksum mismatch (%zu bytes)", l, n - 16); return -1; }
+    if (mesh_infer_layer_sum(b + 16, n - 16) != sum) { *err = mesh_buf_fmt("KV layer %u: checksum mismatch (%zu bytes)", l, n - 16); return -1; }
     *layer = l;
     *rows = r;
     *data = b + 16;

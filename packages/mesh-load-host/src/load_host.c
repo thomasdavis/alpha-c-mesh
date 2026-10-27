@@ -37,7 +37,7 @@ static uint64_t getu64(const uint8_t *b, size_t off) { return (uint64_t)getu(b, 
 static char *slurp(const char *p, char **err) {
     FILE *f = fopen(p, "r");
     if (!f) {
-        if (err) *err = mesh_fmt("%s: %s (os error %d)", p, strerror(errno), errno);
+        if (err) *err = mesh_buf_fmt("%s: %s (os error %d)", p, strerror(errno), errno);
         return NULL;
     }
     mesh_buf b = MESH_BUF_INIT;
@@ -113,7 +113,7 @@ static uint32_t mib(uint64_t a, uint64_t b) {
 
 static int disk(const char *dir, uint32_t *free_mb, uint32_t *total_mb, char **err) {
     struct statvfs v;
-    if (statvfs(dir, &v) != 0) { *err = mesh_fmt("statvfs %s: %s (os error %d)", dir, strerror(errno), errno); return -1; }
+    if (statvfs(dir, &v) != 0) { *err = mesh_buf_fmt("statvfs %s: %s (os error %d)", dir, strerror(errno), errno); return -1; }
     *free_mb = mib((uint64_t)v.f_bavail, (uint64_t)v.f_frsize);
     *total_mb = mib((uint64_t)v.f_blocks, (uint64_t)v.f_frsize);
     return 0;

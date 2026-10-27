@@ -57,7 +57,7 @@ int mesh_parse_proc_stat(const char *text, mesh_cpu_times *all, mesh_cpu_times *
         const char *rest = l + 3, *end = l + ln;
         const char *sp = memchr(rest, ' ', (size_t)(end - rest));
         char *q = quoted(l, ln);
-        if (!sp) { *err = mesh_fmt("/proc/stat: %s", q); free(q); return -1; }
+        if (!sp) { *err = mesh_buf_fmt("/proc/stat: %s", q); free(q); return -1; }
         uint64_t v[16];
         size_t k = 0;
         const char *s = sp + 1, *w;
@@ -65,11 +65,11 @@ int mesh_parse_proc_stat(const char *text, mesh_cpu_times *all, mesh_cpu_times *
         while (word(&s, end, &w, &wn)) {
             uint64_t x;
             int r = mesh_rs_parse_u64(w, wn, &x);
-            if (r) { *err = mesh_fmt("/proc/stat %s: %s", q, mesh_rs_parse_error(r)); free(q); return -1; }
+            if (r) { *err = mesh_buf_fmt("/proc/stat %s: %s", q, mesh_rs_parse_error(r)); free(q); return -1; }
             if (k < 16) v[k] = x;
             k++;
         }
-        if (k < 8) { *err = mesh_fmt("/proc/stat %s: %zu fields, want at least 8", q, k); free(q); return -1; }
+        if (k < 8) { *err = mesh_buf_fmt("/proc/stat %s: %zu fields, want at least 8", q, k); free(q); return -1; }
         uint64_t total = 0;
         for (int i = 0; i < 8; i++) total += v[i];
         mesh_cpu_times t = {total - v[3] - v[4], total, v[4]};
@@ -79,7 +79,7 @@ int mesh_parse_proc_stat(const char *text, mesh_cpu_times *all, mesh_cpu_times *
             uint64_t id;
             if (mesh_rs_parse_u64(rest, idn, &id)) {
                 char *qi = quoted(rest, idn);
-                *err = mesh_fmt("/proc/stat: cpu id %s", qi);
+                *err = mesh_buf_fmt("/proc/stat: cpu id %s", qi);
                 free(qi);
                 free(q);
                 return -1;
@@ -154,10 +154,10 @@ int mesh_parse_psi(const char *text, mesh_psi *out, char **err) {
             }
         }
         char *q = quoted(l, ln);
-        if (!ha || !ht) { *err = mesh_fmt("PSI line %s: no avg10/total", q); free(q); return -1; }
+        if (!ha || !ht) { *err = mesh_buf_fmt("PSI line %s: no avg10/total", q); free(q); return -1; }
         if (kn == 4 && !strncmp(kind, "some", 4)) { out->some_avg10 = avg10 / 100.0f; out->some_total = total; some = true; }
         else if (kn == 4 && !strncmp(kind, "full", 4)) { out->full_avg10 = avg10 / 100.0f; out->full_total = total; }
-        else { *err = mesh_fmt("PSI line %s", q); free(q); return -1; }
+        else { *err = mesh_buf_fmt("PSI line %s", q); free(q); return -1; }
         free(q);
     }
     if (!some) { *err = mesh_xstrdup("PSI: no `some` line"); return -1; }
@@ -191,7 +191,7 @@ int mesh_parse_meminfo(const char *text, mesh_meminfo *m, char **err) {
         uint64_t x;
         if (!word(&s, l + ln, &w, &wn) || mesh_rs_parse_u64(w, wn, &x)) {
             char *q = quoted(l, ln);
-            *err = mesh_fmt("/proc/meminfo %s", q);
+            *err = mesh_buf_fmt("/proc/meminfo %s", q);
             free(q);
             return -1;
         }
@@ -209,7 +209,7 @@ int mesh_parse_loadavg(const char *text, float out[3], char **err) {
         int r = mesh_rs_parse_f32(w, wn, &out[k]);
         if (r) {
             char *q = quoted(text, strlen(text));
-            *err = mesh_fmt("/proc/loadavg %s: %s", q, mesh_rs_parse_error(r));
+            *err = mesh_buf_fmt("/proc/loadavg %s: %s", q, mesh_rs_parse_error(r));
             free(q);
             return -1;
         }
@@ -217,7 +217,7 @@ int mesh_parse_loadavg(const char *text, float out[3], char **err) {
     }
     if (k != 3) {
         char *q = quoted(text, strlen(text));
-        *err = mesh_fmt("/proc/loadavg %s", q);
+        *err = mesh_buf_fmt("/proc/loadavg %s", q);
         free(q);
         return -1;
     }
