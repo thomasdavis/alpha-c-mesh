@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobd-text",
+  "version": "0.1.0",
+  "description": "The jobs control answers: `jobs`, `job status <id>` and `job results <id> [from] [n]`, from a member's job node",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobd-text",
+  "keywords": ["mesh", "alphaos", "jobs", "control", "text"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-node": "workspace:*",
+    "@ajax/mesh-jobs-lid": "workspace:*"
+  }
+}
