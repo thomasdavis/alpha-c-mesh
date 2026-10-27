@@ -122,28 +122,44 @@ void gemm_plain(size_t n, const float *a, const float *b, float *c) {
         }
 }
 
-/* The size, A, B and C of the last GEMM (per node thread). */
+/* The size, A, B and C of the last GEMM (per node thread), freed when the
+ * thread ends, as Rust's thread_local is dropped. */
 typedef struct {
     size_t n;
     float *a, *b, *c;
 } bufs;
-static _Thread_local bufs buf;
+static pthread_key_t buf_key;
+static pthread_once_t buf_once = PTHREAD_ONCE_INIT;
 
-static bool with_buf(size_t n) {
-    if (buf.n == n) return true;
-    free(buf.a), free(buf.b), free(buf.c);
-    buf = (bufs){0};
-    buf.a = malloc(sizeof(float) * n * n);
-    buf.b = malloc(sizeof(float) * n * n);
-    buf.c = calloc(n * n, sizeof(float));
-    if (!buf.a || !buf.b || !buf.c) {
-        free(buf.a), free(buf.b), free(buf.c);
-        buf = (bufs){0};
-        return false;
+static void free_bufs(void *p) {
+    bufs *b = p;
+    free(b->a), free(b->b), free(b->c);
+    free(b);
+}
+static void make_key(void) { pthread_key_create(&buf_key, free_bufs); }
+
+/* This thread's buffers holding size n's inputs; NULL when memory runs out. */
+static bufs *with_buf(size_t n) {
+    pthread_once(&buf_once, make_key);
+    bufs *b = pthread_getspecific(buf_key);
+    if (!b) {
+        b = calloc(1, sizeof *b);
+        if (!b || pthread_setspecific(buf_key, b) != 0) { free(b); return NULL; }
     }
-    mesh_gemm_inputs(n, buf.a, buf.b);
-    buf.n = n;
-    return true;
+    if (b->n == n) return b;
+    free(b->a), free(b->b), free(b->c);
+    b->n = 0;
+    b->a = malloc(sizeof(float) * n * n);
+    b->b = malloc(sizeof(float) * n * n);
+    b->c = calloc(n * n, sizeof(float));
+    if (!b->a || !b->b || !b->c) {
+        free(b->a), free(b->b), free(b->c);
+        b->a = b->b = b->c = NULL;
+        return NULL;
+    }
+    mesh_gemm_inputs(n, b->a, b->b);
+    b->n = n;
+    return b;
 }
 
 static double now_s(void) {
@@ -168,11 +184,13 @@ static bool size(const mesh_worker_ctx *ctx, uint32_t arg, size_t *n) {
 }
 
 /* One fast GEMM of size n; its seconds, or a negative number when memory ran out. */
-static double timed(size_t n, bool single, bool plain) {
-    if (!with_buf(n)) return -1;
+static double timed(size_t n, bool single, bool plain, bufs **used) {
+    bufs *b = with_buf(n);
+    if (!b) return -1;
+    if (used) *used = b;
     double t0 = now_s();
-    if (plain) gemm_plain(n, buf.a, buf.b, buf.c);
-    else gemm_fast(n, buf.a, buf.b, buf.c, single);
+    if (plain) gemm_plain(n, b->a, b->b, b->c);
+    else gemm_fast(n, b->a, b->b, b->c, single);
     return now_s() - t0;
 }
 
@@ -192,7 +210,7 @@ uint32_t gemm_task(const mesh_worker_ctx *ctx, uint32_t op, uint32_t arg, void *
     switch (op) {
     case MESH_OP_JOB: {
         if (!size(ctx, 0, &n)) return MESH_R_JOB_FAIL;
-        double secs = timed(n, false, false);
+        double secs = timed(n, false, false, NULL);
         if (secs < 0) return MESH_R_JOB_FAIL;
         float g = gflops(n, secs);
         uint32_t rec = GEMM_V_JOB_OUT + 8 * (mesh_ctx_ticket(ctx) % MESH_PROG_RESULTS);
@@ -208,21 +226,23 @@ uint32_t gemm_task(const mesh_worker_ctx *ctx, uint32_t op, uint32_t arg, void *
         return (uint32_t)n;
     case MESH_OP_TASK: {
         if (!size(ctx, arg, &n)) return MESH_R_BAD_OP;
-        double secs = timed(n, false, false);
+        double secs = timed(n, false, false, NULL);
         if (secs < 0) return MESH_R_BAD_OP;
         record(ctx, n, secs, gflops(n, secs));
         return (uint32_t)(secs * 1e6);
     }
-    case GEMM_OP_CHECK:
+    case GEMM_OP_CHECK: {
         n = arg;
-        if (n < 1 || n > GEMM_CHECK_MAX || timed(n, false, false) < 0) return MESH_R_BAD_OP;
-        mesh_view_write_f32s(mesh_ctx_view(ctx), GEMM_V_C, buf.c, n * n);
+        bufs *b = NULL;
+        if (n < 1 || n > GEMM_CHECK_MAX || timed(n, false, false, &b) < 0) return MESH_R_BAD_OP;
+        mesh_view_write_f32s(mesh_ctx_view(ctx), GEMM_V_C, b->c, n * n);
         mesh_ctx_count(ctx, 3, 1);
         return (uint32_t)n;
+    }
     case GEMM_OP_PLAIN:
     case GEMM_OP_SINGLE: {
         if (!size(ctx, arg, &n)) return MESH_R_BAD_OP;
-        double secs = timed(n, op == GEMM_OP_SINGLE, op == GEMM_OP_PLAIN);
+        double secs = timed(n, op == GEMM_OP_SINGLE, op == GEMM_OP_PLAIN, NULL);
         if (secs < 0) return MESH_R_BAD_OP;
         mesh_ctx_set_f32(ctx, op == GEMM_OP_PLAIN ? GEMM_V_PLAIN : GEMM_V_SINGLE, gflops(n, secs));
         if (op == GEMM_OP_PLAIN) mesh_ctx_count(ctx, 2, 1);
