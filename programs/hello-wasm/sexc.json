@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-prog-hello-wasm",
+  "version": "0.1.0",
+  "description": "hello for meshd's wasm executor: task = arg * 3 + 7, plus the wasm executor's test hooks (per-access cost, bulk reads, trap, spin, memory growth)",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/hello-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program",
+    "hello"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

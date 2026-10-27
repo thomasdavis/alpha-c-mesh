@@ -1,0 +1,26 @@
+{
+  "name": "@ajax/mesh-prog-sha256d-wasm",
+  "version": "0.1.0",
+  "description": "sha256d for meshd's wasm executor: Bitcoin-style double SHA-256 nonce grinding as a job program, the GPU image's view, ops and request language",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/sha256d-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program",
+    "sha256",
+    "bitcoin"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/sha256-compress": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

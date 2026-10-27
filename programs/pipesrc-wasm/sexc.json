@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-prog-pipesrc-wasm",
+  "version": "0.1.0",
+  "description": "pipesrc: the pipe demo's source on meshd's wasm executor, pushing msgs to pipehash or digests straight to a sink",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pipesrc-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/mesh-abi-view-pipedemo": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

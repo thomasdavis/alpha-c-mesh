@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/wasm-float-guard",
+  "version": "0.1.0",
+  "description": "meshd's load-time float guard for wasm CPU programs: f32 arithmetic only in exported mesh_ftz_* helpers, no threads, no relaxed SIMD, only mesh imports",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "wasm", "float", "ftz", "determinism"],
+  "dependencies": {"@ajax/wasm-decode": "workspace:*", "@ajax/wasm-validate": "workspace:*", "@ajax/wasm-instr": "workspace:*",
+                   "@ajax/mesh-abi-wasm": "workspace:*", "@ajax/mesh-check": "workspace:*", "@ajax/wasm-builder": "workspace:*"}
+}

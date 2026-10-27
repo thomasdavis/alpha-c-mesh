@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/wasm-module",
+  "version": "0.1.0",
+  "description": "A decoded WebAssembly module as plain C structs, borrowing the binary's bytes",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "module"],
+  "dependencies": {"@ajax/wasm-types": "workspace:*"}
+}

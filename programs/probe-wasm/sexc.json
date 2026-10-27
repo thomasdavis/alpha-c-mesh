@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-prog-probe-wasm",
+  "version": "0.1.0",
+  "description": "A test guest for meshd's wasm executor: one op per mesh::* import, to check each and its bounds faults",
+  "kind": "wasm",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["mesh", "alphaos", "wasm", "testing"],
+  "dependencies": {"@ajax/mesh-rt-wasm": "workspace:*"},
+  "cflags": ["-O2"]
+}

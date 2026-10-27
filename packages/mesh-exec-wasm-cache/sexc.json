@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-exec-wasm-cache",
+  "version": "0.1.0",
+  "description": "meshd's --wasm-cache: compiled wasm modules on disk by image and engine hash, at most CACHE_CAP bytes, oldest evicted",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-exec-wasm-cache",
+  "keywords": ["mesh", "alphaos", "wasm", "cache"],
+  "dependencies": {"@ajax/mesh-abi-fnv": "workspace:*", "@ajax/mesh-check": "workspace:*"},
+  "cflags": ["-D_XOPEN_SOURCE=700"]
+}

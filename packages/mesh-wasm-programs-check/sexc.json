@@ -1,0 +1,41 @@
+{
+  "name": "@ajax/mesh-wasm-programs-check",
+  "version": "0.1.0",
+  "description": "Checks every wasm guest program (programs/*-wasm) in meshd's wasm executor against the CPU references",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "testing"
+  ],
+  "dependencies": {
+    "@ajax/mesh-exec-wasm-testkit": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-ref-cubic": "workspace:*",
+    "@ajax/mesh-abi-view-train": "workspace:*",
+    "@ajax/mesh-abi-view-infer": "workspace:*",
+    "@ajax/mesh-abi-fnv": "workspace:*",
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/mesh-abi-view-pipedemo": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-pipe-table": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-lease": "workspace:*"
+  },
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ]
+}

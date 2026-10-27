@@ -1,0 +1,36 @@
+{
+  "name": "@ajax/mesh-lease",
+  "version": "0.1.0",
+  "description": "The lease: mesh-rt's node loop played by a host thread against the mailbox, for executors without resident kernels (wasm lanes)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-lease",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "lease",
+    "node-loop",
+    "wasm"
+  ],
+  "dependencies": {
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-trace": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*"
+  },
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lpthread"
+  ]
+}
