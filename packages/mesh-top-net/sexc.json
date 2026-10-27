@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-net",
+  "version": "0.1.0",
+  "description": "Network rates from meshd's cumulative counters on meshd's own clock (links, NICs, ports), and their human formatting",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-net",
+  "keywords": ["mesh", "alphaos", "mesh-top", "network", "rates"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-top-snap": "workspace:*", "@ajax/rsfmt": "workspace:*"}
+}
