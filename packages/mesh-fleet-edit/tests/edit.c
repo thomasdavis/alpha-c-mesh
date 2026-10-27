@@ -235,7 +235,25 @@ static void revert_only_its_change(void) {
     mfd_doc_free(&r), mfd_doc_free(&r2), mfd_doc_free(&cur), mfd_doc_free(&bad), mfd_doc_free(&base);
 }
 
+/* sched_tests.rs a_pin_never_splits_a_colocated_pair, the control port's half: `sched pin` of a
+ * program colocated with a loaded anchor is refused, pointing at the anchor. */
+static void pin_refuses_colocated(void) {
+    mfd_doc d = {.version = 1, .term = 1};
+    msn_needs n = msn_default();
+    mfd_prog_put(&d, "pipehash", mfd_prog_new("x", 1, true, &n));
+    n.colocate_with = mt_strdup("pipehash");
+    mfd_prog_put(&d, "pipesrc", mfd_prog_new("x", 1, true, &n));
+    msn_free(&n);
+    char *err = NULL;
+    CHECK(fails(&d, "sched pin pipesrc 1", "colocated with pipehash"));
+    mfd_doc *ok = edit(&d, "sched pin pipehash 1", &err);
+    CHECK(ok != NULL);
+    if (ok) drop(ok);
+    mfd_doc_free(&d);
+}
+
 int main(void) {
+    pin_refuses_colocated();
     changes();
     lockstep_upgrade();
     revert_only_its_change();

@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-placer",
+  "version": "0.1.0",
+  "description": "One placed program's state machine across the cluster: placement changes coordinated by the leader, state handed over, frames shown on every machine",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-placer",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "placement",
+    "state-machine",
+    "frames"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-place-spec": "workspace:*", "@ajax/mesh-place-mode": "workspace:*", "@ajax/mesh-place-wire": "workspace:*", "@ajax/mesh-place-compose": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-place-ops": "workspace:*", "@ajax/mesh-abi-placement": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*"
+  }
+}
