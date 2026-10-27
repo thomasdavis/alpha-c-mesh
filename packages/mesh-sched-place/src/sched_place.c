@@ -1,7 +1,7 @@
 /* sched.rs: Input, Explain, order, members_of_at, Books, rows, sorted_ok, place, group_choice,
  * group_score. */
 #include "mesh/sched_place.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <math.h>
 #include <stdlib.h>

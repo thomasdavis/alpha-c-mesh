@@ -18,6 +18,6 @@
   ],
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-core": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-place-wire": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*", "@ajax/mesh-abi-backend": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-group-state": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-core": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-place-wire": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*", "@ajax/mesh-abi-backend": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-group-state": "workspace:*"
   }
 }

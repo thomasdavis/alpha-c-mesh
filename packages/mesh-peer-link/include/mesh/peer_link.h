@@ -34,8 +34,9 @@ typedef struct mpn_link mpn_link;
 /* What a link reports to its owner (called on the link's reader thread). */
 typedef struct {
     void *ctx;
-    /* A whole frame from member from on link lid (type byte first; takes it). */
-    void (*frame)(void *ctx, uint32_t from, uint64_t lid, mpw_bytes frame);
+    /* A whole frame from member from on link lid (type byte first; takes it). A non-NULL return (a
+     * malloc'd reason) closes the link with it, as the reader's own errors do. */
+    char *(*frame)(void *ctx, uint32_t from, uint64_t lid, mpw_bytes frame);
     /* The link closed (why: "closed", "silent for N ms", or the read or decode error). */
     void (*closed)(void *ctx, uint32_t from, uint64_t lid, const char *why);
     /* Bytes counted (net counters): tx when written, rx when a frame was read whole. */

@@ -1,9 +1,9 @@
-/* @ajax/mesh-text: growable strings and string lists, the containers the fleet's Rust used
+/* @ajax/mesh-mt: growable strings and string lists, the containers the fleet's Rust used
  * (`String`, `Vec<String>`) and its splitting (`split`, `split_whitespace`, `split_once`).
  *
  * Allocation failure aborts (the Rust aborts too): callers never check for NULL. */
-#ifndef MESH_TEXT_H
-#define MESH_TEXT_H
+#ifndef MESH_MT_H
+#define MESH_MT_H
 
 #include <stdarg.h>
 #include <stdbool.h>

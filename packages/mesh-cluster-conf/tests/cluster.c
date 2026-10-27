@@ -1,7 +1,7 @@
 /* cluster.rs's tests: three_systems and errors, ported one for one. */
 #include "mesh/check.h"
 #include "mesh/cluster_conf.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 

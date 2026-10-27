@@ -4,7 +4,7 @@
 #include "mesh/abi/host_mload.h"
 #include "mesh/abi/peer_frames.h"
 #include "mesh/abi/peer_sizes.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -414,7 +414,8 @@ static void *reader_main(void *arg) {
         mpw_bytes f;
         if (!mpn_read_frame(sock_read, &s, &f, &why)) break;
         if (l->sink.count) l->sink.count(l->sink.ctx, l->from, false, f.b[0], f.n);
-        l->sink.frame(l->sink.ctx, l->from, l->lid, f);
+        why = l->sink.frame(l->sink.ctx, l->from, l->lid, f);
+        if (why) break;
     }
     mark_dead(l);
     l->sink.closed(l->sink.ctx, l->from, l->lid, why ? why : "closed");

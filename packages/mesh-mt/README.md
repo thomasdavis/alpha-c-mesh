@@ -1,4 +1,4 @@
-# @ajax/mesh-text
+# @ajax/mesh-mt
 
 Growable strings (`mt_buf`), string lists (`mt_strs`), `mt_fmt`, and Rust's splitting
 (`mt_split` = `split(c)`, `mt_words` = `split_whitespace()`, `mt_lines` = `lines()`,

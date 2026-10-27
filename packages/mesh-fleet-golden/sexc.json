@@ -11,7 +11,7 @@
   "ldflags": ["-lm"],
   "dependencies": {
     "@ajax/mesh-check": "workspace:*",
-    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-mt": "workspace:*",
     "@ajax/mesh-parse": "workspace:*",
     "@ajax/rust-fmt": "workspace:*",
     "@ajax/mesh-abi-fnv": "workspace:*",

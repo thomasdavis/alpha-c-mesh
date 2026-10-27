@@ -1,6 +1,6 @@
 /* A sorted string map (see the header). */
 #include "mesh/strmap.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -3,7 +3,7 @@
 #include "mesh/peer_codec.h"
 #include "mesh/abi/peer_frames.h"
 #include "mesh/abi/peer_sizes.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

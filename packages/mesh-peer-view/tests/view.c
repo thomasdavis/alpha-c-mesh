@@ -1,7 +1,7 @@
 /* peer.rs view_chunks_are_bounded_and_counted_once; LoadAvg's smoothing. */
 #include "mesh/check.h"
 #include "mesh/peer_view.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 

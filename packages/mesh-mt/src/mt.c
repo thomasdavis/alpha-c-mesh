@@ -1,5 +1,5 @@
 /* Strings, buffers and string lists (see the header). */
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdio.h>
 #include <stdlib.h>

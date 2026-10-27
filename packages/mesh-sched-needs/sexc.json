@@ -17,6 +17,6 @@
   ],
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-backend": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-parse": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-backend": "workspace:*"
   }
 }

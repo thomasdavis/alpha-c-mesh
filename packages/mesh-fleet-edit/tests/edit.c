@@ -2,7 +2,7 @@
  * a_revert_undoes_only_its_change. */
 #include "mesh/check.h"
 #include "mesh/fleet_edit.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 #include "mesh/abi/placement.h"
 
 #include <stdlib.h>

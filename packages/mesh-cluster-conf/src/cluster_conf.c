@@ -3,7 +3,7 @@
 #include "mesh/abi/peer_frames.h"
 #include "mesh/parse.h"
 #include "mesh/rust_fmt.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdio.h>
 #include <stdlib.h>

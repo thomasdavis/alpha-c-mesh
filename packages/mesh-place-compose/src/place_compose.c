@@ -1,7 +1,7 @@
 /* place.rs: read_state, write_state, gather, scatter, sys_nibbles, Composer. */
 #include "mesh/place_compose.h"
 #include "mesh/rust_fmt.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -1,12 +1,12 @@
 {
-  "name": "@ajax/mesh-text",
+  "name": "@ajax/mesh-mt",
   "version": "0.1.0",
   "description": "Growable strings and string lists for the fleet packages, with Rust's split semantics",
   "kind": "library",
   "license": "MIT",
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-text",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-mt",
   "keywords": [
     "mesh",
     "alphaos",

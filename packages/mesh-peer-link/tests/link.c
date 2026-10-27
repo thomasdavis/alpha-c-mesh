@@ -5,7 +5,7 @@
 #include "mesh/abi/place_ops.h"
 #include "mesh/check.h"
 #include "mesh/peer_link.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <netinet/in.h>
 #include <pthread.h>
@@ -161,13 +161,14 @@ typedef struct {
     char why[64];
 } got;
 
-static void on_frame(void *ctx, uint32_t from, uint64_t lid, mpw_bytes f) {
+static char *on_frame(void *ctx, uint32_t from, uint64_t lid, mpw_bytes f) {
     (void)from, (void)lid;
     got *g = ctx;
     pthread_mutex_lock(&g->mu);
     if (g->n < 64) g->types[g->n++] = f.b[0];
     pthread_mutex_unlock(&g->mu);
     mpw_bytes_free(&f);
+    return NULL;
 }
 
 static void on_closed(void *ctx, uint32_t from, uint64_t lid, const char *why) {

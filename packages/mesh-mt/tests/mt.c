@@ -1,6 +1,6 @@
 /* Splitting as Rust splits; buffers and lists. */
 #include "mesh/check.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdlib.h>
 

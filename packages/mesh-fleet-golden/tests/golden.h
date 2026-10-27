@@ -6,7 +6,7 @@
 #include "mesh/abi/fnv.h"
 #include "mesh/check.h"
 #include "mesh/parse.h"
-#include "mesh/text.h"
+#include "mesh/mt.h"
 
 #include <stdio.h>
 #include <stdlib.h>

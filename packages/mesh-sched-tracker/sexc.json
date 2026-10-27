@@ -17,6 +17,6 @@
   ],
   "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-sched-score": "workspace:*", "@ajax/mesh-sched-place": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-strmap": "workspace:*"
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-mt": "workspace:*", "@ajax/mesh-member-list": "workspace:*", "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-sched-score": "workspace:*", "@ajax/mesh-sched-place": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-strmap": "workspace:*"
   }
 }
