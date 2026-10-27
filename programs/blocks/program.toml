@@ -1,0 +1,22 @@
+# blocks: the block collectives of a multi-warp node (mesh-rt block.rs,
+# mesh_rt.h), checked by kcheck bitwise against mesh-ref::block on every GPU.
+# op 0 (OP_TASK) arg = seed: thread t takes mesh_ref::block::test_values(seed, t)
+# and the node computes every reduction, scan, a broadcast and a shared-memory
+# round trip; the results go to region ticket % 4 of the view (layout below).
+# op 2: warps 1.. return at once while warp 0 runs a warp sum (the node loop's
+# barrier must still be reached by every thread: no hang).
+# View: 0x0 magic, 0x4 tasks; region r at 0x1000 + 0x10000 r: a 0x40-byte header
+# (threads, f32 sum, f32 max, u32 sum, u32 max, u64 sum, u64 max, broadcast,
+# node, warps), then 48 bytes a thread (f32 scan incl/excl, u32 scan incl/excl,
+# u64 scan incl/excl, the shared word read back from thread threads-1-t).
+# variants/blocks-w4.toml: the same image with 4 warps a node.
+name         = "blocks"
+abi          = 6
+view_bytes   = 0x41000
+nodes        = 4
+warps        = 32
+shared_bytes = 0x1000
+policy       = "on_demand"
+counters     = ["tasks", "early", "", ""]
+fields       = ["magic:u32:0x0", "tasks:u32:0x4"]
+backends     = ["cuda", "metal"]

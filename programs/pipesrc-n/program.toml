@@ -1,0 +1,15 @@
+# pipesrc-n: the pipe demo's CPU source as a native worker program (pipesrc's twin;
+# layout: mesh_abi::v2::views::pipedemo, S_*).  Mode 0: `msg`s into pipehash's inbox;
+# mode 1: `digest`s hashed here straight into a sink.
+# `task pipesrc-n 2 <mode>`, `3 <batch>`, `4 <interval us>`, `5` resets.
+name       = "pipesrc-n"
+abi        = 6
+backends   = ["native"]
+view_bytes = 0x100
+nodes      = 1
+policy     = "continuous"
+feeds      = ["pipehash:msg", "pipesink:digest", "pipesink-w:digest"]
+counters   = ["sent", "full", "gone", ""]
+fields     = ["mode:u32:0x0", "batch:u32:0x4", "interval_us:u32:0x8", "next_seq:u32:0xc", "sent:u32:0x10", "full:u32:0x14", "gone:u32:0x18", "dst:u32:0x28"]
+autostart  = false
+colocate_with = "pipehash"  # a fleet: on the member(s) pipehash runs on (pipes are single-machine)

@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-prog-matmul",
+  "version": "0.1.0",
+  "description": "matmul, the mesh's exact-mode GPU GEMM and GEMV (bit-identical on every GPU), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/matmul",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "gpu",
+    "ptx",
+    "program",
+    "gemm",
+    "deterministic"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-linalg": "workspace:*"
+  }
+}

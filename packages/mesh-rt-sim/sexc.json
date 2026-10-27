@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-rt-sim",
+  "version": "0.1.0",
+  "description": "mesh-rt's device primitives on the CPU, and a launcher that runs a kernel's nodes as threads, for testing GPU programs without a GPU",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-sim",
+  "keywords": ["mesh", "alphaos", "gpu", "simulator", "testing", "runtime"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lpthread"],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

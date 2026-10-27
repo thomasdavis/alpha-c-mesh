@@ -1,0 +1,21 @@
+# gpt2x: GPT-2 124M's exact-mode kernels on the GPU (CUDA and Metal), the
+# exact path of programs/gpt2 (its worker loads this image in-process through
+# mesh-host's backend: mesh-host gpt2x.rs is the host side).  Every op follows
+# mesh_ref::gpt2 operation for operation (FTZ, correctly rounded, unfused,
+# fixed sum orders; exp/tanh/sqrt from + - * /), so the logits and the KV
+# cache are bitwise the reference's on every GPU (kcheck GX*).  8-warp nodes;
+# the weights (f32, 498 MB), the KV cache (12 x 1024 x 768 x 2 f32) and the
+# activations of up to 1024 rows live in the scratch.  Ops and the view:
+# mesh_abi::v2::views::gpt2x.
+name          = "gpt2x"
+abi           = 6
+view_bytes    = 0x700000
+nodes         = "fit"
+warps         = 8
+shared_bytes  = 0x4200
+scratch_bytes = 0x24200000
+policy        = "on_demand"
+fanout        = 32
+counters      = ["tasks", "rows", "tiles", "chunks"]
+fields        = ["magic:u32:0x0"]
+backends      = ["cuda", "metal"]

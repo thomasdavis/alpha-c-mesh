@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-rt-block",
+  "version": "0.1.0",
+  "description": "Block collectives of a multi-warp mesh node in a fixed, bit-reproducible order (reduce, scan, broadcast), and typed shared memory",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-block",
+  "keywords": ["mesh", "alphaos", "gpu", "runtime", "collectives", "deterministic"],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-rt-prim": "workspace:*",
+    "@ajax/mesh-rt-view": "workspace:*"
+  }
+}

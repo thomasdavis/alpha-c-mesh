@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-rt-prim",
+  "version": "0.1.0",
+  "description": "mesh-rt's device primitives for the target being compiled (PTX on nvptx64, the CPU simulator elsewhere) and the f32 helpers on them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-prim",
+  "keywords": ["mesh", "alphaos", "gpu", "runtime"],
+  "dependencies": {
+    "@ajax/mesh-rt-ptx": "workspace:*",
+    "@ajax/mesh-rt-sim": "workspace:*"
+  }
+}
