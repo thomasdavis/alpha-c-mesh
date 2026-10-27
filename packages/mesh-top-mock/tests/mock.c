@@ -20,7 +20,7 @@ static void round_trips(void) {
     const char *want[5] = {"doom", "train", "infer", "http", "hello"};
     CHECK_U(again.nsections, 5);
     for (size_t i = 0; i < 5 && i < again.nsections; i++) {
-        char name[MESH_NAME_BYTES + 1];
+        char name[3 * MESH_NAME_BYTES + 1];
         mt_section_name(&again.sections[i], name);
         CHECK_S(name, want[i]);
     }
