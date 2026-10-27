@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/tui-buffer",
+  "version": "0.1.0",
+  "description": "A grid of styled terminal cells, one grapheme each, as ratatui's Buffer and Cell",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-buffer",
+  "keywords": ["tui", "terminal", "buffer", "cell", "ratatui"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-style": "workspace:*",
+    "@ajax/tui-rect": "workspace:*",
+    "@ajax/tui-utf8": "workspace:*",
+    "@ajax/tui-grapheme": "workspace:*",
+    "@ajax/tui-unicode-width": "workspace:*"
+  }
+}

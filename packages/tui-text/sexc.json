@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/tui-text",
+  "version": "0.1.0",
+  "description": "Styled spans, lines and text, measured and rendered as ratatui's Span, Line and Text",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-text",
+  "keywords": ["tui", "terminal", "text", "span", "ratatui"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-arena": "workspace:*",
+    "@ajax/tui-buffer": "workspace:*",
+    "@ajax/tui-grapheme": "workspace:*",
+    "@ajax/tui-unicode-width": "workspace:*"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-grapheme",
+  "version": "0.1.0",
+  "description": "Extended grapheme clusters (UAX #29, Unicode 17), the same boundaries as Rust's unicode-segmentation 1.13",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-grapheme",
+  "keywords": ["unicode", "grapheme", "segmentation", "uax29", "terminal"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/tui-utf8": "workspace:*"}
+}
