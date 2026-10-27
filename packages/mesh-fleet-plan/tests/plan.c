@@ -7,7 +7,7 @@
 
 static mfd_doc doc(void) {
     mfd_doc d = {.version = 7, .term = 3};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog h = mfd_prog_new("hello", 0xabc, true, &n);
     h.reset = 2;
     mfd_prog_put(&d, "hello", h);
@@ -17,7 +17,7 @@ static mfd_doc doc(void) {
     t.prev_dir = mt_strdup("train");
     t.prev_hash = 0x99;
     mfd_prog_put(&d, "train", t);
-    msn_free(&n);
+    mesh_needs_free(&n);
     return d;
 }
 

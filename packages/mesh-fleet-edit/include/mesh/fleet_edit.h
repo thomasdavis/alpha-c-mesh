@@ -51,7 +51,7 @@ typedef struct {
     bool autostart;
     bool placeable;      /* the manifest's `place` capability and fanout */
     uint32_t place_cap, place_fanout;
-    msn_needs needs;
+    mesh_needs needs;
 } mfe_image;
 
 void mfe_image_free(mfe_image *im);

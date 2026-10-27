@@ -8,9 +8,9 @@ int main(void) {
     mfp_persist p = {.term = 5, .has_voted = true, .voted = 2};
     p.accepted.version = 7;
     p.accepted.term = 3;
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog_put(&p.accepted, "hello", mfd_prog_new("hello", 0xabc, true, &n));
-    msn_free(&n);
+    mesh_needs_free(&n);
     mt_strs w = {0};
     mt_push(&w, "split");
     mfd_place_put(&p.accepted, "doom", w);

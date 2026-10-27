@@ -10,22 +10,22 @@ static msp_input input(const mfd_doc *d, const msm_member *ms, const msm_perfs *
 
 static mfd_doc pipe_doc(bool other) {
     mfd_doc d = doc_new();
-    msn_needs n = needs("cuda", "metal", NULL);
-    n.replicas = (msn_replicas){false, 1};
-    msn_terms_push(&n.prefer, term(MSN_SYSTEM, NULL, 2));
-    mt_push(&n.feeds, "pipesink-w");
+    mesh_needs n = needs("cuda", "metal", NULL);
+    n.replicas = (mesh_replicas){false, 1};
+    msn_terms_push(&n.prefer, &n.nprefer, term(MESH_TERM_SYSTEM, NULL, 2));
+    msn_strs_push(&n.feeds, &n.nfeeds, "pipesink-w");
     mfd_prog_put(&d, "pipehash", prog_of(n));
     n = needs("wasm", NULL, NULL);
     n.colocate_with = mt_strdup("pipehash");
-    mt_push(&n.feeds, "pipehash");
-    if (!other) mt_push(&n.feeds, "pipesink-w");
+    msn_strs_push(&n.feeds, &n.nfeeds, "pipehash");
+    if (!other) msn_strs_push(&n.feeds, &n.nfeeds, "pipesink-w");
     mfd_prog_put(&d, "pipesrc", prog_of(n));
     n = needs("wasm", NULL, NULL);
     n.colocate_with = mt_strdup("pipehash");
     mfd_prog_put(&d, "pipesink-w", prog_of(n));
     if (other) {
         n = needs("wasm", NULL, NULL);
-        n.replicas = (msn_replicas){false, 1};
+        n.replicas = (mesh_replicas){false, 1};
         mfd_prog_put(&d, "other", prog_of(n));
     }
     return d;
@@ -35,7 +35,7 @@ static void colocation_and_pins(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d = pipe_doc(false);
-    msn_needs n = needs("wasm", NULL, NULL);
+    mesh_needs n = needs("wasm", NULL, NULL);
     n.colocate_with = mt_strdup("absent");
     mfd_prog_put(&d, "lone", prog_of(n));
     mfd_doc p = placed(ms, 4, &d);
@@ -66,7 +66,7 @@ static void colocation_and_pins(void) {
     CHECK(none_from && at_is(&e, "pipehash", (uint32_t[]){0}, 1));
     mfd_doc back = mst_end_move(&s, &mv, false, "reverted");
     CHECK(at_is(&back, "pipehash", (uint32_t[]){2}, 1));
-    mfd_prog_get(&dp, "pipehash")->needs.migrate = MSN_RESTART;
+    mfd_prog_get(&dp, "pipehash")->needs.migrate = MESH_MIGRATE_RESTART;
     mfd_doc r = placed(ms, 4, &dp);
     CHECK(at_is(&r, "pipehash", (uint32_t[]){0}, 1));
     mst_move_free(&mv);
@@ -82,9 +82,9 @@ static void hysteresis_and_budget(void) {
     w.hold_ms = 3000, w.dwell_ms = 10000, w.per_min = 1;
     mfd_doc d0 = doc_new();
     for (int i = 0; i < 2; i++) {
-        msn_needs n = needs("wasm", NULL, NULL);
-        n.replicas = (msn_replicas){false, 1};
-        msn_terms_push(&n.prefer, term(MSN_SYSTEM, NULL, 0));
+        mesh_needs n = needs("wasm", NULL, NULL);
+        n.replicas = (mesh_replicas){false, 1};
+        msn_terms_push(&n.prefer, &n.nprefer, term(MESH_TERM_SYSTEM, NULL, 0));
         mfd_prog_put(&d0, i ? "b" : "a", prog_of(n));
     }
     mfd_doc d = placed(ms, 4, &d0);
@@ -170,10 +170,10 @@ static void groups_proposed(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d = doc_new();
-    msn_needs n = needs("cuda", "metal", "wasm");
+    mesh_needs n = needs("cuda", "metal", "wasm");
     n.lockstep = true;
     n.group_size = 3;
-    msn_terms_push(&n.group_members, term(MSN_BACKEND, "cuda", 0));
+    msn_terms_push(&n.group_members, &n.ngroup_members, term(MESH_TERM_BACKEND, "cuda", 0));
     mfd_prog_put(&d, "train", prog_of(n));
     mfd_group_push(&d, (mfd_group){.name = mt_strdup("train"), .program = mt_strdup("train"), .epoch = 1, .members = ml_of((uint32_t[]){0, 1, 2}, 3),
                                    .state = MFD_RUNNING, .on_loss = MFD_LOSS_PAUSE});
@@ -204,7 +204,9 @@ static void groups_proposed(void) {
     mst_move mv;
     CHECK(!mst_step(t, &in, 10000, false, &mv));
     ms[1].up = true;
-    msn_terms_free(&mfd_prog_get(&d, "train")->needs.group_members);
+    mesh_needs *tn = &mfd_prog_get(&d, "train")->needs;
+    for (size_t i = 0; i < tn->ngroup_members; i++) mesh_term_free(&tn->group_members[i]);
+    free(tn->group_members), tn->group_members = NULL, tn->ngroup_members = 0;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) ms[i].rtt_us[j] = mof32_some(250.0f);
         ms[i].rtt_us[3] = mof32_some(1900.0f);
@@ -325,13 +327,13 @@ static void simulation(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d = doc_new();
-    msn_needs n;
-    n = needs("cuda", "metal", "wasm"), n.replicas = (msn_replicas){false, 2}, mfd_prog_put(&d, "svc", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.replicas = (msn_replicas){false, 1}, n.cpu = 1.0f, mfd_prog_put(&d, "cpu1", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.replicas = (msn_replicas){false, 1}, n.cpu = 1.0f, mfd_prog_put(&d, "cpu2", prog_of(n));
-    n = needs("metal", NULL, NULL), n.replicas = (msn_replicas){false, 1}, mfd_prog_put(&d, "mac", prog_of(n));
-    n = needs("cuda", "metal", NULL), n.replicas = (msn_replicas){false, 1}, mfd_prog_put(&d, "hash", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.colocate_with = mt_strdup("hash"), mt_push(&n.feeds, "hash"), mfd_prog_put(&d, "src", prog_of(n));
+    mesh_needs n;
+    n = needs("cuda", "metal", "wasm"), n.replicas = (mesh_replicas){false, 2}, mfd_prog_put(&d, "svc", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, n.cpu = 1.0f, mfd_prog_put(&d, "cpu1", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, n.cpu = 1.0f, mfd_prog_put(&d, "cpu2", prog_of(n));
+    n = needs("metal", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, mfd_prog_put(&d, "mac", prog_of(n));
+    n = needs("cuda", "metal", NULL), n.replicas = (mesh_replicas){false, 1}, mfd_prog_put(&d, "hash", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.colocate_with = mt_strdup("hash"), msn_strs_push(&n.feeds, &n.nfeeds, "hash"), mfd_prog_put(&d, "src", prog_of(n));
     n = needs("wasm", NULL, NULL), mfd_prog_put(&d, "every", prog_of(n));
     msm_perfs perf = {0};
     mst_tracker *t = mst_new();
@@ -398,7 +400,7 @@ static void simulation(void) {
             if (!p->needs.replicas.all && !p->needs.colocate_with) CHECK(at.n <= p->needs.replicas.n);
             for (size_t j = 0; j < at.n; j++) {
                 const msm_member *mm = &ms[at.v[j]];
-                CHECK(msm_exec_for(mm, p->needs.backends.v, p->needs.backends.n) != NULL);
+                CHECK(msm_exec_for(mm, p->needs.backends, p->needs.nbackends) != NULL);
                 CHECK(mm->up || mm->down_ms < w.replace_ms || p->has_from);
             }
             if (!strcmp(d.pname[i], "mac")) CHECK(at.n == 1 && at.v[0] == 3);

@@ -14,7 +14,7 @@
 static float clampf(float x, float lo, float hi) { return x < lo ? lo : x > hi ? hi : x; }
 static double clampd(double x, double lo, double hi) { return x < lo ? lo : x > hi ? hi : x; }
 
-bool msc_filter(const msm_member *m, const msn_needs *n, char exec[16], char **err) {
+bool msc_filter(const msm_member *m, const mesh_needs *n, char exec[16], char **err) {
     if (!m->up) {
         *err = mt_fmt("down for %.1f s", (double)m->down_ms / 1e3);
         return false;
@@ -23,13 +23,13 @@ bool msc_filter(const msm_member *m, const msn_needs *n, char exec[16], char **e
         *err = mt_strdup("cordoned");
         return false;
     }
-    const char *e = msm_exec_for(m, n->backends.v, n->backends.n);
+    const char *e = msm_exec_for(m, n->backends, n->nbackends);
     if (!e) {
         const char *ex[3];
         size_t k = msm_executors(m, ex);
         mt_strs runs = {0};
         for (size_t i = 0; i < k; i++) mt_push(&runs, ex[i]);
-        char *b = mt_join(&n->backends, ","), *r = mt_join(&runs, ",");
+        char *b = msn_strs_join(n->backends, n->nbackends, ","), *r = mt_join(&runs, ",");
         *err = mt_fmt("backends %s: it runs %s", b, r);
         free(b), free(r);
         mt_strs_free(&runs);
@@ -49,9 +49,9 @@ bool msc_filter(const msm_member *m, const msn_needs *n, char exec[16], char **e
             return false;
         }
     }
-    for (size_t i = 0; i < n->avoid.n; i++)
-        if (msn_term_matches(&n->avoid.v[i], m)) {
-            char *w = msn_term_word(&n->avoid.v[i]);
+    for (size_t i = 0; i < n->navoid; i++)
+        if (msn_term_matches(&n->avoid[i], m)) {
+            char *w = mesh_term_word(&n->avoid[i]);
             *err = mt_fmt("avoid %s", w);
             free(w);
             return false;
@@ -73,7 +73,7 @@ bool msc_filter(const msm_member *m, const msn_needs *n, char exec[16], char **e
     return true;
 }
 
-bool msc_eligible(const msm_member *m, const msn_needs *n) {
+bool msc_eligible(const msm_member *m, const mesh_needs *n) {
     char exec[16], *err = NULL;
     bool ok = msc_filter(m, n, exec, &err);
     free(err);
@@ -102,9 +102,9 @@ msc_cx msc_cx_simple(const msw_weights *w, const msm_perf *here) {
 /* The GPU share assumed on a member with nothing observing it. */
 #define SHARE_PRIOR 0.75f
 
-msc_score_t msc_score_terms(const msm_member *m, const msn_needs *n, const msc_cx *cx) {
+msc_score_t msc_score_terms(const msm_member *m, const mesh_needs *n, const msc_cx *cx) {
     const msw_weights *w = cx->w;
-    const char *e = msm_exec_for(m, n->backends.v, n->backends.n);
+    const char *e = msm_exec_for(m, n->backends, n->nbackends);
     msc_score_t s = {0};
     msm_set_str(s.exec, sizeof s.exec, e ? e : "");
     bool gpu = strcmp(s.exec, "cuda") == 0 || strcmp(s.exec, "metal") == 0;
@@ -146,8 +146,8 @@ msc_score_t msc_score_terms(const msm_member *m, const msn_needs *n, const msc_c
     s.spread = w->spread * (n->pack ? fill : 1.0 - fill);
     if (cx->rtt_ms.some) s.rtt = w->rtt * (1.0 - clampd((double)cx->rtt_ms.v / 2.0, 0.0, 1.0));
     size_t pref = 0;
-    for (size_t i = 0; i < n->prefer.n; i++)
-        if (msn_term_matches(&n->prefer.v[i], m)) pref++;
+    for (size_t i = 0; i < n->nprefer; i++)
+        if (msn_term_matches(&n->prefer[i], m)) pref++;
     s.prefer = w->prefer * (double)pref;
     if (cx->current) s.sticky = w->sticky;
     if (m->busy) s.owner = -w->owner;
@@ -155,7 +155,7 @@ msc_score_t msc_score_terms(const msm_member *m, const msn_needs *n, const msc_c
     return s;
 }
 
-double msc_score(const msm_member *m, const msn_needs *n, const msm_perf *here, const msw_weights *w) {
+double msc_score(const msm_member *m, const mesh_needs *n, const msm_perf *here, const msw_weights *w) {
     msc_cx cx = msc_cx_simple(w, here);
     return msc_score_terms(m, n, &cx).total;
 }

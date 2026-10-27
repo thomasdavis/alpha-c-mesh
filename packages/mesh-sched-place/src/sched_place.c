@@ -126,7 +126,7 @@ mt_strs msp_order(const mfd_doc *doc) {
     return out;
 }
 
-ml_list msp_members_of_at(const ml_opt *at, const msm_member *ms, size_t nms, const msn_needs *n) {
+ml_list msp_members_of_at(const ml_opt *at, const msm_member *ms, size_t nms, const mesh_needs *n) {
     if (at->some) return ml_clone(&at->l);
     ml_list l = {0};
     for (size_t i = 0; i < nms; i++)
@@ -147,7 +147,7 @@ void msp_books_free(msp_books *b) {
     *b = (msp_books){0};
 }
 
-void msp_books_add(msp_books *b, uint32_t k, const msn_needs *n) {
+void msp_books_add(msp_books *b, uint32_t k, const mesh_needs *n) {
     if (k >= b->n) return;
     b->placed[k] += 1;
     b->cpu[k] += n->cpu;
@@ -155,7 +155,7 @@ void msp_books_add(msp_books *b, uint32_t k, const msn_needs *n) {
 }
 
 /* A placement made in this pass on a member that does not hold it yet: its view and slot. */
-static void books_add_new(msp_books *b, uint32_t k, const msn_needs *n) {
+static void books_add_new(msp_books *b, uint32_t k, const mesh_needs *n) {
     if (k >= b->n) return;
     b->view_kb[k] += div_ceil(n->view_bytes, 1024);
     b->nnew[k] += 1;
@@ -170,7 +170,7 @@ static uint32_t books_max(const msp_books *b) {
 
 /* The reservations fit (the budget is the member's CPUs and RAM less the reserve), and the view and
  * a slot (a member that holds it already has both). */
-static bool books_fits(const msp_books *b, const msm_member *m, const msn_needs *n, const msw_weights *w, bool current, char **err) {
+static bool books_fits(const msp_books *b, const msm_member *m, const mesh_needs *n, const msw_weights *w, bool current, char **err) {
     uint32_t i = m->id;
     if (!current && m->heap_kb > 0) {
         uint32_t want = div_ceil(n->view_bytes, 1024) + b->view_kb[i];
@@ -217,7 +217,7 @@ static mof32 best_task_us(const msm_perfs *perf, const char *name, uint64_t hash
 }
 
 /* The CPU a program uses: measured where it runs (the most of its replicas), else its reservation. */
-static float own_cpu(const msm_perfs *perf, const char *name, uint64_t hash, const msn_needs *n) {
+static float own_cpu(const msm_perfs *perf, const char *name, uint64_t hash, const mesh_needs *n) {
     size_t lo, hi;
     msm_perfs_range(perf, name, &lo, &hi);
     float c = n->cpu;
@@ -228,7 +228,7 @@ static float own_cpu(const msm_perfs *perf, const char *name, uint64_t hash, con
 
 void msp_rows(const msp_input *in, const char *name, const ml_list *current, const msp_books *books, const ml_list *anchor, msp_row **rows, size_t *nrows) {
     const mfd_prog *p = mfd_prog_get(in->doc, name);
-    const msn_needs *n = &p->needs;
+    const mesh_needs *n = &p->needs;
     mof32 best = best_task_us(in->perf, name, p->hash);
     float own = own_cpu(in->perf, name, p->hash, n);
     uint32_t maxp = books_max(books);
@@ -313,7 +313,7 @@ mfd_doc msp_place(const msp_input *in, mt_strs *changes, msp_explains *explains)
     for (size_t oi = 0; oi < ord.n; oi++) {
         const char *name = ord.v[oi];
         mfd_prog p = mfd_prog_clone(mfd_prog_get(&doc, name));
-        const msn_needs *n = &p.needs;
+        const mesh_needs *n = &p.needs;
         /* Where it runs now (a new program with replicas N: nowhere yet). */
         ml_list cur = (!p.at.some && !n->replicas.all && !n->colocate_with) ? (ml_list){0} : msp_members_of_at(&p.at, ms, nms, n);
         /* Colocated: the anchor's members (an anchor not in the document: no constraint). */
@@ -345,7 +345,7 @@ mfd_doc msp_place(const msp_input *in, mt_strs *changes, msp_explains *explains)
             ex.summary = mt_fmt("migrating from system %u (the leader runs it)", p.from);
         } else if (pin) {
             bool moving = false;
-            if (p.at.some && !ml_eq(&p.at.l, &pin->l) && p.at.l.n && n->migrate == MSN_STATE) {
+            if (p.at.some && !ml_eq(&p.at.l, &pin->l) && p.at.l.n && n->migrate == MESH_MIGRATE_STATE) {
                 moving = true;
                 for (size_t i = 0; i < p.at.l.n; i++)
                     if (p.at.l.v[i] >= nms || !ms[p.at.l.v[i]].up) moving = false;
@@ -494,7 +494,7 @@ static mof32 mean_rtt_ms(const msm_member *ms, size_t nms, uint32_t k, const uin
 bool msp_group_choice(const msp_input *in, const mfd_group *g, ml_list *members, char **why) {
     const mfd_prog *p = mfd_prog_get(in->doc, g->program);
     if (!p) return false;
-    const msn_needs *n = &p->needs;
+    const mesh_needs *n = &p->needs;
     mof32 best = best_task_us(in->perf, g->program, p->hash);
     size_t nc = 0;
     uint32_t *ck = mt_alloc((in->nmembers ? in->nmembers : 1) * sizeof *ck);
@@ -502,9 +502,9 @@ bool msp_group_choice(const msp_input *in, const mfd_group *g, ml_list *members,
     for (size_t i = 0; i < in->nmembers; i++) {
         const msm_member *m = &in->members[i];
         if (!msc_eligible(m, n) || ms_get(&m->fails, g->program)) continue;
-        bool match = n->group_members.n == 0;
-        for (size_t t = 0; t < n->group_members.n; t++)
-            if (msn_term_matches(&n->group_members.v[t], m)) match = true;
+        bool match = n->ngroup_members == 0;
+        for (size_t t = 0; t < n->ngroup_members; t++)
+            if (msn_term_matches(&n->group_members[t], m)) match = true;
         if (!match) continue;
         const msm_perf *here = msm_perfs_get(in->perf, g->program, m->id);
         if (here && here->hash != p->hash) here = NULL;

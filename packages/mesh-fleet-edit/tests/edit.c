@@ -198,14 +198,14 @@ static void lockstep_upgrade(void) {
 
 static mfd_doc base_doc(void) {
     mfd_doc d = {.version = 7, .term = 3};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog h = mfd_prog_new("hello", 0xabc, true, &n);
     h.reset = 2;
     mfd_prog_put(&d, "hello", h);
     mfd_prog t = mfd_prog_new("train-b", 0x123, true, &n);
     t.lockstep = true;
     mfd_prog_put(&d, "train", t);
-    msn_free(&n);
+    mesh_needs_free(&n);
     mfd_group_push(&d, (mfd_group){.name = mt_strdup("train"), .program = mt_strdup("train"), .epoch = 4, .cycle = 2, .members = ml_of((uint32_t[]){0, 2, 3}, 3),
                                    .state = MFD_RUNNING, .on_loss = MFD_LOSS_REFORM, .auto_ms = 5000});
     mt_strs w = {0};
@@ -239,11 +239,11 @@ static void revert_only_its_change(void) {
  * program colocated with a loaded anchor is refused, pointing at the anchor. */
 static void pin_refuses_colocated(void) {
     mfd_doc d = {.version = 1, .term = 1};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog_put(&d, "pipehash", mfd_prog_new("x", 1, true, &n));
     n.colocate_with = mt_strdup("pipehash");
     mfd_prog_put(&d, "pipesrc", mfd_prog_new("x", 1, true, &n));
-    msn_free(&n);
+    mesh_needs_free(&n);
     char *err = NULL;
     CHECK(fails(&d, "sched pin pipesrc 1", "colocated with pipehash"));
     mfd_doc *ok = edit(&d, "sched pin pipehash 1", &err);

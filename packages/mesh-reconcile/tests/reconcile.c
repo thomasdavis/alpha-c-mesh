@@ -217,10 +217,10 @@ static mrc_ops ops(fake *f, uint32_t me) {
 
 static mfd_doc doc(void) {
     mfd_doc d = {.version = 3, .term = 1};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog_put(&d, "hello", mfd_prog_new("hello", 0xabc, true, &n));
     mfd_prog_put(&d, "tick", mfd_prog_new("tick", 0x123, false, &n));
-    msn_free(&n);
+    mesh_needs_free(&n);
     return d;
 }
 
@@ -242,9 +242,9 @@ static void passes(void) {
     e.version = 4;
     mfd_prog_get(&e, "hello")->hash = 0xdef;
     mfd_prog_get(&e, "tick")->at = ml_some((uint32_t[]){2}, 1);
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog_put(&e, "metal-only", mfd_prog_new("metal-only", 7, true, &n));
-    msn_free(&n);
+    mesh_needs_free(&n);
     f.no_image = "metal-only";
     CHECK(!mrc_document(r, &e));
     CHECK(called(&f, "upgrade hello") && called(&f, "unload tick") && f.last_status == MESH_RS_SYNC && mt_contains(f.last_reason, "unsupported here: metal-only"));
@@ -253,7 +253,7 @@ static void passes(void) {
     g.version = 5;
     n = msn_default();
     mfd_prog_put(&g, "flaky", mfd_prog_new("flaky", 9, true, &n));
-    msn_free(&n);
+    mesh_needs_free(&n);
     f.fail_load = "flaky";
     CHECK(mrc_document(r, &g) && f.last_status == MESH_RS_FAILED && mt_contains(f.last_reason, "load flaky: jit: boom"));
     mt_strs_free(&f.calls);
@@ -286,13 +286,13 @@ static void migration(void) {
     mrc_ops o = ops(&f, 1);
     mrc_rec *r = mrc_new(&o);
     mfd_doc d = {.version = 8, .term = 1};
-    msn_needs n = msn_default();
-    mt_push(&n.feeds, "pipehash");
+    mesh_needs n = msn_default();
+    msn_strs_push(&n.feeds, &n.nfeeds, "pipehash");
     mfd_prog src = mfd_prog_new("pipesrc", 1, true, &n);
-    msn_free(&n);
+    mesh_needs_free(&n);
     n = msn_default();
     mfd_prog hash = mfd_prog_new("pipehash", 2, true, &n);
-    msn_free(&n);
+    mesh_needs_free(&n);
     src.at = ml_some((uint32_t[]){1}, 1), hash.at = ml_some((uint32_t[]){1}, 1);
     src.has_from = hash.has_from = src.has_to = hash.has_to = true;
     src.from = hash.from = 2, src.to = hash.to = 1, src.since = hash.since = 8;
@@ -316,11 +316,11 @@ static void lockstep(void) {
     mrc_ops o = ops(&f, 2);
     mrc_rec *r = mrc_new(&o);
     mfd_doc d = {.version = 2, .term = 1};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog t = mfd_prog_new("train", 0x77, true, &n);
     t.lockstep = true;
     mfd_prog_put(&d, "train", t);
-    msn_free(&n);
+    mesh_needs_free(&n);
     mfd_group_push(&d, (mfd_group){.name = mt_strdup("train"), .program = mt_strdup("train"), .epoch = 1, .members = ml_of((uint32_t[]){0, 2}, 2), .state = MFD_RUNNING});
     CHECK(!mrc_document(r, &d));
     CHECK(called(&f, "quiesce mirror 0 member 1") && called(&f, "load train running") && called(&f, "reset train"));

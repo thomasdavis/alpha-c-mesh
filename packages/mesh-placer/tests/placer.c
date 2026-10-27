@@ -39,7 +39,7 @@ typedef struct {
 static mpw_bytes state_cb(void *ctx) { return read_state(((statectx *)ctx)->salt); }
 
 static mpw_place place_msg(const mpw_bytes *b) {
-    size_t n;
+    size_t n = 0;
     char *err = NULL;
     CHECK(b->b[0] == MESH_F_PLACE && mpw_place_rest_len(b->b + 1, &n, &err));
     mpw_place m = {0};
@@ -48,7 +48,7 @@ static mpw_place place_msg(const mpw_bytes *b) {
 }
 
 static mpw_frame frame_msg(const mpw_bytes *b) {
-    size_t n;
+    size_t n = 0;
     char *err = NULL;
     CHECK(b->b[0] == MESH_F_FRAME && mpw_frame_rest_len(b->b + 1, &n, &err));
     mpw_frame m = {0};

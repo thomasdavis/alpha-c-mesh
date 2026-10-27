@@ -22,7 +22,7 @@ void mfe_image_free(mfe_image *im) {
     free(im->dir);
     free(im->name);
     mt_strs_free(&im->backends);
-    msn_free(&im->needs);
+    mesh_needs_free(&im->needs);
     *im = (mfe_image){0};
 }
 
@@ -224,7 +224,7 @@ static bool upgrade(mfd_doc *d, const mfe_req *req, const mfe_ctx *cx, char **wh
     e->hash = im.hash;
     mt_strs_free(&e->backends);
     e->backends = mt_strs_clone(&im.backends);
-    msn_free(&e->needs);
+    mesh_needs_free(&e->needs);
     e->needs = msn_clone(&im.needs);
     if (g) {
         g->cycle += 1;

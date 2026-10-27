@@ -58,7 +58,7 @@ const msp_explain *msp_explains_get(const msp_explains *e, const char *program);
 /* The order programs are placed in: names into a new list. */
 mt_strs msp_order(const mfd_doc *doc);
 /* The members a placement puts a program on (none: every member that can run it). */
-ml_list msp_members_of_at(const ml_opt *at, const msm_member *ms, size_t nms, const msn_needs *n);
+ml_list msp_members_of_at(const ml_opt *at, const msm_member *ms, size_t nms, const mesh_needs *n);
 
 /* A placement pass: the document with every program's placement made valid, the changes, and every
  * program's explain. A program being migrated (from) is left to the leader. */
@@ -83,7 +83,7 @@ typedef struct {
 
 msp_books msp_books_new(size_t n);
 void msp_books_free(msp_books *b);
-void msp_books_add(msp_books *b, uint32_t k, const msn_needs *n);
+void msp_books_add(msp_books *b, uint32_t k, const mesh_needs *n);
 /* Every member's verdict for program name (current: its placement now; anchor: NULL or the anchor's
  * members). */
 void msp_rows(const msp_input *in, const char *name, const ml_list *current, const msp_books *books, const ml_list *anchor, msp_row **rows, size_t *nrows);
