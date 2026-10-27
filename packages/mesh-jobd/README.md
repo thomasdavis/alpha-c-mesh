@@ -36,13 +36,20 @@ mesh_control_render = mjd_render;    /* control's and http's `render` */
 mjd_start(jd);                       /* instead of mesh_chan_close_rx(sh->jobs) */
 ```
 
-The fleet thread calls three functions:
+The fleet thread (`@ajax/mesh-peer-relay`'s `mpr_host`) reaches the jobs area through one-line
+wrappers:
 
-- `mjd_set_view(sh, (mj_view){term, has_leader, leader, alive, linked})` whenever its view changes
-  (peer.rs).
-- `mjd_set_sched(sh, mjs_sched(&cx))` with the scheduler's model, once a second (peer_sched.rs).
-- `mjd_route_frame(sh, from, frame, n)` for the link frames of types F_JOB_AVAIL..F_RESULT and
-  F_BLOB_PUT..F_BLOB.
+- `jobs_view` → `mjd_set_view(sh, (mj_view){term, has_leader, leader, alive, linked})`.
+- `jobs_sched` → `mjd_jobs_sched(sh, members, n, doc, perf, w)`. It copies all of them; each
+  program's needs come from the committed document, as in peer_sched.rs.
+- `jobs_frame` → `mjd_jobs_frame(sh, from, type, body, n)`.
+- `blobs_frame` → `mjd_blobs_frame(sh, from, type, body, n)`.
+- `jobs_ctl` → a `MESH_JEV_CTL` event on `sh->jobs`. For a local request, `reply_to` is LOCAL with a
+  `mesh_reply` whose answer goes to the `mpr_reply`. For a request from member `from`, `reply_to` is
+  REMOTE with `remote_from = from` and `remote_id = id`; the jobs thread then sends the F_CTL_REPLY
+  frame itself.
+
+`mjd_route_frame(sh, from, frame, n)` takes a whole frame (type, length, body) instead.
 
 ## Ported from
 

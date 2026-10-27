@@ -12,6 +12,7 @@
 #include "mesh/blobs/durable.h"
 #include "mesh/blobs/store.h"
 #include "mesh/check.h"
+#include "mesh/sched_needs.h"
 #include "mesh/strbuf.h"
 
 #include <pthread.h>
@@ -142,6 +143,24 @@ static void single(const char *dir) {
         mjd_start(d);
         char *t;
         if (run == 0) {
+            /* The scheduler's model (the relay's jobs_sched): no needs for p, so this member is eligible unscored. */
+            msm_member m = msm_member_default();
+            m.id = 0;
+            m.up = true;
+            mesh_needs nd = msn_default();
+            mfd_doc doc = {0};
+            doc.pname = mxalloc(sizeof *doc.pname);
+            doc.pname[0] = mstrdup("other");
+            doc.prog = mxalloc(sizeof *doc.prog);
+            doc.prog[0] = mfd_prog_new("other", 1, true, &nd);
+            doc.nprogs = 1;
+            msm_perfs perf = {0};
+            msw_weights w = msw_default();
+            mjd_jobs_sched(sh, &m, 1, &doc, &perf, &w);
+            mjd_jobs_sched(sh, &m, 1, &doc, &perf, &w); /* the second replaces the first before it is picked up, or after */
+            mfd_doc_free(&doc);
+            mesh_needs_free(&nd);
+            msm_member_free(&m);
             CHECK(ctl(sh, "job submit p items 0-20", &t));
             CHECK(strncmp(t, "job 1.1 program p items 20 on 1 member(s) (0)", 45) == 0);
             free(t);

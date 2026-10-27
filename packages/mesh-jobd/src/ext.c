@@ -4,6 +4,8 @@
 
 #include "mesh/abi/peer_frames.h"
 #include "mesh/abi/peer_sizes.h"
+#include "mesh/jobs/sched.h"
+#include "mesh/sched_needs.h"
 #include "mesh/log.h"
 #include "mesh/strbuf.h"
 
@@ -106,37 +108,60 @@ void mjd_set_sched(mesh_shared *sh, mj_sched *cx) {
 
 /* ---- frames and render */
 
+bool mjd_jobs_frame(mesh_shared *sh, uint32_t from, uint8_t ty, const uint8_t *body, size_t n) {
+    mesh_job_event e = mesh_job_event_new(MESH_JEV_FRAME);
+    e.from = from;
+    e.ty = ty;
+    e.len = n;
+    e.body = mxalloc(n ? n : 1);
+    memcpy(e.body, body, n);
+    if (mesh_chan_send(sh->jobs, &e) != MESH_CHAN_OK) {
+        mesh_job_event_free(&e);
+        return false;
+    }
+    return true;
+}
+
+bool mjd_blobs_frame(mesh_shared *sh, uint32_t from, uint8_t ty, const uint8_t *body, size_t n) {
+    if (!sh->blobs) return false;
+    mjd_bev e = {.k = MJD_BEV_FRAME, .from = from, .ty = ty, .n = n};
+    e.bytes = mxalloc(n ? n : 1);
+    memcpy(e.bytes, body, n);
+    if (mesh_chan_send(sh->blobs, &e) != MESH_CHAN_OK) {
+        mjd_bev_free(&e);
+        return false;
+    }
+    return true;
+}
+
 bool mjd_route_frame(mesh_shared *sh, uint32_t from, const uint8_t *frame, size_t n) {
     if (n < 1 + MESH_JOB_HEAD) return false;
     uint8_t ty = frame[0];
     uint32_t len = (uint32_t)frame[1] | (uint32_t)frame[2] << 8 | (uint32_t)frame[3] << 16 | (uint32_t)frame[4] << 24;
     if ((size_t)len != n - 1 - MESH_JOB_HEAD) return false;
     const uint8_t *body = frame + 1 + MESH_JOB_HEAD;
-    if (ty >= MESH_F_JOB_AVAIL && ty <= MESH_F_RESULT) {
-        mesh_job_event e = mesh_job_event_new(MESH_JEV_FRAME);
-        e.from = from;
-        e.ty = ty;
-        e.len = len;
-        e.body = mxalloc(len ? len : 1);
-        memcpy(e.body, body, len);
-        if (mesh_chan_send(sh->jobs, &e) != MESH_CHAN_OK) {
-            mesh_job_event_free(&e);
-            return false;
-        }
-        return true;
-    }
-    if (ty >= MESH_F_BLOB_PUT && ty <= MESH_F_BLOB) {
-        if (!sh->blobs) return false;
-        mjd_bev e = {.k = MJD_BEV_FRAME, .from = from, .ty = ty, .n = len};
-        e.bytes = mxalloc(len ? len : 1);
-        memcpy(e.bytes, body, len);
-        if (mesh_chan_send(sh->blobs, &e) != MESH_CHAN_OK) {
-            mjd_bev_free(&e);
-            return false;
-        }
-        return true;
-    }
+    if (ty >= MESH_F_JOB_AVAIL && ty <= MESH_F_RESULT) return mjd_jobs_frame(sh, from, ty, body, len);
+    if (ty >= MESH_F_BLOB_PUT && ty <= MESH_F_BLOB) return mjd_blobs_frame(sh, from, ty, body, len);
     return false;
+}
+
+/* The scheduler's model as the fleet thread has it (peer_sched.rs): every program's needs from the
+ * committed document. */
+void mjd_jobs_sched(mesh_shared *sh, const msm_member *members, size_t n, const mfd_doc *doc, const msm_perfs *perf, const msw_weights *w) {
+    mjs_cx cx = {0};
+    cx.members = mxalloc((n ? n : 1) * sizeof *cx.members);
+    for (size_t i = 0; i < n; i++) cx.members[i] = msm_member_clone(&members[i]);
+    cx.nmembers = n;
+    cx.need_names = mxalloc((doc->nprogs ? doc->nprogs : 1) * sizeof *cx.need_names);
+    cx.needs = mxalloc((doc->nprogs ? doc->nprogs : 1) * sizeof *cx.needs);
+    for (size_t i = 0; i < doc->nprogs; i++) {
+        cx.need_names[i] = mstrdup(doc->pname[i]);
+        cx.needs[i] = msn_clone(&doc->prog[i].needs);
+    }
+    cx.nneeds = doc->nprogs;
+    cx.perf = msm_perfs_clone(perf);
+    cx.w = *w;
+    mjd_set_sched(sh, mjs_sched(cx));
 }
 
 bool mjd_render(mesh_shared *sh, char **words, size_t n, uint8_t **out, size_t *len, char **err) {

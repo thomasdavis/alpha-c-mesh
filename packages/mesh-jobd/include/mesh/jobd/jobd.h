@@ -13,13 +13,16 @@
  *
  * Wiring (meshd): mjd_open after mesh_shared_new (it creates sh->blobs and sh->jobs_ext, and replays
  * the job log and indexes the blob store before anything runs), `mesh_control_render = mjd_render`,
- * mjd_start once the driver runs. The fleet thread calls mjd_set_view on every change of its view
- * (peer.rs), mjd_set_sched with the scheduler's model (peer_sched.rs), and mjd_route_frame for the
- * link frames of types F_JOB_AVAIL..F_RESULT and F_BLOB_PUT..F_BLOB. */
+ * mjd_start once the driver runs. The fleet thread (@ajax/mesh-peer-relay's mpr_host) calls mjd_set_view
+ * on every change of its view (jobs_view), mjd_jobs_sched with the scheduler's model (jobs_sched), and
+ * mjd_jobs_frame / mjd_blobs_frame for the job and blob frames (jobs_frame, blobs_frame). */
 #ifndef MESH_JOBD_JOBD_H
 #define MESH_JOBD_JOBD_H
 #include "mesh/jobs/node.h"
 #include "mesh/jobs/select.h"
+#include "mesh/fleet_doc.h"
+#include "mesh/sched_member.h"
+#include "mesh/sched_weights.h"
 #include "mesh/shared.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -55,6 +58,14 @@ void mjd_free(mjd *d);
 void mjd_set_view(mesh_shared *sh, mj_view v);
 /* The fleet thread: the scheduler's model for the lease choice (takes cx; the jobs thread picks it up). */
 void mjd_set_sched(mesh_shared *sh, mj_sched *cx);
+/* The fleet thread (the relay's jobs_sched): the scheduler's model -- the members, the committed
+ * document's programs' needs, the measured performance and the weights (all copied). */
+void mjd_jobs_sched(mesh_shared *sh, const msm_member *members, size_t n, const mfd_doc *doc, const msm_perfs *perf, const msw_weights *w);
+/* The fleet thread (the relay's jobs_frame and blobs_frame): a job frame (F_JOB_AVAIL..F_RESULT) to
+ * the jobs thread, a blob frame (F_BLOB_PUT..F_BLOB) to the blob thread; the body after the length
+ * (copied). False if the thread is gone. */
+bool mjd_jobs_frame(mesh_shared *sh, uint32_t from, uint8_t ty, const uint8_t *body, size_t n);
+bool mjd_blobs_frame(mesh_shared *sh, uint32_t from, uint8_t ty, const uint8_t *body, size_t n);
 /* A link frame (type byte, u32 length, body) from member from: a job frame to the jobs thread, a blob
  * frame to the blob thread. False if it is neither or the thread is gone (the frame is dropped). */
 bool mjd_route_frame(mesh_shared *sh, uint32_t from, const uint8_t *frame, size_t n);

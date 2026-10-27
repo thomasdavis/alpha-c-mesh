@@ -17,7 +17,7 @@ typedef struct {
     msm_member *members; /* index = member id */
     size_t nmembers;
     char **need_names;   /* program -> needs */
-    msn_needs *needs;
+    mesh_needs *needs;
     size_t nneeds;
     msm_perfs perf;      /* (program, member) -> measured performance */
     msw_weights w;
@@ -25,7 +25,7 @@ typedef struct {
 
 void mjs_cx_free(mjs_cx *cx);
 /* The needs of program name in cx (NULL if none). */
-const msn_needs *mjs_needs(const mjs_cx *cx, const char *name);
+const mesh_needs *mjs_needs(const mjs_cx *cx, const char *name);
 /* An mj_sched over cx, which it takes (for mj_node_set_sched, or mj_select). */
 mj_sched *mjs_sched(mjs_cx cx);
 

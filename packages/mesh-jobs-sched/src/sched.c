@@ -12,7 +12,7 @@ void mjs_cx_free(mjs_cx *cx) {
     free(cx->members);
     for (size_t i = 0; i < cx->nneeds; i++) {
         free(cx->need_names[i]);
-        msn_free(&cx->needs[i]);
+        mesh_needs_free(&cx->needs[i]);
     }
     free(cx->need_names);
     free(cx->needs);
@@ -23,7 +23,7 @@ void mjs_cx_free(mjs_cx *cx) {
     memset(cx, 0, sizeof *cx);
 }
 
-const msn_needs *mjs_needs(const mjs_cx *cx, const char *name) {
+const mesh_needs *mjs_needs(const mjs_cx *cx, const char *name) {
     for (size_t i = 0; i < cx->nneeds; i++)
         if (strcmp(cx->need_names[i], name) == 0) return &cx->needs[i];
     return NULL;
@@ -43,7 +43,7 @@ static mof32 best_task(const mjs_cx *cx, const char *prog) {
 static int judge(void *ctx, uint32_t k, const char *prog, mj_score *score, bool *busy, char **why) {
     const mjs_cx *cx = ctx;
     const msm_member *m = &cx->members[k];
-    const msn_needs *nd = mjs_needs(cx, prog);
+    const mesh_needs *nd = mjs_needs(cx, prog);
     if (!nd) return -1;
     char exec[16], *err = NULL;
     if (!msc_filter(m, nd, exec, &err)) {
