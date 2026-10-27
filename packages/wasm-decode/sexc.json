@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/wasm-decode",
+  "version": "0.1.0",
+  "description": "Decodes a WebAssembly binary's sections into a wasm_module, refusing malformed ones",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "decoder",
+    "parser"
+  ],
+  "dependencies": {
+    "@ajax/wasm-module": "workspace:*",
+    "@ajax/wasm-instr": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/wasm-builder": "workspace:*"
+  }
+}

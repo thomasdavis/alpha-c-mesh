@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/wasm-reader",
+  "version": "0.1.0",
+  "description": "A bounds-checked cursor over WebAssembly binary bytes that records the first error with its offset",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "reader", "parser"],
+  "dependencies": {"@ajax/wasm-leb128": "workspace:*", "@ajax/wasm-types": "workspace:*"}
+}

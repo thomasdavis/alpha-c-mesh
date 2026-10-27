@@ -4,7 +4,18 @@
   "description": "programs/pathtrace's float contract and its math, written once over a float's operations: vectors, Newton sqrt, polynomial cis, constants",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "math", "determinism", "template"],
-  "cflags": ["-ffp-contract=off"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-math",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "math",
+    "determinism",
+    "template"
+  ],
+  "cflags": [
+    "-ffp-contract=off"
+  ]
 }

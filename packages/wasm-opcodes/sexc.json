@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/wasm-opcodes",
+  "version": "0.1.0",
+  "description": "Every WebAssembly instruction the decoder knows: its encoding, immediates, operand signature, proposal and name",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "opcodes", "instructions"],
+  "dependencies": {"@ajax/wasm-types": "workspace:*", "@ajax/mesh-check": "workspace:*"}
+}

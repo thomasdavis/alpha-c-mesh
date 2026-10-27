@@ -1,0 +1,30 @@
+{
+  "name": "@ajax/wasm-interp",
+  "version": "0.1.0",
+  "description": "A WebAssembly interpreter in C: compile, instantiate with host imports and limits, call exports, deterministic floats, epoch interrupts",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "interpreter",
+    "runtime",
+    "sandbox"
+  ],
+  "dependencies": {
+    "@ajax/wasm-decode": "workspace:*",
+    "@ajax/wasm-validate": "workspace:*",
+    "@ajax/wasm-lower": "workspace:*",
+    "@ajax/wasm-numeric": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/wasm-builder": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ],
+  "ldflags": [
+    "-lm",
+    "-lpthread"
+  ]
+}

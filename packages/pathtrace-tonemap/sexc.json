@@ -4,9 +4,23 @@
   "description": "programs/pathtrace's tone map: ACES or Reinhard, then 8-bit sRGB by binary search of the quantization table (template over a float's ops)",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "tonemap", "srgb", "template"],
-  "dependencies": {"@ajax/pathtrace-math": "workspace:*", "@ajax/pathtrace-scene": "workspace:*",
-                   "@ajax/pathtrace-srgb": "workspace:*"},
-  "cflags": ["-ffp-contract=off"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-tonemap",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "tonemap",
+    "srgb",
+    "template"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-math": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-srgb": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
 }

@@ -4,7 +4,9 @@
   "description": "programs/pathtrace's renderer instantiated in the cluster float mode Z (every op flushed): pt_*_z, the CPU and wasm reference",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-z",
   "keywords": [
     "alphaos",
     "mesh",
