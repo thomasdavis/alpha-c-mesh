@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui-doom",
+  "version": "0.1.0",
+  "description": "mesh-top's Doom tab: the raycaster's frame in half blocks with fog, the placement's shown frame and its per-column machine markers, the minimap and the player pane",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-doom",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "doom"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*"}
+}
