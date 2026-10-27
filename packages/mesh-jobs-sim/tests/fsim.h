@@ -63,6 +63,10 @@ typedef struct {
     momap *mem;  /* hash words -> fjobs: its own payloads until their copies are durable */
     momap *told; /* forgotten jobs blobd was told of */
     uint64_t refused;
+    /* What the disk replays to, kept up to date record by record (rebuilt after a rewrite). */
+    bool chk_valid;
+    mj_replica chk;
+    size_t chk_at;
 } fm;
 
 typedef enum { FW_F, FW_J, FW_PUT, FW_ACK, FW_GIVE } fwk;
@@ -196,6 +200,7 @@ static inline void fm_free(fm *m) {
     mb_store_free(m->blobs);
     momap_free(m->mem);
     momap_free(m->told);
+    if (m->chk_valid) mj_replica_free(&m->chk);
     memset(m, 0, sizeof *m);
 }
 
@@ -541,10 +546,29 @@ static inline unsigned fs_ones(uint32_t x) {
 /* What member k shows committed must agree with everything shown before; its log replays to its state. */
 static inline void fs_record(fsim *s, uint32_t k) {
     fm *m = &s->m[k];
-    mj_replica r;
-    bool ok = mj_replay(m->disk.p ? m->disk.p : "", m->disk.n, &r, NULL, NULL, NULL);
-    if (!CHECK(ok && mj_replica_eq(&r, &m->node->rep))) fprintf(stderr, "member %u: its log does not replay to its state\n", k);
-    if (ok) mj_replica_free(&r);
+    /* The log replays to the node's state: the replay is incremental (the records appended since the last
+     * check applied to what the log before them replayed to, which is what a whole replay computes),
+     * and whole after the log was rewritten. */
+    bool ok = true;
+    if (!m->chk_valid || m->disk.n < m->chk_at) {
+        if (m->chk_valid) mj_replica_free(&m->chk);
+        ok = mj_replay(m->disk.p ? m->disk.p : "", m->disk.n, &m->chk, NULL, &m->chk_at, NULL);
+        m->chk_valid = ok;
+    } else {
+        const uint8_t *b = (const uint8_t *)m->disk.p;
+        while (ok && m->disk.n - m->chk_at >= 9) {
+            uint64_t len = 0;
+            for (int i = 8; i >= 1; i--) len = len << 8 | b[m->chk_at + (size_t)i];
+            if (m->disk.n - m->chk_at - 9 < len) break;
+            mj_log l;
+            ok = mj_log_decode(b[m->chk_at], b + m->chk_at + 9, (size_t)len, &l, NULL);
+            if (!ok) break;
+            mj_replica_apply(&m->chk, &l);
+            mj_log_free(&l);
+            m->chk_at += 9 + (size_t)len;
+        }
+    }
+    if (!CHECK(ok && mj_replica_eq(&m->chk, &m->node->rep))) fprintf(stderr, "member %u: its log does not replay to its state\n", k);
     /* jobd's compaction (Store::wants_compact, scaled down): the log rewritten as the replica's. */
     if (m->disk.n > 2 * m->base + (64 << 10)) {
         mj_logs lg = mj_replica_log(&m->node->rep);
@@ -552,6 +576,8 @@ static inline void fs_record(fsim *s, uint32_t k) {
         for (size_t i = 0; i < lg.n; i++) mj_log_encode(&lg.v[i], &m->disk);
         mj_logs_free(&lg);
         m->base = m->disk.n;
+        if (m->chk_valid) mj_replica_free(&m->chk);
+        m->chk_valid = false;
     }
     if (m->node->rep.npending > s->max_pending) s->max_pending = m->node->rep.npending;
     const mj_table *t = &m->node->rep.committed;

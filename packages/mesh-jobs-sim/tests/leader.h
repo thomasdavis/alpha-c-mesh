@@ -1,12 +1,14 @@
-/* jobs.rs's fleet tests, part 3: a new leader resumes the job (five seeds), and review finding 5: a
- * restarted leader never overwrites a committed result. */
+/* jobs.rs's fleet tests, part 3: a new leader resumes the job (five seeds, one program each), and
+ * review finding 5: a restarted leader never overwrites a committed result. */
+#ifndef LEADER_H
+#define LEADER_H
+
 #include "fsim.h"
 
 static const uint32_t ALL3[] = {0, 1, 2};
 
-static void a_new_leader_resumes_the_job(void) {
-    for (uint64_t seeds[] = {31, 37, 41, 43, 47}, *sd = seeds; sd < seeds + 5; sd++) {
-        uint64_t seed = *sd;
+static inline void a_new_leader_resumes_the_job(uint64_t seed) {
+    {
         fsim s;
         fs_init(&s, 3, seed);
         fs_progs(&s, ALL3, 3, 8);
@@ -39,7 +41,7 @@ static void a_new_leader_resumes_the_job(void) {
     }
 }
 
-static bool has_pending_result(const mj_replica *r, uint64_t item, uint32_t result) {
+static inline bool has_pending_result(const mj_replica *r, uint64_t item, uint32_t result) {
     for (size_t i = 0; i < r->npending; i++) {
         const mj_entry *e = &r->pending[i];
         if (e->replace) continue;
@@ -49,7 +51,7 @@ static bool has_pending_result(const mj_replica *r, uint64_t item, uint32_t resu
     return false;
 }
 
-static bool leads_again_logged(const fsim *s, uint32_t a) {
+static inline bool leads_again_logged(const fsim *s, uint32_t a) {
     char want[64];
     snprintf(want, sizeof want, "system %u leads the job table:", a);
     for (size_t i = s->nlogs >= 5 ? s->nlogs - 5 : 0; i < s->nlogs; i++)
@@ -61,7 +63,7 @@ static bool leads_again_logged(const fsim *s, uint32_t a) {
  * commits that item's (other) result; the first restarts and leads again. Its uncommitted result stays
  * pending through its replay, and the merge applies the committed tables first: the committed result is
  * never overwritten (fs_record checks every member every 200 ms). */
-static void a_restarted_leader_never_overwrites_a_committed_result(void) {
+static inline void a_restarted_leader_never_overwrites_a_committed_result(void) {
     fsim s;
     fs_init(&s, 3, 101);
     fs_progs(&s, ALL3, 3, 8);
@@ -113,8 +115,5 @@ static void a_restarted_leader_never_overwrites_a_committed_result(void) {
     fs_free(&s);
 }
 
-int main(void) {
-    a_new_leader_resumes_the_job();
-    a_restarted_leader_never_overwrites_a_committed_result();
-    return mesh_check_done();
-}
+
+#endif

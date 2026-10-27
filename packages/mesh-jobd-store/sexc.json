@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-jobd-store",
+  "version": "0.1.0",
+  "description": "The job log file: append-only records fsynced before what depends on them, a torn write cut back, replay at start, compaction by rewrite",
+  "kind": "library",
+  "targets": ["host"],
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobd-store",
+  "keywords": ["mesh", "alphaos", "jobs", "log", "fsync", "durability"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-log": "workspace:*",
+    "@ajax/mesh-jobs-out": "workspace:*"
+  }
+}

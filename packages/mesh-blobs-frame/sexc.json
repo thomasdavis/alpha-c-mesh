@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-blobs-frame",
+  "version": "0.1.0",
+  "description": "The blob frames on the peer links: F_BLOB_PUT (a push), F_BLOB_ACK, F_BLOB_GET (a fetch) and F_BLOB (its answer)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-blobs-frame",
+  "keywords": ["mesh", "alphaos", "blobs", "frames", "protocol"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*",
+    "@ajax/mesh-jobs-id": "workspace:*"
+  }
+}

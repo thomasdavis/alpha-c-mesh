@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-jobs-sched",
+  "version": "0.1.0",
+  "description": "The jobs' lease selection over the fleet scheduler's model: members, each program's needs, measured performance, weights (F4's filter and score)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-sched",
+  "keywords": ["mesh", "alphaos", "jobs", "scheduling", "fleet"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-select": "workspace:*",
+    "@ajax/mesh-sched-member": "workspace:*", "@ajax/mesh-sched-needs": "workspace:*", "@ajax/mesh-sched-score": "workspace:*",
+    "@ajax/mesh-sched-weights": "workspace:*", "@ajax/mesh-strmap": "workspace:*"
+  }
+}
