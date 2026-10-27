@@ -37,18 +37,6 @@ typedef struct {
 
 typedef struct mesh_driver mesh_driver;
 
-/* A native worker's counts and costs (the driver copies them into its slot's
- * control block and the CPU meter every tick). */
-typedef struct {
-    uint32_t pid, spawns, crashes, exit, limits;
-    uint64_t cpu_ns, rss;
-} mesh_native_stats;
-
-/* The native executor's view of a worker image (set by meshd when the native
- * executor is wired; NULL: no native slot reports anything). */
-extern bool (*mesh_driver_native_stats)(const mesh_kernel *k, mesh_native_stats *out);
-/* Starts a native image's process off the driver thread before its first run (NULL: none). */
-extern bool (*mesh_driver_native_warm)(const mesh_kernel *k, char **err);
 
 /* gpu: the GPU backend (or wasm itself: a CPU-only meshd); cpus: the CPU
  * executors beside it. The driver owns the backends. */

@@ -1,0 +1,32 @@
+{
+  "name": "@ajax/mesh-args",
+  "version": "0.1.0",
+  "description": "meshd's command line: every flag, its default and its refusal, as the Rust parses them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-args",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "cli",
+    "flags",
+    "daemon"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-cluster-conf": "workspace:*",
+    "@ajax/mesh-strmap": "workspace:*",
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

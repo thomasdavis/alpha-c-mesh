@@ -2,6 +2,7 @@
  * module operations, relaunch); rollback, reset; the table rewritten; the occupancy budget. */
 #include "driver_int.h"
 
+#include "mesh/native.h"
 #include "mesh/occupancy.h"
 #include "mesh/rsfmt.h"
 
@@ -66,9 +67,9 @@ static void *jit(void *arg) {
         ok = mesh_prepare_any(j->comps, j->ncomps, &p, &j->src.hash, j->root, out, &err);
     }
     /* A native image that will run at once gets its process started here, off the driver thread. */
-    if (ok && out->kernel && mesh_kernel_native(out->kernel) && mesh_driver_native_warm) {
+    if (ok && out->kernel && mesh_kernel_native(out->kernel)) {
         bool run = j->warm_run < 0 ? out->manifest.autostart : j->warm_run == 1;
-        if (run && !mesh_driver_native_warm(out->kernel, &err)) { mesh_prepared_free(out); ok = false; }
+        if (run && !mesh_native_worker_warm(mesh_kernel_native(out->kernel), &err)) { mesh_prepared_free(out); ok = false; }
     }
     if (ok) mesh_reply_ptr(j->tx, out, prepared_free_heap);
     else {
@@ -432,12 +433,9 @@ static bool op_load(mesh_driver *d, mesh_prepared *p, int run, char **out) {
     bool want_run = run < 0 ? m->autostart : run == 1;
     mesh_mailbox_set(mb, mesh_prog_ctl(s) + MESH_P_RUN, want_run);
     if (mesh_kernel_native(im.kernel)) {
-        char *dir = mesh_buf_fmt("%s/%s", d->sh->programs, im.dir);
-        char *bin = mesh_native_binary(dir, m->name);
-        mesh_info("load %s into slot %u (native): worker %s, %u bytes, hash %016llx, view 0x%x+0x%x, %s", m->name, s, bin, im.code_bytes,
-                  (unsigned long long)im.hash, view_off, m->view_bytes, want_run ? "starting" : "stopped");
-        free(bin);
-        free(dir);
+        mesh_info("load %s into slot %u (native): worker %s, %u bytes, hash %016llx, view 0x%x+0x%x, %s", m->name, s,
+                  mesh_native_worker_bin(mesh_kernel_native(im.kernel)), im.code_bytes, (unsigned long long)im.hash, view_off, m->view_bytes,
+                  want_run ? "starting" : "stopped");
     } else {
         char cap[32] = "";
         if (im.reg_cap > 0) snprintf(cap, sizeof cap, " (cap %u)", im.reg_cap);

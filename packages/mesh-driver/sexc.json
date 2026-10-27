@@ -37,6 +37,7 @@
     "@ajax/mesh-publish": "workspace:*",
     "@ajax/mesh-view-alloc": "workspace:*",
     "@ajax/mesh-cpuuse": "workspace:*",
+    "@ajax/mesh-native": "workspace:*",
     "@ajax/mesh-mailbox": "workspace:*",
     "@ajax/mesh-log": "workspace:*",
     "@ajax/mesh-abi": "workspace:*",

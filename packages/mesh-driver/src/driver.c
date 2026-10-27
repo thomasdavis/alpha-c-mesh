@@ -2,6 +2,7 @@
 #include "driver_int.h"
 
 #include "mesh/cpuuse.h"
+#include "mesh/native.h"
 #include "mesh/rsfmt.h"
 #include "mesh/state_file.h"
 
@@ -9,8 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool (*mesh_driver_native_stats)(const mesh_kernel *k, mesh_native_stats *out);
-bool (*mesh_driver_native_warm)(const mesh_kernel *k, char **err);
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -414,13 +413,13 @@ static void stats(mesh_driver *d) {
 void drv_native_words(mesh_driver *d, uint32_t s);
 void drv_native_words(mesh_driver *d, uint32_t s) {
     dslot *x = d->slots[s];
-    if (!x || !mesh_driver_native_stats || !mesh_kernel_native(x->image.kernel)) return;
-    mesh_native_stats st, pst;
-    if (!mesh_driver_native_stats(x->image.kernel, &st)) return;
-    bool prev = x->has_prev && mesh_kernel_native(x->prev.kernel) && mesh_driver_native_stats(x->prev.kernel, &pst);
+    if (!x || !mesh_kernel_native(x->image.kernel)) return;
+    mesh_native_stats st = mesh_native_worker_stats(mesh_kernel_native(x->image.kernel)), pst = {0};
+    bool prev = x->has_prev && mesh_kernel_native(x->prev.kernel);
+    if (prev) pst = mesh_native_worker_stats(mesh_kernel_native(x->prev.kernel));
     mesh_mailbox mb = d->sh->mb;
     size_t c = mesh_prog_ctl(s);
-    mesh_mailbox_set(mb, c + MESH_P_PID, st.pid);
+    mesh_mailbox_set(mb, c + MESH_P_PID, (uint32_t)st.pid);
     mesh_mailbox_set(mb, c + MESH_P_SPAWNS, st.spawns);
     mesh_mailbox_set(mb, c + MESH_P_CRASHES, st.crashes);
     mesh_mailbox_set(mb, c + MESH_P_EXIT, st.exit);
