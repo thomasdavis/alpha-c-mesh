@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-peer-link",
+  "version": "0.1.0",
+  "description": "The fleet's TCP links: bounded connects, the JOIN handshake both ways, the acceptor and dialers, a framed reader that refuses hostile lengths, and a writer that puts control frames before bulk ones",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-peer-link",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "peer",
+    "tcp",
+    "links",
+    "fleet"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700", "-D_DEFAULT_SOURCE"],
+  "ldflags": ["-lpthread"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/mesh-peer-codec": "workspace:*", "@ajax/mesh-place-wire": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*", "@ajax/mesh-abi-exchange": "workspace:*", "@ajax/mesh-abi-host-mload": "workspace:*"
+  }
+}

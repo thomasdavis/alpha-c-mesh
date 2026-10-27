@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-peer-codec",
+  "version": "0.1.0",
+  "description": "The fleet's peer link frames: F_JOIN with capabilities, the election and commit messages, F_BEAT with the reconcile status and move outcomes, F_HELLO",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-peer-codec",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "fleet",
+    "peer",
+    "wire",
+    "frames",
+    "fleet"
+  ],
+  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-text": "workspace:*", "@ajax/rust-fmt": "workspace:*", "@ajax/mesh-fleet-doc": "workspace:*", "@ajax/mesh-fleet-core": "workspace:*", "@ajax/mesh-sched-tracker": "workspace:*", "@ajax/mesh-place-wire": "workspace:*", "@ajax/mesh-abi-base": "workspace:*", "@ajax/mesh-abi-peer-frames": "workspace:*", "@ajax/mesh-abi-peer-sizes": "workspace:*", "@ajax/mesh-abi-backend": "workspace:*", "@ajax/mesh-abi-reconcile": "workspace:*", "@ajax/mesh-abi-group-state": "workspace:*"
+  }
+}
