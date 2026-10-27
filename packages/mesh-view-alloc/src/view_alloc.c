@@ -31,7 +31,7 @@ void mesh_view_heap_free(mesh_view_heap *h, uint32_t off, uint32_t bytes) {
     size_t first = ((size_t)off - MESH_VIEW_HEAP) / MESH_VIEW_PAGE;
     for (size_t i = first; i < first + n; i++) {
         if (!h->used[i]) {
-            fprintf(stderr, "view heap: freeing a free page at %#x\n", off);
+            fprintf(stderr, "view heap: freeing a free page at 0x%x\n", off);
             abort();
         }
         h->used[i] = false;

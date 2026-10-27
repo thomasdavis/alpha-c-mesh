@@ -1,0 +1,51 @@
+{
+  "name": "@ajax/mesh-driver",
+  "version": "0.1.0",
+  "description": "meshd's driver thread: the only ring publisher and program-table writer; lifecycle, blinks, publishing, pipes and job items",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-driver",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "driver",
+    "lifecycle",
+    "blink",
+    "scheduler"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-shared": "workspace:*",
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-occupancy": "workspace:*",
+    "@ajax/mesh-state-file": "workspace:*",
+    "@ajax/mesh-prog-table": "workspace:*",
+    "@ajax/mesh-publish": "workspace:*",
+    "@ajax/mesh-view-alloc": "workspace:*",
+    "@ajax/mesh-cpuuse": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-jobs-frame": "workspace:*",
+    "@ajax/mesh-jobs-ranges": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-reply": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
