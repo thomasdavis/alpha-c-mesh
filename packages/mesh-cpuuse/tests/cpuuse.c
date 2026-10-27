@@ -19,10 +19,13 @@ static void *lane(void *arg) {
     uint32_t units;
     mesh_slot_use_get(&mesh_cpuuse_slots[31], &cpu, &rss, &units);
     CHECK_U(units, 1);
+    /* 30 ms of this thread's CPU (the Rust spins 30 ms of wall time, which a
+     * loaded machine may not turn into 20 ms of CPU); at most 10 s of wall. */
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
+    uint64_t c0 = mesh_thread_cpu_ns();
     volatile uint64_t x = 0;
-    while (ms_since(&t0) < 30) x = x * 31 + 7;
+    while (mesh_thread_cpu_ns() - c0 < 30000000u && ms_since(&t0) < 10000) x = x * 31 + 7;
     mesh_meter_tick(&m, 1u << 20);
     mesh_slot_use_get(&mesh_cpuuse_slots[31], &cpu, &rss, &units);
     CHECK(cpu >= 20000000);

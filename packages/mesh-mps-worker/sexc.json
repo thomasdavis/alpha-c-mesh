@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-mps-worker",
+  "version": "0.1.0",
+  "description": "meshd worker: one program image in its own MPS client process, which maps the mailbox, loads its cubin and launches when meshd says so",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-mps-worker",
+  "keywords": ["mesh", "alphaos", "cuda", "mps", "worker", "process"],
+  "cflags": ["-D_GNU_SOURCE", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {
+    "@ajax/mesh-cuda": "workspace:*",
+    "@ajax/cuda-driver": "workspace:*",
+    "@ajax/mesh-mps-wire": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

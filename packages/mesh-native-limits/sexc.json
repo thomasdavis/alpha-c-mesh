@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/mesh-native-limits",
+  "version": "0.1.0",
+  "description": "A native worker's limits (cpu, mem_mb, nice, background): whether this machine can enforce them (systemd-run --user --scope) and that a process's cgroup has them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-native-limits",
+  "keywords": ["mesh", "alphaos", "native", "limits", "cgroup", "systemd"],
+  "cflags": ["-D_GNU_SOURCE", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

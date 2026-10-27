@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-proc-usage",
+  "version": "0.1.0",
+  "description": "A process's CPU time (every thread, user and system) and resident bytes, from /proc",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-proc-usage",
+  "keywords": ["mesh", "alphaos", "process", "cpu", "rss", "proc"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
