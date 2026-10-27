@@ -6,23 +6,63 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* The shortest scientific digits of x that read back as x ("d.ddde±N" from printf with the least
- * precision that round-trips): the digits without the point, and the decimal exponent. */
-static void shortest(double x, int max_digits, int is_f32, char digits[32], int *exp10) {
-    char buf[64];
-    for (int p = 1; p <= max_digits; p++) {
-        snprintf(buf, sizeof buf, "%.*e", p - 1, x);
-        int same = is_f32 ? (strtof(buf, NULL) == (float)x) : (strtod(buf, NULL) == x);
-        if (same || p == max_digits) break;
-    }
-    /* buf is "d[.ddd]e[+-]NN" (x > 0 here). */
-    int n = 0;
+/* The exact decimal expansion of x > 0 (every binary float has a finite one): its digits without
+ * the point (no trailing zeros) and the decimal exponent of the first. */
+static void exact(double x, char *digits, size_t cap, int *exp10) {
+    char buf[1100];
+    snprintf(buf, sizeof buf, "%.*e", 1000, x);
+    size_t n = 0;
     const char *c = buf;
-    for (; *c && *c != 'e'; c++)
+    for (; *c && *c != 'e' && n + 1 < cap; c++)
         if (*c >= '0' && *c <= '9') digits[n++] = *c;
+    while (n > 1 && digits[n - 1] == '0') n--;
     digits[n] = 0;
+    while (*c && *c != 'e') c++;
     *exp10 = atoi(c + 1);
-    /* printf may keep trailing zeros of the precision it was asked for. */
+}
+
+/* The first p digits of the exact digits, rounded to nearest with ties away from zero (as Rust's
+ * shortest Display picks between two equally close candidates): into out, the exponent adjusted on a
+ * carry. */
+static void round_half_up(const char *ex, int e, int p, char *out, int *exp10) {
+    int n = (int)strlen(ex);
+    for (int i = 0; i < p; i++) out[i] = i < n ? ex[i] : '0';
+    out[p] = 0;
+    *exp10 = e;
+    if (n <= p || ex[p] < '5') return;
+    for (int i = p - 1; i >= 0; i--) {
+        if (out[i] < '9') {
+            out[i]++;
+            return;
+        }
+        out[i] = '0';
+    }
+    /* 99..9 rounded up: 100..0 one decade higher. */
+    memmove(out + 1, out, (size_t)p);
+    out[0] = '1';
+    out[p] = 0;
+    *exp10 = e + 1;
+}
+
+/* The shortest digits of x > 0 that read back as x (f32 when is_f32): the digits without the point
+ * and the decimal exponent of the first. */
+static void shortest(double x, int max_digits, int is_f32, char digits[32], int *exp10) {
+    char ex[1100];
+    int e;
+    exact(x, ex, sizeof ex, &e);
+    for (int p = 1; p <= max_digits; p++) {
+        int ee;
+        round_half_up(ex, e, p, digits, &ee);
+        char buf[64];
+        snprintf(buf, sizeof buf, "%c.%se%d", digits[0], digits + 1, ee);
+        if (p == 1) snprintf(buf, sizeof buf, "%ce%d", digits[0], ee);
+        int same = is_f32 ? (strtof(buf, NULL) == (float)x) : (strtod(buf, NULL) == x);
+        if (same || p == max_digits) {
+            *exp10 = ee;
+            break;
+        }
+    }
+    size_t n = strlen(digits);
     while (n > 1 && digits[n - 1] == '0') digits[--n] = 0;
 }
 
