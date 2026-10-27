@@ -102,6 +102,29 @@ void mesh_sim_set_state(uint8_t *mb, uint32_t slot, uint32_t state) {
     gen_end(e);
 }
 
+void mesh_sim_inbox(uint8_t *mb, uint32_t slot, uint32_t off, uint32_t cap, uint32_t rec, const char *type) {
+    uint8_t *e = mb + mesh_prog_entry(slot), *pp = mb + mesh_pipe_entry(slot);
+    gen_begin(e);
+    mesh_sim_set_u32(pp + MESH_PP_IN_OFF, off);
+    mesh_sim_set_u32(pp + MESH_PP_IN_CAP, cap);
+    mesh_sim_set_u32(pp + MESH_PP_IN_REC, rec);
+    size_t n = strlen(type);
+    mesh_sim_set_u32(pp + MESH_PP_IN_TYPE, mesh_pipe_type_hash((const uint8_t *)type, n));
+    memset(pp + MESH_PP_TYPE_NAME, 0, MESH_NAME_BYTES);
+    memcpy(pp + MESH_PP_TYPE_NAME, type, n < MESH_NAME_MAX ? n : MESH_NAME_MAX);
+    gen_end(e);
+}
+
+void mesh_sim_feed(uint8_t *mb, uint32_t producer, uint32_t consumer) {
+    uint8_t *ep = mb + mesh_prog_entry(producer), *ec = mb + mesh_prog_entry(consumer);
+    gen_begin(ep);
+    mesh_sim_set_u32(mb + mesh_pipe_entry(producer) + MESH_PP_FEEDS_MASK, mesh_sim_u32(mb + mesh_pipe_entry(producer) + MESH_PP_FEEDS_MASK) | 1u << consumer);
+    gen_end(ep);
+    gen_begin(ec);
+    mesh_sim_set_u32(mb + mesh_pipe_entry(consumer) + MESH_PP_FED_MASK, mesh_sim_u32(mb + mesh_pipe_entry(consumer) + MESH_PP_FED_MASK) | 1u << producer);
+    gen_end(ec);
+}
+
 mesh_sim_launch *mesh_sim_launch_prog(uint8_t *mb, uint32_t slot, const mesh_sim_prog *p, mesh_sim_kernel kernel) {
     mesh_sim_launch *l = mesh_sim_start(kernel, mb, slot, p->nodes ? p->nodes : 1, p->warps ? p->warps : 1, p->shared_bytes);
     if (!l) {

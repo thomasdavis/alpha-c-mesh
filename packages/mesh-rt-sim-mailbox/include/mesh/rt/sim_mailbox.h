@@ -63,6 +63,11 @@ bool mesh_sim_input(uint8_t *mb, uint32_t slot, const void *bytes, uint32_t n);
  * ring as meshd does (P_RING_HEAD = the tail, P_ONLINE = P_HALTED = 0,
  * P_SHUTDOWN = 0), so the slot can be launched again. */
 void mesh_sim_halt(uint8_t *mb, uint32_t slot, mesh_sim_launch *l);
+/* Gives slot an inbox (pipes, as the manifest's `inbox = "off:cap:rec"` and
+ * `inbox_type`): cap records of rec bytes at view offset off. */
+void mesh_sim_inbox(uint8_t *mb, uint32_t slot, uint32_t off, uint32_t cap, uint32_t rec, const char *type);
+/* Connects producer -> consumer (the producer's `feeds`). */
+void mesh_sim_feed(uint8_t *mb, uint32_t producer, uint32_t consumer);
 /* The slot's control block (P_* fields) and view. */
 uint8_t *mesh_sim_ctl(uint8_t *mb, uint32_t slot);
 uint8_t *mesh_sim_view(uint8_t *mb, uint32_t slot);
