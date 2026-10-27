@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-wasm-programs-check",
+  "version": "0.1.0",
+  "description": "Checks every wasm guest program (programs/*-wasm) in meshd's wasm executor against the CPU references",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["mesh", "alphaos", "wasm", "testing"],
+  "dependencies": {
+    "@ajax/mesh-exec-wasm-testkit": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  },
+  "cflags": ["-D_XOPEN_SOURCE=700"]
+}

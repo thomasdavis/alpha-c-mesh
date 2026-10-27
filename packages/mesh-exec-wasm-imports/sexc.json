@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-exec-wasm-imports",
+  "version": "0.1.0",
+  "description": "The mesh::* imports of meshd's wasm executor: a lane's windows onto the mailbox, bounds-checked as mesh-rt's View",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-exec-wasm-imports",
+  "keywords": ["mesh", "alphaos", "wasm", "imports", "sandbox"],
+  "dependencies": {
+    "@ajax/wasm-interp": "workspace:*",
+    "@ajax/mesh-lease": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-wasm": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-input-queue": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/wasm-builder": "workspace:*"
+  },
+  "cflags": ["-D_XOPEN_SOURCE=700"]
+}

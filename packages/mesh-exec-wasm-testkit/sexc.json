@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-exec-wasm-testkit",
+  "version": "0.1.0",
+  "description": "Runs wasm guest programs through meshd's wasm executor on a test mailbox: load, launch, publish tickets, read views, unload (for tests)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-exec-wasm-testkit",
+  "keywords": ["mesh", "alphaos", "wasm", "testing"],
+  "dependencies": {
+    "@ajax/mesh-exec-wasm": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-view-heap": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  },
+  "cflags": ["-D_XOPEN_SOURCE=700"]
+}
