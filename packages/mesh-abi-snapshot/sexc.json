@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-abi-snapshot",
+  "version": "0.1.0",
+  "description": "The snapshot v3 format (SN_*, SC_*): header, per-slot sections, host block",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-snapshot",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "snapshot"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-abi-program-table",
+  "version": "0.1.0",
+  "description": "The program table (PT_*): one entry per slot, its states, policies, flags and arg modes",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-program-table",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "program",
+    "table"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

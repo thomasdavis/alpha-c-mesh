@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-host-net",
+  "version": "0.1.0",
+  "description": "Network I/O counters: the NIC sample clock, the control port's and HTTP relay's bytes",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-host-net",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "host",
+    "net"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

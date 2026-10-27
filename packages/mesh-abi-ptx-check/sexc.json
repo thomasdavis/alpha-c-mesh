@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-abi-ptx-check",
+  "version": "0.1.0",
+  "description": "Build check: the whole mesh contract compiled, linked and code-generated for nvptx64",
+  "kind": "ptx",
+  "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "dependencies": {
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

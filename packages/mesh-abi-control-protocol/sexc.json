@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-control-protocol",
+  "version": "0.1.0",
+  "description": "meshd's control port and HTTP port, and the reasons a load can fail",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-control-protocol",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "control",
+    "protocol"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/sha256-compress",
+  "version": "0.1.0",
+  "description": "One SHA-256 compression function and the initial state, freestanding C",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/sha256-compress",
+  "keywords": [
+    "sha256",
+    "hash",
+    "crypto",
+    "freestanding"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

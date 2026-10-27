@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-abi-view-pipedemo",
+  "version": "0.1.0",
+  "description": "The pipe demo's records and views: msg, digest, sources, pipehash, sinks",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-view-pipedemo",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "view",
+    "pipedemo"
+  ],
+  "dependencies": {
+    "@ajax/sha256-compress": "workspace:*",
+    "@ajax/hist-quantile": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

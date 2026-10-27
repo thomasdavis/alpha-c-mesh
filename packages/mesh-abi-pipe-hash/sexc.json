@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-abi-pipe-hash",
+  "version": "0.1.0",
+  "description": "Pipe hashes: a record's position-mixed sum and an inbox type's FNV-1a 32",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-pipe-hash",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "pipe",
+    "hash"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

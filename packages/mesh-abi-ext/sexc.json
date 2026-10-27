@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-abi-ext",
+  "version": "0.1.0",
+  "description": "The manifest extension (PX_*): counter names, fields, placement, occupancy, param, executor, shared and scratch",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-ext",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "ext"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-placement": "workspace:*",
+    "@ajax/mesh-abi-fields": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

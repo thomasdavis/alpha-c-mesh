@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-check",
+  "version": "0.1.0",
+  "description": "Test checks for alpha-c-mesh's packages: CHECK, CHECK_U, CHECK_I, CHECK_S, then mesh_check_done()",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-check",
+  "keywords": [
+    "test",
+    "check"
+  ],
+  "dependencies": {}
+}
