@@ -6,11 +6,19 @@
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "cflags": ["-D_XOPEN_SOURCE=700", "-pthread"],
-  "ldflags": ["-lm", "-lpthread"],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-lm",
+    "-lpthread"
+  ],
   "dependencies": {
     "@ajax/mesh-check": "workspace:*",
     "@ajax/mesh-top-mock": "workspace:*",
-    "@ajax/mesh-top-client": "workspace:*"
+    "@ajax/mesh-top-client": "workspace:*",
+    "@ajax/mesh-top-ui": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*"
   }
 }

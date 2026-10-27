@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui-render",
+  "version": "0.1.0",
+  "description": "mesh-top's Render tab: the pathtrace image in half-block truecolor, box-filtered, tiles tinted by who rendered them, and a fleet job's image as a member assembles it",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-render",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "pathtrace"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*", "@ajax/pathtrace-view": "workspace:*"}
+}
