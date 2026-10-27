@@ -1,0 +1,19 @@
+# pipesink: the pipe demo's checking sink, a native worker program (layout:
+# mesh_abi::v2::views::pipedemo, K_*).  It drains its inbox of `digest` records,
+# checks each against its own SHA-256 (mesh-ref) of the msg it rebuilds from the
+# seq, and histograms the latency since the source stamped the msg (1 us bins).
+# `task pipesink 2` refreshes the percentiles, `task pipesink 3` resets.
+name       = "pipesink"
+abi        = 6
+backends   = ["native"]
+view_bytes = 0x3d000
+inbox      = "0x4100:4096:48"
+inbox_type = "digest"
+nodes      = 2
+fanout     = 2
+policy     = "continuous"
+in_flight  = "free"
+counters   = ["records", "bad", "gpu", "cpu"]
+fields     = ["records:u32:0x0", "bad:u32:0x4", "gpu:u32:0x8", "cpu:u32:0xc", "max_us:u32:0x10", "p50_us:u32:0x14", "p90_us:u32:0x18", "p99_us:u32:0x1c", "empty:u32:0x20", "in_head:u32:0x4100", "in_full:u32:0x4104", "in_tail:u32:0x4140"]
+autostart  = false
+colocate_with = "pipehash"  # a fleet: on the member(s) pipehash runs on (pipes are single-machine)

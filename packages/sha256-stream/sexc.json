@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/sha256-stream",
+  "version": "0.1.0",
+  "description": "SHA-256 over a stream of bytes (init, update, final, hex), freestanding C",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/sha256-stream",
+  "keywords": ["sha256", "hash", "freestanding"],
+  "dependencies": {
+    "@ajax/sha256-compress": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

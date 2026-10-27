@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-build-programs",
+  "version": "0.1.0",
+  "description": "Builds the mesh program catalog: each program's PTX (linked and checked in the cluster float mode), wasm image, native binary and source hash, and its variants",
+  "kind": "executable",
+  "bin": "mesh-build-programs",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-build-programs",
+  "keywords": ["mesh", "alphaos", "build", "catalog", "ptx", "wasm"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-catalog-toml": "workspace:*",
+    "@ajax/mesh-ptx-float-rules": "workspace:*",
+    "@ajax/mesh-source-hash": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

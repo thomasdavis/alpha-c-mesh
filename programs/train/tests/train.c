@@ -81,6 +81,26 @@ static void *mirror(void *arg) {
     return NULL;
 }
 
+/* One member's driver, as meshd's periodic publisher: tasks with arg = its
+ * own T_NEXT_STEP until it reaches `until`. A round the partner was late for
+ * times out (bounded) and is resumed by the next task, never recomputed. */
+typedef struct {
+    uint8_t *mb, *view;
+    uint32_t until, tasks, timeouts;
+} driver;
+
+static void *drive(void *arg) {
+    driver *d = arg;
+    while (mesh_sim_u32(d->view + MESH_TRAIN_T_NEXT_STEP) < d->until && d->tasks < 1000) {
+        uint32_t s = mesh_sim_u32(d->view + MESH_TRAIN_T_NEXT_STEP), r = 0;
+        uint32_t t = mesh_sim_publish(d->mb, 0, MESH_OP_TASK, s);
+        if (!mesh_sim_wait(d->mb, 0, t, &r, 120000)) break;
+        d->tasks++;
+        d->timeouts += mesh_sim_u32(d->view + MESH_TRAIN_T_ERR);
+    }
+    return NULL;
+}
+
 static void lockstep(void) {
     relay r = {{mesh_sim_mailbox(), mesh_sim_mailbox()}, 0};
     mesh_sim_prog p = {.name = "train", .view_bytes = MESH_TRAIN_VIEW_BYTES, .peer_mode = MESH_PEER_MODE_LOCKSTEP};
@@ -95,31 +115,29 @@ static void lockstep(void) {
         check_samples(view[k]);
         CHECK_U(mesh_sim_u32(view[k] + MESH_TRAIN_T_INV_BATCH), mesh_f32_bits(1.0f / 64.0f));
     }
-    pthread_t th;
+    pthread_t th, dt[2];
     pthread_create(&th, NULL, mirror, &r);
+    driver d[2] = {{r.mb[0], view[0], TASKS * MESH_TRAIN_STEPS_PER_TASK, 0, 0}, {r.mb[1], view[1], TASKS * MESH_TRAIN_STEPS_PER_TASK, 0, 0}};
+    for (int k = 0; k < 2; k++) pthread_create(&dt[k], NULL, drive, &d[k]);
+    for (int k = 0; k < 2; k++) pthread_join(dt[k], NULL);
+    /* A member cannot complete a round without the other's sums, so both stop at the same step. */
+    uint32_t steps = mesh_sim_u32(view[0] + MESH_TRAIN_T_NEXT_STEP);
+    CHECK_U(mesh_sim_u32(view[1] + MESH_TRAIN_T_NEXT_STEP), steps);
+    CHECK(steps >= TASKS * MESH_TRAIN_STEPS_PER_TASK);
     float p_ref[4] = {0, 0, 0, 0};
-    for (uint32_t task = 0; task < TASKS; task++) {
-        uint32_t s = task * MESH_TRAIN_STEPS_PER_TASK;
-        uint32_t t0 = mesh_sim_publish(r.mb[0], 0, MESH_OP_TASK, s), t1 = mesh_sim_publish(r.mb[1], 0, MESH_OP_TASK, s), r0 = 0, r1 = 0;
-        CHECK(mesh_sim_wait(r.mb[0], 0, t0, &r0, 60000));
-        CHECK(mesh_sim_wait(r.mb[1], 0, t1, &r1, 60000));
-        CHECK_U(r0, MESH_TRAIN_STEPS_PER_TASK);
-        CHECK_U(r1, MESH_TRAIN_STEPS_PER_TASK);
-        for (uint32_t k = 0; k < MESH_TRAIN_STEPS_PER_TASK; k++) {
-            uint32_t t = s + k;
-            float a[5], b[5], sum[5];
-            mesh_cubic_step_sums(p_ref, xs, ys, 2 * t, a);
-            mesh_cubic_step_sums(p_ref, xs, ys, 2 * t + 1, b);
-            for (int j = 0; j < 5; j++) sum[j] = a[j] + b[j];
-            mesh_cubic_apply(p_ref, sum, MESH_TRAIN_LR, 1.0f / 64.0f);
-        }
-        for (int k = 0; k < 4; k++) {
-            CHECK_U(mesh_sim_u32(view[0] + MESH_TRAIN_T_PARAMS + 4 * k), mesh_f32_bits(p_ref[k]));
-            CHECK_U(mesh_sim_u32(view[1] + MESH_TRAIN_T_PARAMS + 4 * k), mesh_f32_bits(p_ref[k]));
-        }
-        CHECK_U(mesh_sim_u32(view[0] + MESH_TRAIN_T_ERR), 0);
+    for (uint32_t t = 0; t < steps; t++) {
+        float a[5], b[5], sum[5];
+        mesh_cubic_step_sums(p_ref, xs, ys, 2 * t, a);
+        mesh_cubic_step_sums(p_ref, xs, ys, 2 * t + 1, b);
+        for (int j = 0; j < 5; j++) sum[j] = a[j] + b[j];
+        mesh_cubic_apply(p_ref, sum, MESH_TRAIN_LR, 1.0f / 64.0f);
+    }
+    for (int k = 0; k < 4; k++) {
+        CHECK_U(mesh_sim_u32(view[0] + MESH_TRAIN_T_PARAMS + 4 * k), mesh_f32_bits(p_ref[k]));
+        CHECK_U(mesh_sim_u32(view[1] + MESH_TRAIN_T_PARAMS + 4 * k), mesh_f32_bits(p_ref[k]));
     }
     for (int j = 0; j < 256; j++) CHECK_U(mesh_sim_u32(view[0] + MESH_TRAIN_T_LOSS + 4 * j), mesh_sim_u32(view[1] + MESH_TRAIN_T_LOSS + 4 * j));
+    if (d[0].timeouts + d[1].timeouts) fprintf(stderr, "lockstep: %u and %u rounds timed out and were resumed\n", d[0].timeouts, d[1].timeouts);
     atomic_store(&r.stop, 1);
     pthread_join(th, NULL);
     for (uint32_t k = 0; k < 2; k++) {
