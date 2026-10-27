@@ -17,9 +17,9 @@
 #include <stdint.h>
 
 /* The executor n would run on at m (written to exec, 16 bytes), or false with *err the reason. */
-bool msc_filter(const msm_member *m, const msn_needs *n, char exec[16], char **err);
+bool msc_filter(const msm_member *m, const mesh_needs *n, char exec[16], char **err);
 /* Whether n may run on m at all (the reservations and colocation aside). */
-bool msc_eligible(const msm_member *m, const msn_needs *n);
+bool msc_eligible(const msm_member *m, const mesh_needs *n);
 
 /* A score's terms (each already weighted) and their sum. */
 typedef struct {
@@ -47,8 +47,8 @@ typedef struct {
 
 msc_cx msc_cx_simple(const msw_weights *w, const msm_perf *here);
 /* The score terms of running n on m (it passed msc_filter). */
-msc_score_t msc_score_terms(const msm_member *m, const msn_needs *n, const msc_cx *cx);
+msc_score_t msc_score_terms(const msm_member *m, const mesh_needs *n, const msc_cx *cx);
 /* The plain score of n on m (no placement context). */
-double msc_score(const msm_member *m, const msn_needs *n, const msm_perf *here, const msw_weights *w);
+double msc_score(const msm_member *m, const mesh_needs *n, const msm_perf *here, const msw_weights *w);
 
 #endif

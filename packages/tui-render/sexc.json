@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/tui-render",
+  "version": "0.1.0",
+  "description": "Drawing buffers to a terminal: the cells that changed since the last frame, as ANSI escapes, as ratatui's Terminal with crossterm",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-render",
+  "keywords": [
+    "tui",
+    "terminal",
+    "ansi",
+    "render",
+    "ratatui"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-buffer": "workspace:*",
+    "@ajax/tui-term": "workspace:*"
+  }
+}

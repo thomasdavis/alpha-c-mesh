@@ -9,7 +9,7 @@
 
 static char *dup0(const char *s) { return s ? mt_strdup(s) : NULL; }
 
-mfd_prog mfd_prog_new(const char *dir, uint64_t hash, bool run, const msn_needs *needs) {
+mfd_prog mfd_prog_new(const char *dir, uint64_t hash, bool run, const mesh_needs *needs) {
     mfd_prog p = {0};
     p.dir = mt_strdup(dir);
     p.hash = hash;
@@ -36,7 +36,7 @@ bool mfd_prog_eq(const mfd_prog *a, const mfd_prog *b) {
         !mt_strs_eq(&a->backends, &b->backends) || a->has_prev != b->has_prev)
         return false;
     if (a->has_prev && (strcmp(a->prev_dir, b->prev_dir) || a->prev_hash != b->prev_hash)) return false;
-    if (!msn_eq(&a->needs, &b->needs) || !ml_opt_eq(&a->at, &b->at) || a->has_from != b->has_from || (a->has_from && a->from != b->from)) return false;
+    if (!mesh_needs_eq(&a->needs, &b->needs) || !ml_opt_eq(&a->at, &b->at) || a->has_from != b->has_from || (a->has_from && a->from != b->from)) return false;
     if (a->has_to != b->has_to || (a->has_to && a->to != b->to) || a->since != b->since || !ml_opt_eq(&a->pin, &b->pin)) return false;
     return strcmp(a->why, b->why) == 0;
 }
@@ -45,7 +45,7 @@ void mfd_prog_free(mfd_prog *p) {
     free(p->dir);
     mt_strs_free(&p->backends);
     free(p->prev_dir);
-    msn_free(&p->needs);
+    mesh_needs_free(&p->needs);
     ml_opt_free(&p->at);
     ml_opt_free(&p->pin);
     free(p->why);

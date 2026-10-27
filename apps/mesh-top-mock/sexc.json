@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-top-mock-meshd",
+  "version": "0.1.0",
+  "description": "A mock meshd control port for trying mesh-top without a GPU: synthetic snapshots, trace and log (a viewer fixture only)",
+  "kind": "executable",
+  "bin": "mesh-top-mock",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-top-mock",
+  "keywords": ["mesh", "alphaos", "mesh-top", "mock", "demo"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-pthread"],
+  "ldflags": ["-lm", "-lpthread"],
+  "dependencies": {"@ajax/mesh-top-mock": "workspace:*"}
+}

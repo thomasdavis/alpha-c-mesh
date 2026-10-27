@@ -38,15 +38,15 @@ static void fleet4(msm_member ms[4]) {
     ms[3] = member(3, "metal", "monumentals-mac-studio.local");
 }
 
-static msn_needs needs(const char *b0, const char *b1, const char *b2) {
-    msn_needs n = msn_default();
-    mt_strs_free(&n.backends);
-    if (b0) mt_push(&n.backends, b0);
-    if (b1) mt_push(&n.backends, b1);
-    if (b2) mt_push(&n.backends, b2);
+static mesh_needs needs(const char *b0, const char *b1, const char *b2) {
+    mesh_needs n = msn_default();
+    mesh_strs_free(n.backends, n.nbackends), n.backends = NULL, n.nbackends = 0;
+    if (b0) msn_strs_push(&n.backends, &n.nbackends, b0);
+    if (b1) msn_strs_push(&n.backends, &n.nbackends, b1);
+    if (b2) msn_strs_push(&n.backends, &n.nbackends, b2);
     return n;
 }
 
-static msn_term term(msn_term_kind k, const char *s, uint32_t sys) { return msn_term_new(k, s, sys); }
+static mesh_term term(mesh_term_kind k, const char *s, uint32_t sys) { return msn_term_new(k, s, sys); }
 
 #endif

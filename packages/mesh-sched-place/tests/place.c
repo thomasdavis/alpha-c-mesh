@@ -7,7 +7,7 @@ static void node_shape(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d = doc_new();
-    msn_needs n = needs("cuda", "metal", NULL);
+    mesh_needs n = needs("cuda", "metal", NULL);
     n.warps = 16;
     n.shared = 48 << 10;
     mfd_prog_put(&d, "pt", prog_of(n));
@@ -34,15 +34,15 @@ static void constraints(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d = doc_new();
-    msn_needs n;
-    n = needs("metal", NULL, NULL), n.replicas = (msn_replicas){false, 1}, mfd_prog_put(&d, "m", prog_of(n));
-    n = needs("cuda", "metal", "wasm"), n.replicas = (msn_replicas){false, 2}, mfd_prog_put(&d, "r2", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.replicas = (msn_replicas){false, 1}, n.arch = mt_strdup("x86_64"), mfd_prog_put(&d, "x86", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.replicas = (msn_replicas){false, 1};
-    for (uint32_t k = 0; k < 4; k++) msn_terms_push(&n.avoid, term(MSN_SYSTEM, NULL, k));
+    mesh_needs n;
+    n = needs("metal", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, mfd_prog_put(&d, "m", prog_of(n));
+    n = needs("cuda", "metal", "wasm"), n.replicas = (mesh_replicas){false, 2}, mfd_prog_put(&d, "r2", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, n.arch = mt_strdup("x86_64"), mfd_prog_put(&d, "x86", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.replicas = (mesh_replicas){false, 1};
+    for (uint32_t k = 0; k < 4; k++) msn_terms_push(&n.avoid, &n.navoid, term(MESH_TERM_SYSTEM, NULL, k));
     mfd_prog_put(&d, "never", prog_of(n));
     n = needs("cuda", NULL, NULL), mfd_prog_put(&d, "all", prog_of(n));
-    n = needs("wasm", NULL, NULL), n.replicas = (msn_replicas){false, 1}, n.view_bytes = 8 << 20, mfd_prog_put(&d, "huge", prog_of(n));
+    n = needs("wasm", NULL, NULL), n.replicas = (mesh_replicas){false, 1}, n.view_bytes = 8 << 20, mfd_prog_put(&d, "huge", prog_of(n));
     mfd_doc p = placed(ms, 4, &d);
     CHECK(at_is(&p, "m", (uint32_t[]){3}, 1));
     const mfd_prog *r2 = mfd_prog_get(&p, "r2");
@@ -84,11 +84,11 @@ static void same_inputs(void) {
         ms[k].id = k;
     }
     mfd_doc d = doc_new();
-    msn_needs n = needs("cuda", NULL, NULL);
-    n.replicas = (msn_replicas){false, 2};
+    mesh_needs n = needs("cuda", NULL, NULL);
+    n.replicas = (mesh_replicas){false, 2};
     mfd_prog_put(&d, "a", prog_of(n));
     n = needs("cuda", NULL, NULL);
-    n.replicas = (msn_replicas){false, 1};
+    n.replicas = (mesh_replicas){false, 1};
     mfd_prog_put(&d, "b", prog_of(n));
     mfd_doc p1 = placed(ms, 4, &d), p2 = placed(ms, 4, &d);
     CHECK(mfd_doc_eq(&p1, &p2));
@@ -109,8 +109,8 @@ static void reservations(void) {
     mfd_doc d = doc_new();
     const char *names[] = {"p0", "p1", "p2", "p3", "p4"};
     for (int i = 0; i < 5; i++) {
-        msn_needs n = needs("wasm", NULL, NULL);
-        n.replicas = (msn_replicas){false, 1};
+        mesh_needs n = needs("wasm", NULL, NULL);
+        n.replicas = (mesh_replicas){false, 1};
         n.cpu = 2.0f;
         n.pack = true;
         mfd_prog_put(&d, names[i], prog_of(n));
@@ -131,8 +131,8 @@ static void reservations(void) {
     fleet4(ms);
     d = doc_new();
     for (int i = 0; i < 2; i++) {
-        msn_needs n = needs("wasm", NULL, NULL);
-        n.replicas = (msn_replicas){false, 1};
+        mesh_needs n = needs("wasm", NULL, NULL);
+        n.replicas = (mesh_replicas){false, 1};
         n.view_bytes = 4 << 20;
         n.pack = true;
         mfd_prog_put(&d, i ? "v1" : "v0", prog_of(n));
@@ -147,9 +147,9 @@ static void member_down_replaced(void) {
     msm_member ms[4];
     fleet4(ms);
     mfd_doc d0 = doc_new();
-    msn_needs n = needs("cuda", NULL, NULL);
-    n.replicas = (msn_replicas){false, 1};
-    msn_terms_push(&n.prefer, term(MSN_SYSTEM, NULL, 1));
+    mesh_needs n = needs("cuda", NULL, NULL);
+    n.replicas = (mesh_replicas){false, 1};
+    msn_terms_push(&n.prefer, &n.nprefer, term(MESH_TERM_SYSTEM, NULL, 1));
     mfd_prog_put(&d0, "a", prog_of(n));
     mfd_doc d = placed(ms, 4, &d0);
     CHECK(at_is(&d, "a", (uint32_t[]){1}, 1));

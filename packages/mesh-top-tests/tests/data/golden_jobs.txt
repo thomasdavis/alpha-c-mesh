@@ -1,0 +1,15 @@
+jobs system=1 leader=1 role=leader commit=1609 jobs=3 active=2 held=2 unconfirmed=0 rate=37850.7 persisted=1
+job job=1.1 program=hashjob state=running priority=0 items=3000000 done=500909 failed=1 leased=4597 queued=2490420 dupes=3 retried=7 mode=collect progress=0.1670 rate=20699.9 eta_s=120.7 elapsed_ms=21053 submitted_ms=1793026857817
+share job=1.1 member=0 done=140608 leased=1655 rate=6655.6
+share job=1.1 member=1 done=141935 leased=838 rate=6343.0
+share job=1.1 member=2 done=76223 leased=105 rate=2087.6
+share job=1.1 member=3 done=142143 leased=- rate=6577.6
+pick job=1.1 member=1 verdict=eligible busy=0 score=2.002 -- 2.002 = perf 1.00 load 0.47 mem 0.23 spread 0.20 sticky 0.10 (wasm, cpu share 1.00, 559 us/task, cpu after 0.20)
+pick job=1.1 member=0 verdict=eligible busy=0 score=1.817 -- 1.817 = perf 0.96 load 0.31 mem 0.25 (wasm, cpu share 0.98)
+pick job=1.1 member=2 verdict=rejected busy=0 score=- -- cordoned
+pick job=1.1 member=3 verdict=rejected busy=0 score=- -- busy (owner policy: cpu 0.91 for 6 s): leases go to the idle members
+result job=1.1 item=502604 result=289358284 member=3 out=277f9ee5d5260977811e6615bf72afa0
+failed job=1.1 item=77 tries=3 -- system 0: hashjob: item 77: result 0xffffffff (R_JOB_FAIL)
+job job=1.2 program=sha256d state=running priority=5 items=endless done=381661 failed=0 leased=3419 queued=endless dupes=0 retried=0 mode=nonzero progress=- rate=15047.4 eta_s=- elapsed_ms=21048 submitted_ms=1793026857822
+share job=1.2 member=0 done=134554 leased=974 rate=6586.1
+job job=1.3 program=hashjob state=done priority=0 items=400000 done=400000 failed=0 leased=0 queued=- dupes=0 retried=0 mode=collect progress=1.0000 rate=0.0 eta_s=- elapsed_ms=16100 submitted_ms=1793026800000

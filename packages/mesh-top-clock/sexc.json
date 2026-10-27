@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-clock",
+  "version": "0.1.0",
+  "description": "Monotonic instants and durations with Rust's std::time arithmetic, and a virtual clock for tests",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-clock",
+  "keywords": ["mesh", "alphaos", "mesh-top", "time", "clock"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

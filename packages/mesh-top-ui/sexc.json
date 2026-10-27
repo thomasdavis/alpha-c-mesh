@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui",
+  "version": "0.1.0",
+  "description": "mesh-top's frame: the tab bar, the current tab's panes, the key help and last reply, the prompt; and the flush onto a blank screen that --print and the golden frames read",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "ratatui"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*", "@ajax/mesh-top-ui-mesh": "workspace:*", "@ajax/mesh-top-ui-programs": "workspace:*", "@ajax/mesh-top-ui-doom": "workspace:*", "@ajax/mesh-top-ui-train": "workspace:*", "@ajax/mesh-top-ui-infer": "workspace:*", "@ajax/mesh-top-ui-http": "workspace:*", "@ajax/mesh-top-ui-net": "workspace:*", "@ajax/mesh-top-ui-load": "workspace:*", "@ajax/mesh-top-ui-fleet": "workspace:*", "@ajax/mesh-top-ui-render": "workspace:*"}
+}

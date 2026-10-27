@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-place-mode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "How a program is placed across the cluster: local, pinned to one machine, or split by an assignment of its parts (with the auto split), and each machine's role",
   "kind": "library",
   "license": "MIT",

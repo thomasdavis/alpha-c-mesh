@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-style",
+  "version": "0.1.0",
+  "description": "Colours, modifiers and styles that patch onto each other, as ratatui's Style",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-style",
+  "keywords": ["tui", "terminal", "style", "color", "ratatui"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

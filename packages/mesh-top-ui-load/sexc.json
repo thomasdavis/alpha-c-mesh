@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-top-ui-load",
+  "version": "0.1.0",
+  "description": "mesh-top's load panes: the Load tab (GPU share, host CPU and pressure, cores, per-program task time, share history), a machine panel's Load box and the overview's load cells",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-ui-load",
+  "keywords": ["mesh", "alphaos", "mesh-top", "tui", "load"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-ffp-contract=off"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-top-ui-kit": "workspace:*", "@ajax/tui-sparkline": "workspace:*"}
+}

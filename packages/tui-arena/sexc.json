@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/tui-arena",
+  "version": "0.1.0",
+  "description": "A bump allocator for one frame of a terminal UI: allocate freely, free everything at once",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-arena",
+  "keywords": ["tui", "arena", "allocator", "terminal"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

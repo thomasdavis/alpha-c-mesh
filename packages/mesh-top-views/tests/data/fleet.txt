@@ -1,0 +1,44 @@
+fleet system=1 n=4 role=leader leader=1 term=7 version=42 applied=42 quorum=3 up=0,1,2,3 suspect=3 majority=yes paused=0 autoreform=0 cordon=2 busy_members=3 migrations=4 last_gap_ms=2.4
+member id=0 state=up leader=0 host=dgx-00 gpu=cuda arch=aarch64 cpus=20 big=10 little=10 ram_mb=124543 avail_mb=104160 disk_mb=178890 share=0.48 cpu=0.53 psi_cpu=0.102 psi_mem=0.000 meshd_cpu=7.25 slots_free=21 heap_kb=6708 cordoned=0 busy=0 reconcile=in-sync applied=42 heard_ms=12 group=running -- last ok: start sha256d
+member id=1 state=up leader=1 host=gx10-9959 gpu=cuda arch=aarch64 cpus=20 big=10 little=10 ram_mb=124544 avail_mb=95842 disk_mb=350702 share=1.00 cpu=0.22 psi_cpu=0.002 psi_mem=0.000 meshd_cpu=4.46 slots_free=24 heap_kb=7044 cordoned=0 busy=0 reconcile=in-sync applied=42 heard_ms=0 group=running
+member id=2 state=up leader=0 host=being gpu=cuda arch=x86_64 cpus=24 big=24 little=0 ram_mb=128723 avail_mb=68265 disk_mb=594010 share=0.95 cpu=0.36 psi_cpu=0.036 psi_mem=0.001 meshd_cpu=5.51 slots_free=25 heap_kb=7108 cordoned=1 busy=0 reconcile=pending applied=41 heard_ms=40 group=running -- reconciling version 42
+member id=3 state=suspect leader=0 host=mac-studio gpu=metal arch=aarch64 cpus=28 big=20 little=8 ram_mb=98304 avail_mb=79651 disk_mb=44207 share=- cpu=0.91 psi_cpu=- psi_mem=- meshd_cpu=5.57 slots_free=25 heap_kb=7064 cordoned=0 busy=1 reconcile=failed applied=40 heard_ms=1200 group=paused -- busy: cpu 0.91 for 6 s
+program name=http hash=588478d9f83788ef run=1 lockstep=0 at=all pin=- from=- replicas=all backends=cuda priority=0 migrate=state cpu=0.00 mem_mb=0 -- replicas all backends cuda
+cell program=http member=0 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=- tasks_s=0.0
+cell program=http member=1 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=- tasks_s=0.0
+cell program=http member=2 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=- tasks_s=0.0
+cell program=http member=3 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+explain program=http member=3 verdict=rejected score=- -- backends cuda: it runs metal,wasm,native
+program name=pipesink-w hash=7c1e982901c44327 run=1 lockstep=0 at=0 pin=- from=- replicas=all backends=wasm priority=0 migrate=state cpu=0.25 mem_mb=128 -- colocated with pipehash (on 0)
+cell program=pipesink-w member=0 placed=1 pinned=0 moving=- reserved=cpu:0.25,mem_mb:128 state=running exec=wasm task_us=42.7 tasks_s=15564.9
+cell program=pipesink-w member=1 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+cell program=pipesink-w member=2 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+cell program=pipesink-w member=3 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+program name=tick hash=c3842f137ba95197 run=1 lockstep=0 at=2 pin=- from=0 replicas=1 backends=cuda,metal,wasm priority=0 migrate=state cpu=0.00 mem_mb=0 -- the gain 41 %: from 0
+cell program=tick member=0 placed=0 pinned=0 moving=from reserved=- state=running exec=cuda task_us=8.0 tasks_s=50.0
+cell program=tick member=1 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+cell program=tick member=2 placed=1 pinned=0 moving=to reserved=- state=stopped exec=cuda task_us=- tasks_s=-
+cell program=tick member=3 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+explain program=tick member=2 verdict=chosen score=1.998 -- 1.998 = perf 1.00 load 0.47 mem 0.23 spread 0.20 sticky 0.10 (cuda, gpu share 0.95, 8 us/task, cpu after 0.36)
+explain program=tick member=0 verdict=feasible score=1.412 -- 1.412 = perf 0.48 load 0.17 mem 0.25 (cuda, gpu share 0.48)
+explain program=tick member=3 verdict=rejected score=- -- busy (owner policy)
+program name=tick-r hash=c3842f137ba95197 run=1 lockstep=0 at=0,1 pin=0,1 from=- replicas=2 backends=cuda,metal,wasm priority=0 migrate=state cpu=0.00 mem_mb=0 -- pinned by the operator
+cell program=tick-r member=0 placed=1 pinned=1 moving=- reserved=- state=running exec=cuda task_us=8.1 tasks_s=50.0
+cell program=tick-r member=1 placed=1 pinned=1 moving=- reserved=- state=running exec=cuda task_us=7.9 tasks_s=50.0
+cell program=tick-r member=2 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+cell program=tick-r member=3 placed=0 pinned=0 moving=- reserved=- state=- exec=- task_us=- tasks_s=-
+program name=train hash=7ce1b752a10dc769 run=1 lockstep=1 at=all pin=- from=- replicas=all backends=cuda,metal,wasm priority=0 migrate=never cpu=0.00 mem_mb=0 -- the lockstep group
+cell program=train member=0 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=20.0 tasks_s=44.0
+cell program=train member=1 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=20.0 tasks_s=44.0
+cell program=train member=2 placed=1 pinned=0 moving=- reserved=- state=running exec=cuda task_us=60.0 tasks_s=44.0
+cell program=train member=3 placed=1 pinned=0 moving=- reserved=- state=running exec=metal task_us=30.0 tasks_s=44.0
+group name=train program=train epoch=4 cycle=2 members=0,1,2,3 state=running on_loss=reform auto_ms=5000
+gmember group=train member=0 rank=0 state=running epoch=4
+gmember group=train member=1 rank=1 state=running epoch=4
+gmember group=train member=2 rank=2 state=running epoch=4
+gmember group=train member=3 rank=3 state=paused epoch=3
+proposal -- sched: proposes re-forming group train over 0,1,2: system 3 busy
+migration programs=tick from=0 to=2 version=41 secs=0.4 -- the gain 41 % for 10 s
+decision at_s=812.3 -- sched: migrate tick from system 0 to 2: the gain 41 % for 10 s
+decision at_s=700.1 -- sched: tick-r: all -> 0,1 (replicas 2)
+note -- tick-w: the gain fell to 12 %: stays on 3

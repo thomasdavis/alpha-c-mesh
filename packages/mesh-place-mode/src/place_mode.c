@@ -40,7 +40,7 @@ char *mpm_list(const mpm_assign *a) {
 }
 
 mpm_assign mpm_counts(const uint32_t *sys, const uint32_t *count, size_t n) {
-    uint32_t of[MESH_PLACE_PARTS_MAX];
+    uint32_t of[MESH_PLACE_PARTS_MAX] = {0};
     size_t k = 0;
     for (size_t i = 0; i < n; i++)
         for (uint32_t j = 0; j < count[i] && k < MESH_PLACE_PARTS_MAX; j++) of[k++] = sys[i];
@@ -244,7 +244,7 @@ bool mpm_from_code(uint32_t code, uint32_t sys, const uint8_t *assign, size_t n,
                 fanout = i;
                 break;
             }
-        uint32_t of[MESH_PLACE_PARTS_MAX];
+        uint32_t of[MESH_PLACE_PARTS_MAX] = {0};
         for (size_t i = 0; i < fanout && i < MESH_PLACE_PARTS_MAX; i++) of[i] = assign[i];
         mpm_assign a = mpm_assign_new(of, fanout);
         if (!check(&a, MESH_MAX_SYSTEMS, err)) return false;

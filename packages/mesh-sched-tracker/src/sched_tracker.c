@@ -172,7 +172,7 @@ mt_strs mst_unit(const mfd_doc *doc, const char *name, uint32_t from) {
             for (size_t j = 0; j < v.n; j++) {
                 if (j == i || strcmp(v.v[j], v.v[i]) == 0) continue;
                 const mfd_prog *o = mfd_prog_get(doc, v.v[j]);
-                if (o && mt_strs_has(&o->needs.feeds, v.v[i])) fed = true;
+                if (o && msn_strs_has(o->needs.feeds, o->needs.nfeeds, v.v[i])) fed = true;
             }
             if (!fed) pick = i, found = true;
         }
@@ -195,7 +195,7 @@ bool mst_step(mst_tracker *t, const msp_input *in, uint64_t now, bool busy, mst_
         const char *name = ord.v[oi];
         const mfd_prog *p = mfd_prog_get(doc, name);
         if (!p->pin.some || !p->at.some) continue;
-        if (p->has_from || ml_eq(&p->pin.l, &p->at.l) || p->needs.migrate != MSN_STATE) continue;
+        if (p->has_from || ml_eq(&p->pin.l, &p->at.l) || p->needs.migrate != MESH_MIGRATE_STATE) continue;
         /* Colocated with a loaded anchor: it moves with the anchor's unit, never on its own pin. */
         if (p->needs.colocate_with && mfd_prog_get(doc, p->needs.colocate_with)) continue;
         long fi = -1, ti = -1;
@@ -237,8 +237,8 @@ bool mst_step(mst_tracker *t, const msp_input *in, uint64_t now, bool busy, mst_
     for (size_t oi = 0; oi < ord.n; oi++) {
         const char *name = ord.v[oi];
         const mfd_prog *p = mfd_prog_get(doc, name);
-        const msn_needs *n = &p->needs;
-        bool movable = !n->replicas.all && !p->pin.some && !n->lockstep && n->migrate != MSN_NEVER && !p->has_from &&
+        const mesh_needs *n = &p->needs;
+        bool movable = !n->replicas.all && !p->pin.some && !n->lockstep && n->migrate != MESH_MIGRATE_NEVER && !p->has_from &&
                        (!n->colocate_with || !mfd_prog_get(doc, n->colocate_with));
         if (!p->at.some || !p->at.l.n || !movable) {
             cand_remove(t, name);
@@ -316,7 +316,7 @@ bool mst_step(mst_tracker *t, const msp_input *in, uint64_t now, bool busy, mst_
         gain = mt_realloc(gain, (nready + 1) * sizeof *gain);
         ready = mt_realloc(ready, (nready + 1) * sizeof *ready);
         gain[nready] = g;
-        ready[nready++] = (mst_move){mst_unit(doc, name, from), from, to, n->migrate == MSN_STATE, why, false};
+        ready[nready++] = (mst_move){mst_unit(doc, name, from), from, to, n->migrate == MESH_MIGRATE_STATE, why, false};
     }
     for (size_t i = t->ncand; i-- > 0;)
         if (!mt_strs_has(&seen, t->cand[i].name)) cand_remove_at(t, i);

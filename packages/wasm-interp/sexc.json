@@ -18,10 +18,12 @@
     "@ajax/wasm-lower": "workspace:*",
     "@ajax/wasm-numeric": "workspace:*",
     "@ajax/mesh-check": "workspace:*",
-    "@ajax/wasm-builder": "workspace:*"
+    "@ajax/wasm-builder": "workspace:*",
+    "@ajax/wasm-fuse": "workspace:*"
   },
   "cflags": [
-    "-ffp-contract=off"
+    "-ffp-contract=off",
+    "-O2"
   ],
   "ldflags": [
     "-lm",

@@ -8,7 +8,7 @@ int main(void) {
     mt_strs lines = mt_lines(text);
     for (size_t i = 0; i < lines.n; i++) {
         mt_strs w = mt_words(lines.v[i]);
-        msn_needs n;
+        mesh_needs n;
         char *err = NULL;
         if (!CHECK(w.n == 2 && msn_decode(w.v[0], &n, &err))) {
             fprintf(stderr, "line %zu: %s\n", i + 1, err ? err : "?");
@@ -20,7 +20,7 @@ int main(void) {
         CHECK_S(e, w.v[0]);
         CHECK_S(s, want);
         free(e), free(s), free(want);
-        msn_free(&n);
+        mesh_needs_free(&n);
         mt_strs_free(&w);
     }
     CHECK_U(lines.n, 500);

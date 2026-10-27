@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/tui-solver",
+  "version": "0.1.0",
+  "description": "The Cassowary incremental simplex solver for linear constraints with strengths, ported from kasuari 0.4 (ratatui's)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-solver",
+  "keywords": [
+    "cassowary",
+    "simplex",
+    "constraints",
+    "layout",
+    "solver"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  },
+  "ldflags": [
+    "-lm"
+  ]
+}

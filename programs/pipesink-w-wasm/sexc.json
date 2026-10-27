@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/mesh-prog-pipesink-w-wasm",
+  "version": "0.1.0",
+  "description": "pipesink-w: the pipe demo's sink on meshd's wasm executor: drains digests, checks each against sha256d, histograms latency",
+  "kind": "wasm",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/pipesink-w-wasm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "wasm",
+    "program"
+  ],
+  "dependencies": {
+    "@ajax/mesh-rt-wasm": "workspace:*",
+    "@ajax/mesh-abi-view-pipedemo": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/hist-quantile": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ]
+}

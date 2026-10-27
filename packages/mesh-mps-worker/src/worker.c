@@ -166,7 +166,7 @@ _Noreturn void mesh_mps_worker_main(int argc, char **argv) {
     }
     mesh_cuda_gpu g;
     mesh_cuda_stream st;
-    uint64_t dev;
+    uint64_t dev = 0; /* set by setup(); fatal() never returns, but gcc -O2 cannot see that */
     uint8_t *mb;
     if (!setup(path, sms, &g, &st, &dev, &mb, &err)) fatal(pid, err);
     bool launched = false;

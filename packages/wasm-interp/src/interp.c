@@ -2,6 +2,7 @@
 #include "wasm/interp.h"
 
 #include "wasm/decode.h"
+#include "wasm/fuse.h"
 #include "wasm/instr.h"
 #include "wasm/lower.h"
 #include "wasm/reader.h"
@@ -104,8 +105,13 @@ wasm_compiled *wasm_compile(const uint8_t *bytes, size_t len, wasm_features feat
         say(err, errlen, "out of memory");
         goto fail;
     }
-    for (uint32_t i = 0; i < m->ncodes; i++)
+    for (uint32_t i = 0; i < m->ncodes; i++) {
         if (!wasm_lower(m, m->nfunc_imports + i, &c->fns[i], err, errlen)) goto fail;
+        if (!wasm_fuse(&c->fns[i])) {
+            say(err, errlen, "out of memory");
+            goto fail;
+        }
+    }
     return c;
 fail:
     wasm_compiled_free(c);
@@ -460,6 +466,21 @@ static inline uint64_t SF64(double d) { return wasm_f64_bits(d); }
         sp = dst_ + n_;                                                \
     } while (0)
 
+
+/* A plain instruction's case, with a label fused instructions jump to (wasm/fuse.h). */
+#define OP(n) case 0x##n: op_##n
+/* Every plain instruction fusion may give an operand to. */
+#define FUSIBLE(X) X(28) X(29) X(2a) X(2b) X(2c) X(2d) X(2e) X(2f) X(30) X(31) X(32) X(33) X(34) X(35) X(36) X(37) X(38) X(39) X(3a) X(3b) X(3c) X(3d) X(3e) X(45) X(46) X(47) X(48) X(49) X(4a) X(4b) X(4c) X(4d) X(4e) X(4f) X(50) X(51) X(52) X(53) X(54) X(55) X(56) X(57) X(58) X(59) X(5a) X(5b) X(5c) X(5d) X(5e) X(5f) X(60) X(61) X(62) X(63) X(64) X(65) X(66) X(67) X(68) X(69) X(6a) X(6b) X(6c) X(6d) X(6e) X(6f) X(70) X(71) X(72) X(73) X(74) X(75) X(76) X(77) X(78) X(79) X(7a) X(7b) X(7c) X(7d) X(7e) X(7f) X(80) X(81) X(82) X(83) X(84) X(85) X(86) X(87) X(88) X(89) X(8a) X(8b) X(8c) X(8d) X(8e) X(8f) X(90) X(91) X(92) X(93) X(94) X(95) X(96) X(97) X(98) X(99) X(9a) X(9b) X(9c) X(9d) X(9e) X(9f) X(a0) X(a1) X(a2) X(a3) X(a4) X(a5) X(a6) X(a7) X(a8) X(a9) X(aa) X(ab) X(ac) X(ad) X(ae) X(af) X(b0) X(b1) X(b2) X(b3) X(b4) X(b5) X(b6) X(b7) X(b8) X(b9) X(ba) X(bb) X(bc) X(bd) X(be) X(bf) X(c0) X(c1) X(c2) X(c3) X(c4) X(100) X(101) X(102) X(103) X(104) X(105) X(106) X(107)
+/* The constant of an I-fused instruction: in a, for a load or store (their b is the offset). */
+#define IMMV(n) ((0x##n >= 0x28 && 0x##n <= 0x3e) ? (uint64_t)pc->a : pc->b)
+#define FUSED(n)                                                       \
+    case WASM_INS_L + 0x##n:                                           \
+        *sp++ = fp[pc->a];                                             \
+        goto op_##n;                                                   \
+    case WASM_INS_I + 0x##n:                                           \
+        *sp++ = IMMV(n);                                               \
+        goto op_##n;
+
 int wasm_call(wasm_instance *I, uint32_t func, uint64_t *io) {
     const wasm_compiled *C = I->c;
     const wasm_module *M = &C->m;
@@ -574,6 +595,12 @@ int wasm_call(wasm_instance *I, uint32_t func, uint64_t *io) {
             break;
         }
         case WASM_OP_LOCAL_GET: *sp++ = fp[pc->a]; break;
+        case WASM_INS_GET2:
+            sp[0] = fp[pc->a];
+            sp[1] = fp[pc->b];
+            sp += 2;
+            break;
+            FUSIBLE(FUSED)
         case WASM_OP_LOCAL_SET: fp[pc->a] = *--sp; break;
         case WASM_OP_LOCAL_TEE: fp[pc->a] = sp[-1]; break;
         case WASM_OP_GLOBAL_GET: *sp++ = I->globals[pc->a]; break;
@@ -593,29 +620,29 @@ int wasm_call(wasm_instance *I, uint32_t func, uint64_t *io) {
             sp -= 2;
             break;
         }
-        case 0x28: LOAD(uint32_t, 4, v_)
-        case 0x29: LOAD(uint64_t, 8, v_)
-        case 0x2a: LOAD(uint32_t, 4, v_)
-        case 0x2b: LOAD(uint64_t, 8, v_)
-        case 0x2c: LOAD(int8_t, 1, (uint32_t)(int32_t)v_)
-        case 0x2d: LOAD(uint8_t, 1, (uint32_t)v_)
-        case 0x2e: LOAD(int16_t, 2, (uint32_t)(int32_t)v_)
-        case 0x2f: LOAD(uint16_t, 2, (uint32_t)v_)
-        case 0x30: LOAD(int8_t, 1, (uint64_t)(int64_t)v_)
-        case 0x31: LOAD(uint8_t, 1, (uint64_t)v_)
-        case 0x32: LOAD(int16_t, 2, (uint64_t)(int64_t)v_)
-        case 0x33: LOAD(uint16_t, 2, (uint64_t)v_)
-        case 0x34: LOAD(int32_t, 4, (uint64_t)(int64_t)v_)
-        case 0x35: LOAD(uint32_t, 4, (uint64_t)v_)
-        case 0x36: STORE(uint32_t, 4, x_)
-        case 0x37: STORE(uint64_t, 8, x_)
-        case 0x38: STORE(uint32_t, 4, x_)
-        case 0x39: STORE(uint64_t, 8, x_)
-        case 0x3a: STORE(uint8_t, 1, x_)
-        case 0x3b: STORE(uint16_t, 2, x_)
-        case 0x3c: STORE(uint8_t, 1, x_)
-        case 0x3d: STORE(uint16_t, 2, x_)
-        case 0x3e: STORE(uint32_t, 4, x_)
+        OP(28): LOAD(uint32_t, 4, v_)
+        OP(29): LOAD(uint64_t, 8, v_)
+        OP(2a): LOAD(uint32_t, 4, v_)
+        OP(2b): LOAD(uint64_t, 8, v_)
+        OP(2c): LOAD(int8_t, 1, (uint32_t)(int32_t)v_)
+        OP(2d): LOAD(uint8_t, 1, (uint32_t)v_)
+        OP(2e): LOAD(int16_t, 2, (uint32_t)(int32_t)v_)
+        OP(2f): LOAD(uint16_t, 2, (uint32_t)v_)
+        OP(30): LOAD(int8_t, 1, (uint64_t)(int64_t)v_)
+        OP(31): LOAD(uint8_t, 1, (uint64_t)v_)
+        OP(32): LOAD(int16_t, 2, (uint64_t)(int64_t)v_)
+        OP(33): LOAD(uint16_t, 2, (uint64_t)v_)
+        OP(34): LOAD(int32_t, 4, (uint64_t)(int64_t)v_)
+        OP(35): LOAD(uint32_t, 4, (uint64_t)v_)
+        OP(36): STORE(uint32_t, 4, x_)
+        OP(37): STORE(uint64_t, 8, x_)
+        OP(38): STORE(uint32_t, 4, x_)
+        OP(39): STORE(uint64_t, 8, x_)
+        OP(3a): STORE(uint8_t, 1, x_)
+        OP(3b): STORE(uint16_t, 2, x_)
+        OP(3c): STORE(uint8_t, 1, x_)
+        OP(3d): STORE(uint16_t, 2, x_)
+        OP(3e): STORE(uint32_t, 4, x_)
         case WASM_OP_MEMORY_SIZE: *sp++ = (uint32_t)(memsize / WASM_PAGE); break;
         case WASM_OP_MEMORY_GROW: {
             uint32_t old;
@@ -628,193 +655,193 @@ int wasm_call(wasm_instance *I, uint32_t func, uint64_t *io) {
         case WASM_OP_I64_CONST:
         case WASM_OP_F32_CONST:
         case WASM_OP_F64_CONST: *sp++ = pc->b; break;
-        case 0x45: UN((uint32_t)a == 0)
-        case 0x46: CMP32(a == b)
-        case 0x47: CMP32(a != b)
-        case 0x48: CMP32((int32_t)a < (int32_t)b)
-        case 0x49: CMP32(a < b)
-        case 0x4a: CMP32((int32_t)a > (int32_t)b)
-        case 0x4b: CMP32(a > b)
-        case 0x4c: CMP32((int32_t)a <= (int32_t)b)
-        case 0x4d: CMP32(a <= b)
-        case 0x4e: CMP32((int32_t)a >= (int32_t)b)
-        case 0x4f: CMP32(a >= b)
-        case 0x50: UN(a == 0)
-        case 0x51: CMP64(a == b)
-        case 0x52: CMP64(a != b)
-        case 0x53: CMP64((int64_t)a < (int64_t)b)
-        case 0x54: CMP64(a < b)
-        case 0x55: CMP64((int64_t)a > (int64_t)b)
-        case 0x56: CMP64(a > b)
-        case 0x57: CMP64((int64_t)a <= (int64_t)b)
-        case 0x58: CMP64(a <= b)
-        case 0x59: CMP64((int64_t)a >= (int64_t)b)
-        case 0x5a: CMP64(a >= b)
-        case 0x5b: FCMP32(a == b)
-        case 0x5c: FCMP32(a != b)
-        case 0x5d: FCMP32(a < b)
-        case 0x5e: FCMP32(a > b)
-        case 0x5f: FCMP32(a <= b)
-        case 0x60: FCMP32(a >= b)
-        case 0x61: FCMP64(a == b)
-        case 0x62: FCMP64(a != b)
-        case 0x63: FCMP64(a < b)
-        case 0x64: FCMP64(a > b)
-        case 0x65: FCMP64(a <= b)
-        case 0x66: FCMP64(a >= b)
-        case 0x67: UN(wasm_i32_clz((uint32_t)a))
-        case 0x68: UN(wasm_i32_ctz((uint32_t)a))
-        case 0x69: UN(wasm_i32_popcnt((uint32_t)a))
-        case 0x6a: BIN32(a + b)
-        case 0x6b: BIN32(a - b)
-        case 0x6c: BIN32(a * b)
-        case 0x6d: {
+        OP(45): UN((uint32_t)a == 0)
+        OP(46): CMP32(a == b)
+        OP(47): CMP32(a != b)
+        OP(48): CMP32((int32_t)a < (int32_t)b)
+        OP(49): CMP32(a < b)
+        OP(4a): CMP32((int32_t)a > (int32_t)b)
+        OP(4b): CMP32(a > b)
+        OP(4c): CMP32((int32_t)a <= (int32_t)b)
+        OP(4d): CMP32(a <= b)
+        OP(4e): CMP32((int32_t)a >= (int32_t)b)
+        OP(4f): CMP32(a >= b)
+        OP(50): UN(a == 0)
+        OP(51): CMP64(a == b)
+        OP(52): CMP64(a != b)
+        OP(53): CMP64((int64_t)a < (int64_t)b)
+        OP(54): CMP64(a < b)
+        OP(55): CMP64((int64_t)a > (int64_t)b)
+        OP(56): CMP64(a > b)
+        OP(57): CMP64((int64_t)a <= (int64_t)b)
+        OP(58): CMP64(a <= b)
+        OP(59): CMP64((int64_t)a >= (int64_t)b)
+        OP(5a): CMP64(a >= b)
+        OP(5b): FCMP32(a == b)
+        OP(5c): FCMP32(a != b)
+        OP(5d): FCMP32(a < b)
+        OP(5e): FCMP32(a > b)
+        OP(5f): FCMP32(a <= b)
+        OP(60): FCMP32(a >= b)
+        OP(61): FCMP64(a == b)
+        OP(62): FCMP64(a != b)
+        OP(63): FCMP64(a < b)
+        OP(64): FCMP64(a > b)
+        OP(65): FCMP64(a <= b)
+        OP(66): FCMP64(a >= b)
+        OP(67): UN(wasm_i32_clz((uint32_t)a))
+        OP(68): UN(wasm_i32_ctz((uint32_t)a))
+        OP(69): UN(wasm_i32_popcnt((uint32_t)a))
+        OP(6a): BIN32(a + b)
+        OP(6b): BIN32(a - b)
+        OP(6c): BIN32(a * b)
+        OP(6d): {
             uint32_t r;
             CHECK_TRAP(wasm_i32_div_s((uint32_t)sp[-2], (uint32_t)sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x6e: {
+        OP(6e): {
             uint32_t r;
             CHECK_TRAP(wasm_i32_div_u((uint32_t)sp[-2], (uint32_t)sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x6f: {
+        OP(6f): {
             uint32_t r;
             CHECK_TRAP(wasm_i32_rem_s((uint32_t)sp[-2], (uint32_t)sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x70: {
+        OP(70): {
             uint32_t r;
             CHECK_TRAP(wasm_i32_rem_u((uint32_t)sp[-2], (uint32_t)sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x71: BIN32(a & b)
-        case 0x72: BIN32(a | b)
-        case 0x73: BIN32(a ^ b)
-        case 0x74: BIN32(a << (b & 31))
-        case 0x75: BIN32(wasm_i32_shr_s(a, b))
-        case 0x76: BIN32(a >> (b & 31))
-        case 0x77: BIN32(wasm_i32_rotl(a, b))
-        case 0x78: BIN32(wasm_i32_rotr(a, b))
-        case 0x79: UN(wasm_i64_clz(a))
-        case 0x7a: UN(wasm_i64_ctz(a))
-        case 0x7b: UN(wasm_i64_popcnt(a))
-        case 0x7c: BIN64(a + b)
-        case 0x7d: BIN64(a - b)
-        case 0x7e: BIN64(a * b)
-        case 0x7f: {
+        OP(71): BIN32(a & b)
+        OP(72): BIN32(a | b)
+        OP(73): BIN32(a ^ b)
+        OP(74): BIN32(a << (b & 31))
+        OP(75): BIN32(wasm_i32_shr_s(a, b))
+        OP(76): BIN32(a >> (b & 31))
+        OP(77): BIN32(wasm_i32_rotl(a, b))
+        OP(78): BIN32(wasm_i32_rotr(a, b))
+        OP(79): UN(wasm_i64_clz(a))
+        OP(7a): UN(wasm_i64_ctz(a))
+        OP(7b): UN(wasm_i64_popcnt(a))
+        OP(7c): BIN64(a + b)
+        OP(7d): BIN64(a - b)
+        OP(7e): BIN64(a * b)
+        OP(7f): {
             uint64_t r;
             CHECK_TRAP(wasm_i64_div_s(sp[-2], sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x80: {
+        OP(80): {
             uint64_t r;
             CHECK_TRAP(wasm_i64_div_u(sp[-2], sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x81: {
+        OP(81): {
             uint64_t r;
             CHECK_TRAP(wasm_i64_rem_s(sp[-2], sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x82: {
+        OP(82): {
             uint64_t r;
             CHECK_TRAP(wasm_i64_rem_u(sp[-2], sp[-1], &r));
             sp--;
             sp[-1] = r;
             break;
         }
-        case 0x83: BIN64(a & b)
-        case 0x84: BIN64(a | b)
-        case 0x85: BIN64(a ^ b)
-        case 0x86: BIN64(a << (b & 63))
-        case 0x87: BIN64(wasm_i64_shr_s(a, b))
-        case 0x88: BIN64(a >> (b & 63))
-        case 0x89: BIN64(wasm_i64_rotl(a, b))
-        case 0x8a: BIN64(wasm_i64_rotr(a, b))
-        case 0x8b: UN(wasm_f32_abs((uint32_t)a))
-        case 0x8c: UN(wasm_f32_neg((uint32_t)a))
-        case 0x8d: UN(SF32(wasm_f32_ceil(F32(a))))
-        case 0x8e: UN(SF32(wasm_f32_floor(F32(a))))
-        case 0x8f: UN(SF32(wasm_f32_trunc(F32(a))))
-        case 0x90: UN(SF32(wasm_f32_nearest(F32(a))))
-        case 0x91: UN(SF32(wasm_f32_sqrt(F32(a))))
-        case 0x92: FBIN32(wasm_f32_add(a, b))
-        case 0x93: FBIN32(wasm_f32_sub(a, b))
-        case 0x94: FBIN32(wasm_f32_mul(a, b))
-        case 0x95: FBIN32(wasm_f32_div(a, b))
-        case 0x96: FBIN32(wasm_f32_min(a, b))
-        case 0x97: FBIN32(wasm_f32_max(a, b))
-        case 0x98: BIN32(wasm_f32_copysign(a, b))
-        case 0x99: UN(wasm_f64_abs(a))
-        case 0x9a: UN(wasm_f64_neg(a))
-        case 0x9b: UN(SF64(wasm_f64_ceil(F64(a))))
-        case 0x9c: UN(SF64(wasm_f64_floor(F64(a))))
-        case 0x9d: UN(SF64(wasm_f64_trunc(F64(a))))
-        case 0x9e: UN(SF64(wasm_f64_nearest(F64(a))))
-        case 0x9f: UN(SF64(wasm_f64_sqrt(F64(a))))
-        case 0xa0: FBIN64(wasm_f64_add(a, b))
-        case 0xa1: FBIN64(wasm_f64_sub(a, b))
-        case 0xa2: FBIN64(wasm_f64_mul(a, b))
-        case 0xa3: FBIN64(wasm_f64_div(a, b))
-        case 0xa4: FBIN64(wasm_f64_min(a, b))
-        case 0xa5: FBIN64(wasm_f64_max(a, b))
-        case 0xa6: BIN64(wasm_f64_copysign(a, b))
-        case 0xa7: UN((uint32_t)a)
-        case 0xa8: TRUNC(wasm_i32_trunc_f32_s, F32(sp[-1]), uint32_t)
-        case 0xa9: TRUNC(wasm_i32_trunc_f32_u, F32(sp[-1]), uint32_t)
-        case 0xaa: TRUNC(wasm_i32_trunc_f64_s, F64(sp[-1]), uint32_t)
-        case 0xab: TRUNC(wasm_i32_trunc_f64_u, F64(sp[-1]), uint32_t)
-        case 0xac: UN((uint64_t)(int64_t)(int32_t)(uint32_t)a)
-        case 0xad: UN((uint32_t)a)
-        case 0xae: TRUNC(wasm_i64_trunc_f32_s, F32(sp[-1]), uint64_t)
-        case 0xaf: TRUNC(wasm_i64_trunc_f32_u, F32(sp[-1]), uint64_t)
-        case 0xb0: TRUNC(wasm_i64_trunc_f64_s, F64(sp[-1]), uint64_t)
-        case 0xb1: TRUNC(wasm_i64_trunc_f64_u, F64(sp[-1]), uint64_t)
-        case 0xb2: UN(SF32((float)(int32_t)(uint32_t)a))
-        case 0xb3: UN(SF32((float)(uint32_t)a))
-        case 0xb4: UN(SF32((float)(int64_t)a))
-        case 0xb5: UN(SF32((float)a))
-        case 0xb6: UN(SF32(wasm_f32_demote(F64(a))))
-        case 0xb7: UN(SF64((double)(int32_t)(uint32_t)a))
-        case 0xb8: UN(SF64((double)(uint32_t)a))
-        case 0xb9: UN(SF64((double)(int64_t)a))
-        case 0xba: UN(SF64((double)a))
-        case 0xbb: UN(SF64(wasm_f64_promote(F32(a))))
-        case 0xbc: /* reinterprets: the slot holds the bits already */
-        case 0xbd:
-        case 0xbe:
-        case 0xbf: break;
-        case 0xc0: UN((uint32_t)(int32_t)(int8_t)(uint8_t)a)
-        case 0xc1: UN((uint32_t)(int32_t)(int16_t)(uint16_t)a)
-        case 0xc2: UN((uint64_t)(int64_t)(int8_t)(uint8_t)a)
-        case 0xc3: UN((uint64_t)(int64_t)(int16_t)(uint16_t)a)
-        case 0xc4: UN((uint64_t)(int64_t)(int32_t)(uint32_t)a)
+        OP(83): BIN64(a & b)
+        OP(84): BIN64(a | b)
+        OP(85): BIN64(a ^ b)
+        OP(86): BIN64(a << (b & 63))
+        OP(87): BIN64(wasm_i64_shr_s(a, b))
+        OP(88): BIN64(a >> (b & 63))
+        OP(89): BIN64(wasm_i64_rotl(a, b))
+        OP(8a): BIN64(wasm_i64_rotr(a, b))
+        OP(8b): UN(wasm_f32_abs((uint32_t)a))
+        OP(8c): UN(wasm_f32_neg((uint32_t)a))
+        OP(8d): UN(SF32(wasm_f32_ceil(F32(a))))
+        OP(8e): UN(SF32(wasm_f32_floor(F32(a))))
+        OP(8f): UN(SF32(wasm_f32_trunc(F32(a))))
+        OP(90): UN(SF32(wasm_f32_nearest(F32(a))))
+        OP(91): UN(SF32(wasm_f32_sqrt(F32(a))))
+        OP(92): FBIN32(wasm_f32_add(a, b))
+        OP(93): FBIN32(wasm_f32_sub(a, b))
+        OP(94): FBIN32(wasm_f32_mul(a, b))
+        OP(95): FBIN32(wasm_f32_div(a, b))
+        OP(96): FBIN32(wasm_f32_min(a, b))
+        OP(97): FBIN32(wasm_f32_max(a, b))
+        OP(98): BIN32(wasm_f32_copysign(a, b))
+        OP(99): UN(wasm_f64_abs(a))
+        OP(9a): UN(wasm_f64_neg(a))
+        OP(9b): UN(SF64(wasm_f64_ceil(F64(a))))
+        OP(9c): UN(SF64(wasm_f64_floor(F64(a))))
+        OP(9d): UN(SF64(wasm_f64_trunc(F64(a))))
+        OP(9e): UN(SF64(wasm_f64_nearest(F64(a))))
+        OP(9f): UN(SF64(wasm_f64_sqrt(F64(a))))
+        OP(a0): FBIN64(wasm_f64_add(a, b))
+        OP(a1): FBIN64(wasm_f64_sub(a, b))
+        OP(a2): FBIN64(wasm_f64_mul(a, b))
+        OP(a3): FBIN64(wasm_f64_div(a, b))
+        OP(a4): FBIN64(wasm_f64_min(a, b))
+        OP(a5): FBIN64(wasm_f64_max(a, b))
+        OP(a6): BIN64(wasm_f64_copysign(a, b))
+        OP(a7): UN((uint32_t)a)
+        OP(a8): TRUNC(wasm_i32_trunc_f32_s, F32(sp[-1]), uint32_t)
+        OP(a9): TRUNC(wasm_i32_trunc_f32_u, F32(sp[-1]), uint32_t)
+        OP(aa): TRUNC(wasm_i32_trunc_f64_s, F64(sp[-1]), uint32_t)
+        OP(ab): TRUNC(wasm_i32_trunc_f64_u, F64(sp[-1]), uint32_t)
+        OP(ac): UN((uint64_t)(int64_t)(int32_t)(uint32_t)a)
+        OP(ad): UN((uint32_t)a)
+        OP(ae): TRUNC(wasm_i64_trunc_f32_s, F32(sp[-1]), uint64_t)
+        OP(af): TRUNC(wasm_i64_trunc_f32_u, F32(sp[-1]), uint64_t)
+        OP(b0): TRUNC(wasm_i64_trunc_f64_s, F64(sp[-1]), uint64_t)
+        OP(b1): TRUNC(wasm_i64_trunc_f64_u, F64(sp[-1]), uint64_t)
+        OP(b2): UN(SF32((float)(int32_t)(uint32_t)a))
+        OP(b3): UN(SF32((float)(uint32_t)a))
+        OP(b4): UN(SF32((float)(int64_t)a))
+        OP(b5): UN(SF32((float)a))
+        OP(b6): UN(SF32(wasm_f32_demote(F64(a))))
+        OP(b7): UN(SF64((double)(int32_t)(uint32_t)a))
+        OP(b8): UN(SF64((double)(uint32_t)a))
+        OP(b9): UN(SF64((double)(int64_t)a))
+        OP(ba): UN(SF64((double)a))
+        OP(bb): UN(SF64(wasm_f64_promote(F32(a))))
+        OP(bc): /* reinterprets: the slot holds the bits already */
+        OP(bd):
+        OP(be):
+        OP(bf): break;
+        OP(c0): UN((uint32_t)(int32_t)(int8_t)(uint8_t)a)
+        OP(c1): UN((uint32_t)(int32_t)(int16_t)(uint16_t)a)
+        OP(c2): UN((uint64_t)(int64_t)(int8_t)(uint8_t)a)
+        OP(c3): UN((uint64_t)(int64_t)(int16_t)(uint16_t)a)
+        OP(c4): UN((uint64_t)(int64_t)(int32_t)(uint32_t)a)
         case WASM_OP_REF_NULL: *sp++ = 0; break;
         case WASM_OP_REF_IS_NULL: sp[-1] = sp[-1] == 0; break;
         case WASM_OP_REF_FUNC: *sp++ = (uint64_t)pc->a + 1; break;
-        case WASM_INS_FC + 0: UN(wasm_i32_trunc_sat_f32_s(F32(a)))
-        case WASM_INS_FC + 1: UN(wasm_i32_trunc_sat_f32_u(F32(a)))
-        case WASM_INS_FC + 2: UN(wasm_i32_trunc_sat_f64_s(F64(a)))
-        case WASM_INS_FC + 3: UN(wasm_i32_trunc_sat_f64_u(F64(a)))
-        case WASM_INS_FC + 4: UN(wasm_i64_trunc_sat_f32_s(F32(a)))
-        case WASM_INS_FC + 5: UN(wasm_i64_trunc_sat_f32_u(F32(a)))
-        case WASM_INS_FC + 6: UN(wasm_i64_trunc_sat_f64_s(F64(a)))
-        case WASM_INS_FC + 7: UN(wasm_i64_trunc_sat_f64_u(F64(a)))
+        OP(100): UN(wasm_i32_trunc_sat_f32_s(F32(a)))
+        OP(101): UN(wasm_i32_trunc_sat_f32_u(F32(a)))
+        OP(102): UN(wasm_i32_trunc_sat_f64_s(F64(a)))
+        OP(103): UN(wasm_i32_trunc_sat_f64_u(F64(a)))
+        OP(104): UN(wasm_i64_trunc_sat_f32_s(F32(a)))
+        OP(105): UN(wasm_i64_trunc_sat_f32_u(F32(a)))
+        OP(106): UN(wasm_i64_trunc_sat_f64_s(F64(a)))
+        OP(107): UN(wasm_i64_trunc_sat_f64_u(F64(a)))
         case WASM_INS_FC + 8: { /* memory.init */
             uint64_t n = (uint32_t)sp[-1], s = (uint32_t)sp[-2], d = (uint32_t)sp[-3];
             sp -= 3;

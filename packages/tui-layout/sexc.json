@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/tui-layout",
+  "version": "0.1.0",
+  "description": "Splitting a rectangle by constraints (Length, Min, Max, Percentage, Ratio, Fill) with flex and spacing, solved exactly as ratatui's Layout",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-layout",
+  "keywords": [
+    "tui",
+    "terminal",
+    "layout",
+    "constraints",
+    "ratatui"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-rect": "workspace:*",
+    "@ajax/tui-solver": "workspace:*"
+  },
+  "ldflags": [
+    "-lm"
+  ]
+}

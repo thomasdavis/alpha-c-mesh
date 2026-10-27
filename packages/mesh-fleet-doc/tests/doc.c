@@ -6,7 +6,7 @@
 
 static mfd_doc doc(void) {
     mfd_doc d = {.version = 7, .term = 3};
-    msn_needs n = msn_default();
+    mesh_needs n = msn_default();
     mfd_prog h = mfd_prog_new("hello", 0xabc, true, &n);
     h.reset = 2;
     mt_push(&h.backends, "cuda");
@@ -19,7 +19,7 @@ static mfd_doc doc(void) {
     t.prev_dir = mt_strdup("train");
     t.prev_hash = 0x99;
     mfd_prog_put(&d, "train", t);
-    msn_free(&n);
+    mesh_needs_free(&n);
     mfd_group g = {.name = mt_strdup("train"), .program = mt_strdup("train"), .epoch = 4, .cycle = 2, .op = {MFD_OP_TASK, 3, 1000593162},
                    .members = ml_of((uint32_t[]){0, 2, 3}, 3), .state = MFD_RUNNING, .on_loss = MFD_LOSS_REFORM, .auto_ms = 5000};
     mfd_group_push(&d, g);
@@ -73,8 +73,8 @@ int main(void) {
     h->to = 3;
     h->since = 41;
     h->pin = ml_some((uint32_t[]){3}, 1);
-    h->needs.replicas = (msn_replicas){false, 2};
-    msn_terms_push(&h->needs.prefer, msn_term_new(MSN_HOST, "dgx-00", 0));
+    h->needs.replicas = (mesh_replicas){false, 2};
+    msn_terms_push(&h->needs.prefer, &h->needs.nprefer, msn_term_new(MESH_TERM_HOST, "dgx-00", 0));
     mt_set(&h->why, "replicas 2: system 1 0.812, system 3 0.700; next system 0 0.6");
     mfd_prog *t = mfd_prog_get(&x, "train");
     t->at = ml_some(NULL, 0);

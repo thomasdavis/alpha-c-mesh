@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/tui-chart",
+  "version": "0.1.0",
+  "description": "Line and scatter charts with axes, labels and a legend, as ratatui's Chart",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-chart",
+  "keywords": ["tui", "terminal", "chart", "plot", "ratatui"],
+  "ldflags": ["-lm"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/tui-canvas": "workspace:*", "@ajax/tui-layout": "workspace:*"}
+}

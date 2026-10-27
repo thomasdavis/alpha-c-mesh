@@ -26,7 +26,7 @@ typedef struct {
     bool has_prev;      /* the image before the last upgrade, for `rollback` */
     char *prev_dir;
     uint64_t prev_hash;
-    msn_needs needs;    /* the manifest's scheduling keys */
+    mesh_needs needs;    /* the manifest's scheduling keys */
     ml_opt at;          /* the scheduler's placement (none: every member that can) */
     bool has_from;      /* a migration in flight: the member whose view the new member takes */
     uint32_t from;
@@ -38,7 +38,7 @@ typedef struct {
 } mfd_prog;
 
 /* A ProgSpec with Rust's empty/None defaults and these needs (copied). */
-mfd_prog mfd_prog_new(const char *dir, uint64_t hash, bool run, const msn_needs *needs);
+mfd_prog mfd_prog_new(const char *dir, uint64_t hash, bool run, const mesh_needs *needs);
 mfd_prog mfd_prog_clone(const mfd_prog *p);
 bool mfd_prog_eq(const mfd_prog *a, const mfd_prog *b);
 void mfd_prog_free(mfd_prog *p);

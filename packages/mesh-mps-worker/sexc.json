@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-mps-worker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "meshd worker: one program image in its own MPS client process, which maps the mailbox, loads its cubin and launches when meshd says so",
   "kind": "library",
   "license": "MIT",

@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-top-client",
+  "version": "0.1.0",
+  "description": "mesh-top's endpoint threads: one persistent meshd control-port connection each, polling snap and running the viewer's commands, with backoff and per-command reply timeouts",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-top-client",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "mesh-top",
+    "client",
+    "tcp"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-lm",
+    "-lpthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-top-snap": "workspace:*",
+    "@ajax/mesh-top-app": "workspace:*"
+  }
+}

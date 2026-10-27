@@ -61,7 +61,7 @@ mt_strs mrc_stop_order(const mfd_doc *doc, const mt_strs *names) {
             for (size_t j = 0; j < left.n && !fed; j++) {
                 if (!strcmp(left.v[j], left.v[i])) continue;
                 const mfd_prog *o = mfd_prog_get(doc, left.v[j]);
-                if (o && mt_strs_has(&o->needs.feeds, left.v[i])) fed = true;
+                if (o && msn_strs_has(o->needs.feeds, o->needs.nfeeds, left.v[i])) fed = true;
             }
             if (!fed) {
                 pick = i;

@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/wasm-fuse",
+  "version": "0.1.0",
+  "description": "Fuses local.get and constants into the next instruction of lowered WebAssembly code (superinstructions), remapping every branch",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "interpreter", "optimizer", "superinstructions"],
+  "dependencies": {"@ajax/wasm-lower": "workspace:*", "@ajax/wasm-opcodes": "workspace:*", "@ajax/mesh-check": "workspace:*",
+                   "@ajax/wasm-builder": "workspace:*", "@ajax/wasm-decode": "workspace:*", "@ajax/wasm-validate": "workspace:*"}
+}

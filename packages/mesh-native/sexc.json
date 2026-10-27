@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-native",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The native executor: programs that are executables run as worker processes on the shared mailbox, with limits, crash reports and a process per image",
   "kind": "library",
   "license": "MIT",

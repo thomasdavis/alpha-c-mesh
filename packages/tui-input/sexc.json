@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/tui-input",
+  "version": "0.1.0",
+  "description": "Key events from terminal input bytes (arrows, function keys, Ctrl, UTF-8), as crossterm decodes them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-input",
+  "keywords": ["tui", "terminal", "keyboard", "input", "crossterm"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/tui-utf8": "workspace:*"}
+}

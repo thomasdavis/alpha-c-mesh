@@ -6,6 +6,7 @@
 
 static uint64_t committed_version(sim_t *s, uint32_t k) { return mfc_committed(s->cores[k])->version; }
 
+/* fleet.rs a_leader_is_elected_and_commits */
 static void elected_and_commits(void) {
     for (uint32_t n = 3; n <= 5; n++) {
         sim_t s;
@@ -41,6 +42,7 @@ static void elected_and_commits(void) {
     }
 }
 
+/* fleet.rs a_minority_refuses_changes */
 static void minority_refuses(void) {
     sim_t s;
     sim_init(&s, 5, 11, 0);
@@ -72,6 +74,7 @@ static void minority_refuses(void) {
     sim_free(&s);
 }
 
+/* fleet.rs two_two_split_has_no_leader */
 static void two_two_split(void) {
     sim_t s;
     sim_init(&s, 4, 3, 0);
@@ -87,6 +90,7 @@ static void two_two_split(void) {
     sim_free(&s);
 }
 
+/* fleet.rs no_two_leaders_in_a_term_randomised (and its #[ignore]d long run: `election N`) */
 static void randomised(uint64_t from, uint64_t to) {
     uint64_t terms = 0, versions = 0, stops = 0, count = to - from;
     for (uint64_t seed = from; seed < to; seed++) {
@@ -155,6 +159,7 @@ static void randomised(uint64_t from, uint64_t to) {
             (unsigned long long)terms, (unsigned long long)versions, (unsigned long long)stops);
 }
 
+/* fleet.rs a_pair_has_a_fixed_coordinator */
 static void pair_fixed(void) {
     sim_t s;
     sim_init(&s, 2, 5, 0);
@@ -182,6 +187,7 @@ static void pair_fixed(void) {
     sim_free(&s);
 }
 
+/* fleet.rs terms_and_votes_survive_restarts */
 static void terms_and_votes_survive(void) {
     sim_t s;
     sim_init(&s, 3, 99, 0);
