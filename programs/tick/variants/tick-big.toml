@@ -1,0 +1,15 @@
+# tick-big: a variant of tick (scripts/build-programs.sh copies tick's images under this name). a 6 MiB view (the view heap is 7 MiB): the migration moves all of it.
+name       = "tick-big"
+abi        = 6
+view_abi   = 1
+snap_bytes = 0x40
+nodes      = 1
+policy     = "periodic"
+hz         = 50
+counters   = ["ticks", "inits", "", ""]
+fields     = ["magic:u32:0x0", "ticks:u32:0x4", "inits:u32:0x8", "mismatches:u32:0xc"]
+autostart  = false
+backends   = ["cuda", "metal", "wasm"]
+replicas   = 1
+task_ms    = 2000
+view_bytes = 0x600000

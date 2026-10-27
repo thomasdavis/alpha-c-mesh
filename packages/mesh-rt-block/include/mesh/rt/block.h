@@ -55,106 +55,106 @@ _Static_assert(MESH_RT_DESC + 0x20u <= MESH_RT_RED && MESH_RT_BCAST + 8u <= MESH
 
 /* ---- the fixed operations (mesh_ref::block has the same) */
 /* f32 sum's identity: -0.0 (x + -0.0 == x for every x, +0 and -0 included). */
-#define MESH_SUM_F32_ID (-0.0f)
+#define MESH_RT_SUM_F32_ID (-0.0f)
 /* f32 max's identity: the least value of the total order (a negative NaN, all bits set). */
-#define MESH_MAX_F32_ID_BITS 0xffffffffu
+#define MESH_RT_MAX_F32_ID_BITS 0xffffffffu
 MESH_RT_INLINE uint32_t mesh_rt_order_key(uint32_t b) { return (b & 0x80000000u) ? ~b : (b | 0x80000000u); }
 /* The larger of a and b in the IEEE total order of their bits (one of them, unchanged). */
-MESH_RT_INLINE float mesh_max_f32(float a, float b) {
+MESH_RT_INLINE float mesh_rt_max_f32(float a, float b) {
     return mesh_rt_order_key(mesh_f32_bits(b)) > mesh_rt_order_key(mesh_f32_bits(a)) ? b : a;
 }
-MESH_RT_INLINE float mesh_add_f32(float a, float b) { return a + b; }
-MESH_RT_INLINE uint32_t mesh_add_u32(uint32_t a, uint32_t b) { return a + b; }
-MESH_RT_INLINE uint32_t mesh_max_u32(uint32_t a, uint32_t b) { return a > b ? a : b; }
-MESH_RT_INLINE uint32_t mesh_min_u32(uint32_t a, uint32_t b) { return a < b ? a : b; }
-MESH_RT_INLINE uint64_t mesh_add_u64(uint64_t a, uint64_t b) { return a + b; }
-MESH_RT_INLINE uint64_t mesh_max_u64(uint64_t a, uint64_t b) { return a > b ? a : b; }
-MESH_RT_INLINE uint64_t mesh_min_u64(uint64_t a, uint64_t b) { return a < b ? a : b; }
+MESH_RT_INLINE float mesh_rt_add_f32(float a, float b) { return a + b; }
+MESH_RT_INLINE uint32_t mesh_rt_add_u32(uint32_t a, uint32_t b) { return a + b; }
+MESH_RT_INLINE uint32_t mesh_rt_max_u32(uint32_t a, uint32_t b) { return a > b ? a : b; }
+MESH_RT_INLINE uint32_t mesh_rt_min_u32(uint32_t a, uint32_t b) { return a < b ? a : b; }
+MESH_RT_INLINE uint64_t mesh_rt_add_u64(uint64_t a, uint64_t b) { return a + b; }
+MESH_RT_INLINE uint64_t mesh_rt_max_u64(uint64_t a, uint64_t b) { return a > b ? a : b; }
+MESH_RT_INLINE uint64_t mesh_rt_min_u64(uint64_t a, uint64_t b) { return a < b ? a : b; }
 
-typedef uint32_t (*mesh_op_u32)(uint32_t, uint32_t);
-typedef float (*mesh_op_f32)(float, float);
-typedef uint64_t (*mesh_op_u64)(uint64_t, uint64_t);
+typedef uint32_t (*mesh_rt_op_u32)(uint32_t, uint32_t);
+typedef float (*mesh_rt_op_f32)(float, float);
+typedef uint64_t (*mesh_rt_op_u64)(uint64_t, uint64_t);
 
 /* ---- moving words between lanes and through shared memory (Rust's Word) */
-MESH_RT_INLINE uint32_t mesh_word_u32_xor(uint32_t v, uint32_t m) { return mesh_rt_shfl_bfly(v, m); }
-MESH_RT_INLINE uint32_t mesh_word_u32_up(uint32_t v, uint32_t d) { return mesh_rt_shfl_up(v, d); }
-MESH_RT_INLINE uint32_t mesh_word_u32_idx(uint32_t v, uint32_t s) { return mesh_rt_shfl_idx(v, s); }
-MESH_RT_INLINE uint32_t mesh_word_u32_load(const uint8_t *p) { return *(const volatile uint32_t *)(const volatile void *)p; }
-MESH_RT_INLINE void mesh_word_u32_store(uint32_t v, uint8_t *p) { *(volatile uint32_t *)(volatile void *)p = v; }
+MESH_RT_INLINE uint32_t mesh_rt_word_u32_xor(uint32_t v, uint32_t m) { return mesh_rt_shfl_bfly(v, m); }
+MESH_RT_INLINE uint32_t mesh_rt_word_u32_up(uint32_t v, uint32_t d) { return mesh_rt_shfl_up(v, d); }
+MESH_RT_INLINE uint32_t mesh_rt_word_u32_idx(uint32_t v, uint32_t s) { return mesh_rt_shfl_idx(v, s); }
+MESH_RT_INLINE uint32_t mesh_rt_word_u32_load(const uint8_t *p) { return *(const volatile uint32_t *)(const volatile void *)p; }
+MESH_RT_INLINE void mesh_rt_word_u32_store(uint32_t v, uint8_t *p) { *(volatile uint32_t *)(volatile void *)p = v; }
 
-MESH_RT_INLINE float mesh_word_f32_xor(float v, uint32_t m) { return mesh_f32_from_bits(mesh_rt_shfl_bfly(mesh_f32_bits(v), m)); }
-MESH_RT_INLINE float mesh_word_f32_up(float v, uint32_t d) { return mesh_f32_from_bits(mesh_rt_shfl_up(mesh_f32_bits(v), d)); }
-MESH_RT_INLINE float mesh_word_f32_idx(float v, uint32_t s) { return mesh_f32_from_bits(mesh_rt_shfl_idx(mesh_f32_bits(v), s)); }
-MESH_RT_INLINE float mesh_word_f32_load(const uint8_t *p) { return mesh_f32_from_bits(mesh_word_u32_load(p)); }
-MESH_RT_INLINE void mesh_word_f32_store(float v, uint8_t *p) { mesh_word_u32_store(mesh_f32_bits(v), p); }
+MESH_RT_INLINE float mesh_rt_word_f32_xor(float v, uint32_t m) { return mesh_f32_from_bits(mesh_rt_shfl_bfly(mesh_f32_bits(v), m)); }
+MESH_RT_INLINE float mesh_rt_word_f32_up(float v, uint32_t d) { return mesh_f32_from_bits(mesh_rt_shfl_up(mesh_f32_bits(v), d)); }
+MESH_RT_INLINE float mesh_rt_word_f32_idx(float v, uint32_t s) { return mesh_f32_from_bits(mesh_rt_shfl_idx(mesh_f32_bits(v), s)); }
+MESH_RT_INLINE float mesh_rt_word_f32_load(const uint8_t *p) { return mesh_f32_from_bits(mesh_rt_word_u32_load(p)); }
+MESH_RT_INLINE void mesh_rt_word_f32_store(float v, uint8_t *p) { mesh_rt_word_u32_store(mesh_f32_bits(v), p); }
 
-MESH_RT_INLINE uint64_t mesh_word_u64_xor(uint64_t v, uint32_t m) {
+MESH_RT_INLINE uint64_t mesh_rt_word_u64_xor(uint64_t v, uint32_t m) {
     return (uint64_t)mesh_rt_shfl_bfly((uint32_t)v, m) | (uint64_t)mesh_rt_shfl_bfly((uint32_t)(v >> 32), m) << 32;
 }
-MESH_RT_INLINE uint64_t mesh_word_u64_up(uint64_t v, uint32_t d) {
+MESH_RT_INLINE uint64_t mesh_rt_word_u64_up(uint64_t v, uint32_t d) {
     return (uint64_t)mesh_rt_shfl_up((uint32_t)v, d) | (uint64_t)mesh_rt_shfl_up((uint32_t)(v >> 32), d) << 32;
 }
-MESH_RT_INLINE uint64_t mesh_word_u64_idx(uint64_t v, uint32_t s) {
+MESH_RT_INLINE uint64_t mesh_rt_word_u64_idx(uint64_t v, uint32_t s) {
     return (uint64_t)mesh_rt_shfl_idx((uint32_t)v, s) | (uint64_t)mesh_rt_shfl_idx((uint32_t)(v >> 32), s) << 32;
 }
-MESH_RT_INLINE uint64_t mesh_word_u64_load(const uint8_t *p) { return *(const volatile uint64_t *)(const volatile void *)p; }
-MESH_RT_INLINE void mesh_word_u64_store(uint64_t v, uint8_t *p) { *(volatile uint64_t *)(volatile void *)p = v; }
+MESH_RT_INLINE uint64_t mesh_rt_word_u64_load(const uint8_t *p) { return *(const volatile uint64_t *)(const volatile void *)p; }
+MESH_RT_INLINE void mesh_rt_word_u64_store(uint64_t v, uint8_t *p) { *(volatile uint64_t *)(volatile void *)p = v; }
 
 /* The collectives for one word type T (suffix S): warp_reduce, warp_scan,
  * block reduce, scan and broadcast. */
 #define MESH_RT_COLLECTIVES(T, S)                                                                                  \
     /* Butterfly over the warp's 32 lanes (m = 16, 8, 4, 2, 1); every lane ends with the same value when op is \
      * commutative. Warp-collective. */                                                                          \
-    MESH_RT_INLINE T mesh_warp_reduce_##S(T v, mesh_op_##S op) {                                               \
-        for (uint32_t m = 16; m > 0; m >>= 1) v = op(v, mesh_word_##S##_xor(v, m));                           \
+    MESH_RT_INLINE T mesh_rt_warp_reduce_##S(T v, mesh_rt_op_##S op) {                                               \
+        for (uint32_t m = 16; m > 0; m >>= 1) v = op(v, mesh_rt_word_##S##_xor(v, m));                           \
         return v;                                                                                              \
     }                                                                                                          \
     /* Inclusive Hillis-Steele scan over the warp's lanes (d = 1, 2, 4, 8, 16: lane l >= d computes            \
      * op(lane l - d's value, its own)). Warp-collective. */                                                   \
-    MESH_RT_INLINE T mesh_warp_scan_##S(T v, mesh_op_##S op) {                                                 \
+    MESH_RT_INLINE T mesh_rt_warp_scan_##S(T v, mesh_rt_op_##S op) {                                                 \
         uint32_t l = mesh_rt_lane();                                                                           \
         for (uint32_t d = 1; d < 32; d <<= 1) {                                                                \
-            T y = mesh_word_##S##_up(v, d);                                                                    \
+            T y = mesh_rt_word_##S##_up(v, d);                                                                    \
             if (l >= d) v = op(y, v);                                                                          \
         }                                                                                                      \
         return v;                                                                                              \
     }                                                                                                          \
     /* Block reduction in the fixed order: every thread gets the result. */                                    \
-    MESH_RT_INLINE T mesh_block_reduce_##S(T v, T id, mesh_op_##S op) {                                       \
+    MESH_RT_INLINE T mesh_rt_block_reduce_##S(T v, T id, mesh_rt_op_##S op) {                                       \
         uint32_t l = mesh_rt_lane(), w = mesh_rt_tid() >> 5, warps = mesh_rt_ntid() >> 5;                     \
         uint8_t *s = mesh_rt_smem_base();                                                                     \
         mesh_rt_bar_sync();                                                                                    \
-        T r = mesh_warp_reduce_##S(v, op);                                                                     \
-        if (l == 0) mesh_word_##S##_store(r, s + MESH_RT_RED + 8u * w);                                       \
+        T r = mesh_rt_warp_reduce_##S(v, op);                                                                     \
+        if (l == 0) mesh_rt_word_##S##_store(r, s + MESH_RT_RED + 8u * w);                                       \
         mesh_rt_bar_sync();                                                                                    \
-        T x = l < warps ? mesh_word_##S##_load(s + MESH_RT_RED + 8u * l) : id;                                \
-        return mesh_warp_reduce_##S(x, op);                                                                    \
+        T x = l < warps ? mesh_rt_word_##S##_load(s + MESH_RT_RED + 8u * l) : id;                                \
+        return mesh_rt_warp_reduce_##S(x, op);                                                                    \
     }                                                                                                          \
     /* Block scan in the fixed order: inclusive, or exclusive (thread 0: id). */                               \
-    MESH_RT_INLINE T mesh_block_scan_##S(T v, T id, mesh_op_##S op, bool inclusive) {                         \
+    MESH_RT_INLINE T mesh_rt_block_scan_##S(T v, T id, mesh_rt_op_##S op, bool inclusive) {                         \
         uint32_t l = mesh_rt_lane(), w = mesh_rt_tid() >> 5, warps = mesh_rt_ntid() >> 5;                     \
         uint8_t *s = mesh_rt_smem_base();                                                                     \
         mesh_rt_bar_sync();                                                                                    \
-        T inc = mesh_warp_scan_##S(v, op);                                                                     \
-        if (l == 31) mesh_word_##S##_store(inc, s + MESH_RT_RED + 8u * w);                                    \
+        T inc = mesh_rt_warp_scan_##S(v, op);                                                                     \
+        if (l == 31) mesh_rt_word_##S##_store(inc, s + MESH_RT_RED + 8u * w);                                    \
         mesh_rt_bar_sync();                                                                                    \
-        T t = l < warps ? mesh_word_##S##_load(s + MESH_RT_RED + 8u * l) : id;                                \
-        T ts = mesh_warp_scan_##S(t, op);                                                                      \
+        T t = l < warps ? mesh_rt_word_##S##_load(s + MESH_RT_RED + 8u * l) : id;                                \
+        T ts = mesh_rt_warp_scan_##S(t, op);                                                                      \
         /* The total of warps 0..w-1 (lane w - 1's inclusive scan of the totals). */                          \
-        T prefix = mesh_word_##S##_idx(ts, (w - 1u) & 31u);                                                   \
+        T prefix = mesh_rt_word_##S##_idx(ts, (w - 1u) & 31u);                                                   \
         if (w != 0) inc = op(prefix, inc);                                                                     \
         if (inclusive) return inc;                                                                             \
-        T up = mesh_word_##S##_up(inc, 1);                                                                     \
+        T up = mesh_rt_word_##S##_up(inc, 1);                                                                     \
         if (l > 0) return up;                                                                                  \
         return w == 0 ? id : prefix;                                                                           \
     }                                                                                                          \
     /* Thread src's v on every thread of the block. */                                                         \
-    MESH_RT_INLINE T mesh_block_broadcast_##S(T v, uint32_t src) {                                            \
+    MESH_RT_INLINE T mesh_rt_block_broadcast_##S(T v, uint32_t src) {                                            \
         uint8_t *s = mesh_rt_smem_base();                                                                     \
         mesh_rt_bar_sync();                                                                                    \
-        if (mesh_rt_tid() == src) mesh_word_##S##_store(v, s + MESH_RT_BCAST);                                \
+        if (mesh_rt_tid() == src) mesh_rt_word_##S##_store(v, s + MESH_RT_BCAST);                                \
         mesh_rt_bar_sync();                                                                                    \
-        return mesh_word_##S##_load(s + MESH_RT_BCAST);                                                       \
+        return mesh_rt_word_##S##_load(s + MESH_RT_BCAST);                                                       \
     }
 
 MESH_RT_COLLECTIVES(uint32_t, u32)

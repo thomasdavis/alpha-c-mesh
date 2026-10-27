@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-prog-blocks",
+  "version": "0.1.0",
+  "description": "blocks, the mesh program that exercises every block collective of a multi-warp node, as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/blocks",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "collectives"],
+  "cflags": ["-ffp-contract=off"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-block": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

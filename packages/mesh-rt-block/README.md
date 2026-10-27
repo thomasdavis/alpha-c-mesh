@@ -7,7 +7,7 @@ warp scans, block reductions and scans over the 1024-leaf tree, broadcasts, and 
 of the node's shared memory.
 
 Rust's generic `Word` and closures become one function per type (`_u32`, `_f32`, `_u64`) taking the
-operation as a function pointer: `mesh_block_reduce_f32(v, MESH_SUM_F32_ID, mesh_add_f32)`. Every call is
+operation as a function pointer: `mesh_rt_block_reduce_f32(v, MESH_RT_SUM_F32_ID, mesh_rt_add_f32)`. Every call is
 inlined, so the operation is too.
 
 - **Ported from:** alpha-rust-mesh `crates/mesh-rt/src/block.rs`.

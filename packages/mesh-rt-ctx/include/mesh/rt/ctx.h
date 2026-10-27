@@ -155,28 +155,28 @@ MESH_RT_INLINE bool mesh_ctx_leader(const mesh_ctx *c) { return c->thread == 0; 
 
 /* ---- the block (every thread of the node calls these; @ajax/mesh-rt-block) */
 MESH_RT_INLINE void mesh_ctx_block_barrier(const mesh_ctx *c) { (void)c; mesh_rt_bar_sync(); }
-MESH_RT_INLINE uint32_t mesh_ctx_block_broadcast_u32(const mesh_ctx *c, uint32_t v, uint32_t src) { (void)c; return mesh_block_broadcast_u32(v, src); }
-MESH_RT_INLINE float mesh_ctx_block_broadcast_f32(const mesh_ctx *c, float v, uint32_t src) { (void)c; return mesh_block_broadcast_f32(v, src); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_broadcast_u64(const mesh_ctx *c, uint64_t v, uint32_t src) { (void)c; return mesh_block_broadcast_u64(v, src); }
-MESH_RT_INLINE uint32_t mesh_ctx_block_reduce_u32(const mesh_ctx *c, uint32_t v, uint32_t id, mesh_op_u32 op) { (void)c; return mesh_block_reduce_u32(v, id, op); }
-MESH_RT_INLINE float mesh_ctx_block_reduce_f32(const mesh_ctx *c, float v, float id, mesh_op_f32 op) { (void)c; return mesh_block_reduce_f32(v, id, op); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_reduce_u64(const mesh_ctx *c, uint64_t v, uint64_t id, mesh_op_u64 op) { (void)c; return mesh_block_reduce_u64(v, id, op); }
-MESH_RT_INLINE uint32_t mesh_ctx_block_scan_u32_op(const mesh_ctx *c, uint32_t v, uint32_t id, mesh_op_u32 op, bool inclusive) { (void)c; return mesh_block_scan_u32(v, id, op, inclusive); }
-MESH_RT_INLINE float mesh_ctx_block_scan_f32_op(const mesh_ctx *c, float v, float id, mesh_op_f32 op, bool inclusive) { (void)c; return mesh_block_scan_f32(v, id, op, inclusive); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_scan_u64_op(const mesh_ctx *c, uint64_t v, uint64_t id, mesh_op_u64 op, bool inclusive) { (void)c; return mesh_block_scan_u64(v, id, op, inclusive); }
-MESH_RT_INLINE float mesh_ctx_block_sum_f32(const mesh_ctx *c, float v) { (void)c; return mesh_block_reduce_f32(v, MESH_SUM_F32_ID, mesh_add_f32); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_broadcast_u32(const mesh_ctx *c, uint32_t v, uint32_t src) { (void)c; return mesh_rt_block_broadcast_u32(v, src); }
+MESH_RT_INLINE float mesh_ctx_block_broadcast_f32(const mesh_ctx *c, float v, uint32_t src) { (void)c; return mesh_rt_block_broadcast_f32(v, src); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_broadcast_u64(const mesh_ctx *c, uint64_t v, uint32_t src) { (void)c; return mesh_rt_block_broadcast_u64(v, src); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_reduce_u32(const mesh_ctx *c, uint32_t v, uint32_t id, mesh_rt_op_u32 op) { (void)c; return mesh_rt_block_reduce_u32(v, id, op); }
+MESH_RT_INLINE float mesh_ctx_block_reduce_f32(const mesh_ctx *c, float v, float id, mesh_rt_op_f32 op) { (void)c; return mesh_rt_block_reduce_f32(v, id, op); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_reduce_u64(const mesh_ctx *c, uint64_t v, uint64_t id, mesh_rt_op_u64 op) { (void)c; return mesh_rt_block_reduce_u64(v, id, op); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_scan_u32_op(const mesh_ctx *c, uint32_t v, uint32_t id, mesh_rt_op_u32 op, bool inclusive) { (void)c; return mesh_rt_block_scan_u32(v, id, op, inclusive); }
+MESH_RT_INLINE float mesh_ctx_block_scan_f32_op(const mesh_ctx *c, float v, float id, mesh_rt_op_f32 op, bool inclusive) { (void)c; return mesh_rt_block_scan_f32(v, id, op, inclusive); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_scan_u64_op(const mesh_ctx *c, uint64_t v, uint64_t id, mesh_rt_op_u64 op, bool inclusive) { (void)c; return mesh_rt_block_scan_u64(v, id, op, inclusive); }
+MESH_RT_INLINE float mesh_ctx_block_sum_f32(const mesh_ctx *c, float v) { (void)c; return mesh_rt_block_reduce_f32(v, MESH_RT_SUM_F32_ID, mesh_rt_add_f32); }
 MESH_RT_INLINE float mesh_ctx_block_max_f32(const mesh_ctx *c, float v) {
     (void)c;
-    return mesh_block_reduce_f32(v, mesh_f32_from_bits(MESH_MAX_F32_ID_BITS), mesh_max_f32);
+    return mesh_rt_block_reduce_f32(v, mesh_f32_from_bits(MESH_RT_MAX_F32_ID_BITS), mesh_rt_max_f32);
 }
-MESH_RT_INLINE uint32_t mesh_ctx_block_sum_u32(const mesh_ctx *c, uint32_t v) { (void)c; return mesh_block_reduce_u32(v, 0, mesh_add_u32); }
-MESH_RT_INLINE uint32_t mesh_ctx_block_max_u32(const mesh_ctx *c, uint32_t v) { (void)c; return mesh_block_reduce_u32(v, 0, mesh_max_u32); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_sum_u64(const mesh_ctx *c, uint64_t v) { (void)c; return mesh_block_reduce_u64(v, 0, mesh_add_u64); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_max_u64(const mesh_ctx *c, uint64_t v) { (void)c; return mesh_block_reduce_u64(v, 0, mesh_max_u64); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_sum_u32(const mesh_ctx *c, uint32_t v) { (void)c; return mesh_rt_block_reduce_u32(v, 0, mesh_rt_add_u32); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_max_u32(const mesh_ctx *c, uint32_t v) { (void)c; return mesh_rt_block_reduce_u32(v, 0, mesh_rt_max_u32); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_sum_u64(const mesh_ctx *c, uint64_t v) { (void)c; return mesh_rt_block_reduce_u64(v, 0, mesh_rt_add_u64); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_max_u64(const mesh_ctx *c, uint64_t v) { (void)c; return mesh_rt_block_reduce_u64(v, 0, mesh_rt_max_u64); }
 /* Inclusive / exclusive prefix sums over the node's threads in thread order. */
-MESH_RT_INLINE float mesh_ctx_block_scan_f32(const mesh_ctx *c, float v, bool inclusive) { (void)c; return mesh_block_scan_f32(v, MESH_SUM_F32_ID, mesh_add_f32, inclusive); }
-MESH_RT_INLINE uint32_t mesh_ctx_block_scan_u32(const mesh_ctx *c, uint32_t v, bool inclusive) { (void)c; return mesh_block_scan_u32(v, 0, mesh_add_u32, inclusive); }
-MESH_RT_INLINE uint64_t mesh_ctx_block_scan_u64(const mesh_ctx *c, uint64_t v, bool inclusive) { (void)c; return mesh_block_scan_u64(v, 0, mesh_add_u64, inclusive); }
+MESH_RT_INLINE float mesh_ctx_block_scan_f32(const mesh_ctx *c, float v, bool inclusive) { (void)c; return mesh_rt_block_scan_f32(v, MESH_RT_SUM_F32_ID, mesh_rt_add_f32, inclusive); }
+MESH_RT_INLINE uint32_t mesh_ctx_block_scan_u32(const mesh_ctx *c, uint32_t v, bool inclusive) { (void)c; return mesh_rt_block_scan_u32(v, 0, mesh_rt_add_u32, inclusive); }
+MESH_RT_INLINE uint64_t mesh_ctx_block_scan_u64(const mesh_ctx *c, uint64_t v, bool inclusive) { (void)c; return mesh_rt_block_scan_u64(v, 0, mesh_rt_add_u64, inclusive); }
 /* A block-strided loop: i = thread(), thread() + threads(), .. < n (Rust's for_strided). */
 #define MESH_CTX_FOR_STRIDED(c, n, i) for (uint32_t i = (c)->thread, i##_end_ = (n); i < i##_end_; i += mesh_ctx_threads(c))
 

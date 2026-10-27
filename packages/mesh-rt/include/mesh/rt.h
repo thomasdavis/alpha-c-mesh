@@ -39,10 +39,16 @@
     /* The runtime contract this image was built against (meshd refuses a mismatch). */                           \
     __attribute__((used)) const uint32_t mesh_rt_abi_symbol_ __asm__("MESH_RT_ABI") = MESH_RT_ABI
 #else
-void mesh_main(uint8_t *mb, uint32_t slot);
-#define MESH_PROGRAM(INIT, TASK)                                                       \
-    void mesh_main(uint8_t *mb, uint32_t slot) { mesh_rt_run(mb, slot, INIT, TASK); } \
-    const uint32_t mesh_rt_abi_symbol_ = MESH_RT_ABI
+/* On the host the kernel is an ordinary function for @ajax/mesh-rt-sim's
+ * launcher, named mesh_main unless MESH_SIM_KERNEL says otherwise (a test that
+ * runs two programs includes each with its own name). */
+#ifndef MESH_SIM_KERNEL
+#define MESH_SIM_KERNEL mesh_main
+#endif
+#define MESH_PROGRAM(INIT, TASK)                                                                   \
+    void MESH_SIM_KERNEL(uint8_t *mb, uint32_t slot);                                              \
+    void MESH_SIM_KERNEL(uint8_t *mb, uint32_t slot) { mesh_rt_run(mb, slot, INIT, TASK); }        \
+    _Static_assert(MESH_RT_ABI > 0, "the runtime contract")
 #endif
 
 #endif
