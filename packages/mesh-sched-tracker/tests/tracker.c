@@ -321,6 +321,7 @@ static void pin_never_splits(void) {
 
 /* A simulated fleet over 10 minutes: members leave and return, the load oscillates on one member; the
  * placement stays valid at every step and programs do not flap. */
+/* sched_tests.rs simulation_is_stable_and_valid */
 static void simulation(void) {
     msw_weights w = msw_default();
     w.hold_ms = 6000, w.dwell_ms = 20000, w.per_min = 3, w.replace_ms = 3000;

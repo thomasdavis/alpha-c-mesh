@@ -123,6 +123,7 @@ static bool n5_filter(uint32_t f, uint32_t t, const mfc_msg *m) {
 }
 
 /* N = 3: a new leader whose committed document is behind must not catch a follower "up" to it. */
+/* fleet.rs catch_up_never_regresses_a_committed_document */
 static void never_regresses(void) {
     net_t n;
     net_init(&n, 3);
@@ -149,6 +150,7 @@ static void never_regresses(void) {
 }
 
 /* A follower that missed a commit while away catches up even past an abandoned proposal. */
+/* fleet.rs a_follower_catches_up_past_an_abandoned_proposal */
 static void past_abandoned(void) {
     net_t n;
     net_init(&n, 3);
@@ -176,6 +178,7 @@ static void past_abandoned(void) {
 }
 
 /* N = 5: version 2 (x) committed on {0, 1, 2}; two leader changes lose nothing. */
+/* fleet.rs a_committed_version_survives_two_leader_changes_n5 */
 static void survives_two_changes(void) {
     net_t n;
     net_init(&n, 5);
@@ -224,6 +227,7 @@ static bool has_send(const mfc_outs *o, mfc_msg_kind kind, int to, int granted) 
 }
 
 /* Review finding 4: a vote (or an acknowledgement) whose persist failed is never sent. */
+/* fleet.rs nothing_leaves_without_its_persist */
 static void nothing_leaves_without_persist(void) {
     mfc_core *c = mfc_new((mfc_config){1, 3, 3000, 3}, (mfp_persist){0}, 1);
     mfc_outs o = mfc_link(c, 0, true, 1);
