@@ -2,7 +2,8 @@
 
 meshd itself: the driver thread, the shared state and its messages, the control and HTTP ports, the
 load and network telemetry, inference requests, the command line, and `apps/meshd`, which wires the
-other areas' executors in. 28 packages and one app; everything that runs without a GPU is tested.
+other areas' executors, fleet and jobs in. 29 packages and one app; everything that runs without a GPU is
+tested, a three-member fleet of whole meshds included.
 
 ## Rust → C
 
@@ -32,6 +33,8 @@ other areas' executors in. 28 packages and one app; everything that runs without
 | `infer.rs` (`Svc`) | `mesh-infer-svc` | `mesh_infer_svc_*` |
 | `inferd.rs` | `mesh-inferd` | `mesh_inferd_run`, `mesh_inferd_members_of` |
 | `args.rs` | `mesh-args` | `mesh_args_parse`, `mesh_args_backend_of`, `MESH_ARGS_USAGE` |
+| `main.rs` (the fleet member's start), `peer.rs` (`run`'s start, `writer`, the reader's direct frames, `catalog`, `serve_image`, `send_view`), `reconcile.rs` (`run`'s driver calls), `load.rs` (`perf_report`) | `mesh-fleetd` | `mesh_fleetd_open/caps/start/stop/free` (the relay's `mpr_host`, the reconciler's `mrc_ops`, the bridges, `mesh_load_perf`) |
+| `driver.rs` (placement: `PSlot`, `sync_place`, `place_acts`, `apply_mode`, `place_tick`, `place_frame`, `placed_here`, `place_report`) | `mesh-driver` (`src/place.c`) | `drv_sync_place`, `drv_place_*`, `drv_cmd_place`, `drv_cmd_peer_*`, `drv_cmd_fleet_view` (internal) |
 | `main.rs` | `apps/meshd` | `meshd_main` |
 | Rust's `String`/`format!`, `mpsc`, reply senders | `mesh-buf`, `mesh-rsfmt`, `mesh-chan`, `mesh-reply` | building blocks |
 
@@ -39,6 +42,20 @@ other areas' executors in. 28 packages and one app; everything that runs without
 
 - **The Rust's unit tests**, ported one for one: args (4), views (1), net (7), load (8), status (1),
   programs (4), publish (3), driver (2), control (1), http (1), infer (3).
+- **A fleet of three whole meshds** (apps/meshd's `tests/cluster.c`, `--backend wasm` on loopback, one
+  cluster config): they elect one leader and agree on it, the term and the committed version; `load`
+  and `start` asked of a follower commit through the leader and every member reconciles them (the
+  image from its own catalog); `job submit hashjob items 240` on a follower runs on the three members'
+  wasm lanes (188 / 27 / 25 items in one run) and `job results` holds every item exactly once, each
+  result and job_out recomputed in the test with mesh-ref's sha256d; `jobs` answers on every member and
+  the HTTP relay answers; a member killed with SIGKILL is seen `down` by the two left, which keep their
+  leader and commit a change (`stop hashjob`: the dead member `absent: reconcile on join`); the two exit
+  0 on SIGTERM. About 25 s.
+- **Placement in the driver** (mesh-driver's `tests/place.c`): a peered driver over the fake executor
+  with a placeable program: the report, a pin asked of the leader, a refusal as a follower, the
+  leader's PL_SET pinning it elsewhere (state written into the view, its kernel stopped, start and
+  reset refused with the Rust's reason, input forwarded as F_INPUT, PL_DONE back, the inventory still
+  counting it run), back to local, unload.
 - **Golden text from the Rust**: Rust's formatting rules (`{:?}` of strings and durations, float
   `Display`, `from_utf8_lossy`, number parsing) were checked against rustc 1.88's output.
 - **End to end**: the driver over a fake executor (mesh-driver's test); the control port and the HTTP
@@ -52,22 +69,31 @@ other areas' executors in. 28 packages and one app; everything that runs without
 
 `meshd --backend wasm --programs DIR [--autoload] [--state FILE]` is a working CPU-only meshd: wasm
 programs on lease lanes and native worker processes on one shared mailbox, every lifecycle operation,
-the control port (every single-machine request), the HTTP port (the views, the relay to an http
-program, infer), the load and NIC telemetry, `--state`, signals and the watchdog. With a GPU, the CUDA
-backend (blink or `--isolation mps`) is exec's and is wired the way docs/port/exec.md says.
+the control port (every request), the HTTP port (the views, the relay to an http program, infer), the
+load and NIC telemetry, `--state`, signals and the watchdog, and the job table (`job submit`, `jobs`,
+`job status`, `job results`; payloads in the blob store) with its own leader.
 
-## Not wired yet (the integration that remains)
+With `--cluster FILE --system K --fleet-state FILE` (or `--peer` / `--peer-listen` for a pair) it is a
+fleet member: links to every member, the election and the committed desired state, changes asked of
+any member committed by the leader and reconciled on every member (images from the local catalog or
+fetched from a member), the scheduler's model and texts (`fleet`, `groups`, `sched`, `view fleet`),
+F_LOADREP and F_PERF every second, jobs leased across the members' executors and committed by a
+majority, placement of a placeable program (pin / split) coordinated by the leader, and the lockstep
+data plane. With a GPU, the CUDA backend (blink or `--isolation mps`) is exec's and is wired the way
+docs/port/exec.md says.
 
-- **The fleet thread** (peer.rs `run`): links, beats, the leader, the reconciler, the scheduler's
-  texts. meshd refuses `--cluster`/`--peer` with that reason. The fleet area's packages exist
-  (mesh-peer-link, mesh-peer-codec, mesh-reconcile, mesh-fleet-*, mesh-sched-*); what is missing is
-  the thread that drives them over `mesh_shared` (its `peer` channel, `link_out`/`bulk_out` queues,
-  `fleet_text`, `sched_*`, `fleet_view`) and the F_PERF hook `mesh_load_perf`.
-- **Placement in the driver** (place.rs's Placer, the fleet area's @ajax/mesh-placer): see
-  mesh-driver's README for the exact functions.
-- **The jobs and blob threads** (jobd.rs, blobd.rs `run`): the jobs area. meshd closes the jobs
-  channel so `jobs` requests answer at once; `render` goes through `mesh_control_render`.
+## What remains
+
 - **gpt2x.rs** (the host side of programs/gpt2x, on exec's mesh-inproc): runs only on a GPU; not ported.
+- **Not exercised without a GPU**: placement end to end (the only placeable program, doom, is a GPU
+  program; the driver's placement is tested over a fake executor, the placer in mesh-placer), a
+  lockstep group across members (train is GPU; the relay's data plane is the fleet area's, tested in
+  pieces); a migration's view transfer between real meshds is not driven by a test either.
+- **One process, one fleet member**: `mesh_load_perf` is a process-wide hook, so mesh-fleetd keeps
+  its member in a static (meshd has one).
+- **The relay's own changes**: `mpr_board_rtts` was added to @ajax/mesh-peer-relay (0.1.1) for the
+  F_PERF's link RTTs; nothing else of the fleet's, jobs' or exec's packages changed.
+- meshd exits without stopping the fleet, jobs and blob threads, as the Rust's `log::exit` does.
 
 ## Notes for the integrator
 

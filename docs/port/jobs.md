@@ -182,12 +182,10 @@ with a fake driver:
 
 ## Gaps
 
-- **meshd is not wired yet.** `apps/meshd` still closes `sh->jobs`. The wiring above is DAEMON's
-  (or the lead's) to do; `mesh-jobd`'s test exercises the same calls in-process.
-- **No two-meshd test.** The threads are tested single and as a follower with a fake fleet thread.
-  A fleet of real meshds exchanging F_JOB_* and F_BLOB_* frames over `mesh-peer-relay` has not run
-  here. The node and blobd logic is exercised fleet-wide in `mesh-jobs-sim` and in blobd's
-  three-node test.
+- **Wired (DAEMON, final integration).** `apps/meshd` opens the job log and the blob store with
+  `mjd_open`, sets `mesh_control_render = mjd_render` and starts both threads with `mjd_start`; the
+  fleet's hooks are `@ajax/mesh-fleetd`'s. apps/meshd's `tests/cluster.c` runs a hashjob array on a
+  fleet of three real meshds over `mesh-peer-relay`: every item exactly once, each result recomputed.
 - **Loaded box.** Under a load average of 40–60 on 8 cores, the sim programs need
   `sexc test --timeout 600`.
 - **No Metal.** Nothing in this area is GPU code.

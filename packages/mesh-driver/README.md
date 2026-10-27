@@ -21,11 +21,12 @@ Executors are per slot (mesh-abi PX_EXEC): the GPU backend and beside it the CPU
 ## Tests
 
 - `tests/driver.c`: driver.rs's `job_setup_in_order` and `reads_by_name`; and the driver end to end over a fake CPU executor whose nodes are a thread playing mesh-rt's node loop: autoload (and a program it may not run), the blink, OP_INIT, tasks, refusals, stop and start, reset, `--state`, unload and load into the freed slot, shutdown.
-- apps/meshd's test runs it with the real wasm and native executors.
+- `tests/place.c`: placement over the fake executor, peered (member 0 of 2) with a placeable program: the `place` report, a pin asked of the leader, the refusal as a follower, the leader's PL_SET pinning it elsewhere (its state written into the view, its kernel stopped, start and reset refused, input forwarded as F_INPUT, PL_DONE answered, the inventory counting it run), back to local, unload.
+- apps/meshd's tests run it with the real wasm and native executors, single and as a fleet of three.
 
-## Differences
+## Placement
 
-- **Placement (place.rs) is not wired**: no placer is ever created (as in a single meshd, or a program without `place`), so `place` answers "declares no `place`" when peered and F_PLACE/F_FRAME from members are logged and dropped. The fleet area's @ajax/mesh-placer provides the Placer; wiring it means `sync_place`, `place_acts`, `apply_mode`, `place_tick`, `place_frame` and the role checks in `publish_slot`, `ProgRun`, `Reset` and `Input`.
+- **Placement** is the fleet area's @ajax/mesh-placer, one per placeable program when peered (`src/place.c`: driver.rs's `sync_place`, `place_acts`, `apply_mode`, `place_tick`, `place_frame` and the role checks in `publish_slot`, ProgRun, Reset, run requests and Input).
 - The JIT runs one detached thread per load or upgrade, as the Rust's `std::thread::spawn`.
 
 ## Licence

@@ -144,7 +144,10 @@ Each layer uses only the layers below it (and the `mesh-abi-*` contract).
 - The relay's lockstep data plane (HELLO, rounds), image fetch and migration view transfer compile
   and are ported line by line. Their pure pieces are tested (`mesh-peer-view`, `mesh-peer-codec`,
   `mesh-sched-tracker`'s verdicts), but the loopback simulation does not drive them end to end. That
-  needs a driver with programs in the mailbox, which is DAEMON's integration.
+  needs a driver with programs in the mailbox: DAEMON's integration (`@ajax/mesh-fleetd`) runs the
+  relay inside real meshds (apps/meshd `tests/cluster.c`: election, changes, reconcile, a member
+  killed); the lockstep data plane (its programs are GPU programs) and a migration's view transfer
+  are still not driven end to end by a test.
 - The relay's published texts (`fleet`, `groups`, `sched`, the view records) follow the Rust
   format strings but have no golden vectors. The pure functions under them do.
 - The fleet view's JSON form (views.rs) is not here; the relay produces the text form.
