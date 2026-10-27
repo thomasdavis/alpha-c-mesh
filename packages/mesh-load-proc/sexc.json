@@ -1,0 +1,28 @@
+{
+  "name": "@ajax/mesh-load-proc",
+  "version": "0.1.0",
+  "description": "Parsers of the Linux /proc files the load sampler reads: stat, pressure, meminfo, loadavg, key-value files",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-load-proc",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "proc",
+    "cpu",
+    "psi",
+    "memory"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-host-load": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

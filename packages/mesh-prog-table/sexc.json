@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-prog-table",
+  "version": "0.1.0",
+  "description": "meshd's writes to the program table: entries and pipe blocks under the PT_GEN seqlock, state changes, inbox holds, flight words, fresh slots, lookups",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-prog-table",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "program-table",
+    "seqlock",
+    "mailbox"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@ajax/mesh-infer-svc",
+  "version": "0.1.0",
+  "description": "Where each member's inference services listen, and the address one member dials for another's",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-infer-svc",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "inference",
+    "gpt2",
+    "addresses",
+    "cluster"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

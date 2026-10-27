@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-rt-wasm",
+  "version": "0.1.0",
+  "description": "The guest runtime of wasm CPU mesh programs: Ctx, View, Exchange and MESH_PROGRAM over the mesh::* imports (wasm32)",
+  "kind": "library",
+  "targets": ["wasm32"],
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-wasm",
+  "keywords": ["mesh", "alphaos", "wasm", "runtime", "guest"],
+  "dependencies": {
+    "@ajax/mesh-abi-wasm": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-ftz": "workspace:*"
+  }
+}

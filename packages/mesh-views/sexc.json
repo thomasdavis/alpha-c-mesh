@@ -1,0 +1,14 @@
+{
+  "name": "@ajax/mesh-views",
+  "version": "0.1.0",
+  "description": "The fleet's view records (kind key=value -- text) as text and JSON, and their parser",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-views",
+  "keywords": ["mesh", "alphaos", "views", "records", "json"],
+  "targets": ["host"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {"@ajax/mesh-buf": "workspace:*", "@ajax/mesh-check": "workspace:*"}
+}

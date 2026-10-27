@@ -1,0 +1,41 @@
+{
+  "name": "@ajax/mesh-samplers",
+  "version": "0.1.0",
+  "description": "meshd's two once-a-second samplers: the load telemetry (machine and programs) and the network interfaces",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-samplers",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "network",
+    "telemetry",
+    "threads"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-shared": "workspace:*",
+    "@ajax/mesh-load-host": "workspace:*",
+    "@ajax/mesh-load-prog": "workspace:*",
+    "@ajax/mesh-load-share": "workspace:*",
+    "@ajax/mesh-nic": "workspace:*",
+    "@ajax/mesh-cpuuse": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

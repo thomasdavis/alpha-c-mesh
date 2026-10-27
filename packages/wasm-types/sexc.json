@@ -1,0 +1,9 @@
+{
+  "name": "@ajax/wasm-types",
+  "version": "0.1.0",
+  "description": "WebAssembly's binary-format constants: value types, section ids, external kinds, limits flags, feature bits",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "types"]
+}

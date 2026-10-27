@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/wasm-instr",
+  "version": "0.1.0",
+  "description": "Decodes one WebAssembly instruction and its immediates from a function body",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "instruction", "decoder"],
+  "dependencies": {"@ajax/wasm-reader": "workspace:*", "@ajax/wasm-opcodes": "workspace:*", "@ajax/mesh-check": "workspace:*"}
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@ajax/mesh-host-block",
+  "version": "0.1.0",
+  "description": "meshd's host status block (S_* fields) under one lock, with its uptime clock and the live network counters",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-host-block",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "status",
+    "host",
+    "snapshot"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-snapshot": "workspace:*",
+    "@ajax/mesh-abi-host-status": "workspace:*",
+    "@ajax/mesh-net-counters": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

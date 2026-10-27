@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-reply",
+  "version": "0.1.0",
+  "description": "One-shot replies between threads: a result (text, number or bytes, or an error) with a timeout",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-reply",
+  "keywords": ["mesh", "alphaos", "reply", "result", "threads"],
+  "targets": ["host"],
+  "cflags": ["-D_XOPEN_SOURCE=700", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {"@ajax/mesh-buf": "workspace:*", "@ajax/mesh-chan": "workspace:*", "@ajax/mesh-check": "workspace:*"}
+}

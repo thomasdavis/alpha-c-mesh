@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/wasm-validate",
+  "version": "0.1.0",
+  "description": "Validates a decoded WebAssembly module: module-level rules and full type checking of every function body, per enabled proposals",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "validator", "type-checker"],
+  "dependencies": {"@ajax/wasm-module": "workspace:*", "@ajax/wasm-instr": "workspace:*", "@ajax/wasm-decode": "workspace:*",
+                   "@ajax/mesh-check": "workspace:*", "@ajax/wasm-builder": "workspace:*"}
+}

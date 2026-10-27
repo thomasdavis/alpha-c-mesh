@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/wasm-leb128",
+  "version": "0.1.0",
+  "description": "LEB128 decoding exactly as the WebAssembly binary format requires it (length and padding rules)",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "leb128", "varint"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

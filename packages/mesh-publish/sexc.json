@@ -1,0 +1,30 @@
+{
+  "name": "@ajax/mesh-publish",
+  "version": "0.1.0",
+  "description": "The generic task publisher: one ticket ring per program slot, and the manifest's policy deciding what meshd publishes",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-publish",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "publisher",
+    "ring",
+    "tickets",
+    "policy"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-reply": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

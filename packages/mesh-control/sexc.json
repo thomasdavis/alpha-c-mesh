@@ -1,0 +1,46 @@
+{
+  "name": "@ajax/mesh-control",
+  "version": "0.1.0",
+  "description": "meshd's control port: one request line, one reply (a line or a framed body), every request byte for byte as the Rust",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-control",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "control",
+    "protocol",
+    "tcp",
+    "daemon"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-shared": "workspace:*",
+    "@ajax/mesh-snapshot": "workspace:*",
+    "@ajax/mesh-prog-table": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-load-text": "workspace:*",
+    "@ajax/mesh-inferd": "workspace:*",
+    "@ajax/mesh-infer-request": "workspace:*",
+    "@ajax/mesh-views": "workspace:*",
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-rsfmt": "workspace:*",
+    "@ajax/mesh-chan": "workspace:*",
+    "@ajax/mesh-reply": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

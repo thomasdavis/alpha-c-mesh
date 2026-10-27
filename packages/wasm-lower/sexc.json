@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/wasm-lower",
+  "version": "0.1.0",
+  "description": "Lowers validated WebAssembly function bodies to a flat internal code with resolved branches and stack heights",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "compiler", "interpreter"],
+  "dependencies": {"@ajax/wasm-module": "workspace:*", "@ajax/wasm-instr": "workspace:*", "@ajax/mesh-check": "workspace:*",
+                   "@ajax/wasm-builder": "workspace:*", "@ajax/wasm-decode": "workspace:*", "@ajax/wasm-validate": "workspace:*"}
+}

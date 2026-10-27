@@ -1,0 +1,28 @@
+{
+  "name": "@ajax/mesh-nic",
+  "version": "0.1.0",
+  "description": "Network interface counters: /proc/net/dev (or macOS's 64-bit if_data), wrap-safe totals, NIC records",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-nic",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "network",
+    "interfaces",
+    "proc"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_DEFAULT_SOURCE"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-host-nics": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

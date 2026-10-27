@@ -1,0 +1,13 @@
+{
+  "name": "@ajax/mesh-buf",
+  "version": "0.1.0",
+  "description": "A growable byte buffer for building strings and messages, with printf",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-buf",
+  "keywords": ["mesh", "alphaos", "string", "buffer"],
+  "targets": ["host"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

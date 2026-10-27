@@ -1,0 +1,37 @@
+{
+  "name": "@ajax/mesh-snapshot",
+  "version": "0.1.0",
+  "description": "Snapshot v3: the mailbox header, one section per loaded program, and the host block, in one frame for viewers",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-snapshot",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "snapshot",
+    "viewers",
+    "mailbox"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-prog-table": "workspace:*",
+    "@ajax/mesh-host-block": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
