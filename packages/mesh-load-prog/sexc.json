@@ -1,0 +1,28 @@
+{
+  "name": "@ajax/mesh-load-prog",
+  "version": "0.1.0",
+  "description": "One program's load sample: GPU share from its node load records, task latencies from its trace, busy time, throughput, its CPU executor's cost",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-load-prog",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "load",
+    "telemetry",
+    "program"
+  ],
+  "targets": [
+    "host"
+  ],
+  "dependencies": {
+    "@ajax/mesh-load-share": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-cpuuse": "workspace:*",
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-buf": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
