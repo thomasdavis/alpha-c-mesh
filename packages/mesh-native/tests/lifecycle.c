@@ -69,7 +69,10 @@ static void env_new(env *e, const char *tag) {
     e->comp = e->b->ops->compiler(e->b);
 }
 
-static void env_end(env *e) { run((char *[]){"rm", "-rf", e->root, NULL}); }
+static void env_end(env *e) {
+    run((char *[]){"rm", "-rf", e->root, NULL});
+    mesh_backend_destroy(e->b);
+}
 
 static void write_file(const char *path, const char *s) {
     FILE *f = fopen(path, "w");
