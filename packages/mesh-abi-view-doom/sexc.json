@@ -1,0 +1,22 @@
+{
+  "name": "@ajax/mesh-abi-view-doom",
+  "version": "0.1.0",
+  "description": "programs/doom's view: a DDA raycaster's pose, map, columns and show region",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-view-doom",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "view",
+    "doom"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-placement": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

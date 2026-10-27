@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-abi-pipe-ring",
+  "version": "0.1.0",
+  "description": "A pipe inbox's two lock-free MPMC rings: laps, record sums, reserve and commit",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-abi-pipe-ring",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "abi",
+    "gpu",
+    "pipe",
+    "ring"
+  ],
+  "dependencies": {
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-abi-pipe-hash": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
