@@ -1,0 +1,27 @@
+{
+  "name": "@ajax/mesh-rt-ctx",
+  "version": "0.1.0",
+  "description": "What a mesh program sees (Ctx): views, peer views, input queue, pipes, request window, exchange page, counters, ids",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-ctx",
+  "keywords": ["mesh", "alphaos", "gpu", "runtime", "ctx"],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-exchange": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-input-queue": "workspace:*",
+    "@ajax/mesh-abi-pipe": "workspace:*",
+    "@ajax/mesh-abi-pipe-ring": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-rt-block": "workspace:*",
+    "@ajax/mesh-rt-prim": "workspace:*",
+    "@ajax/mesh-rt-view": "workspace:*"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@ajax/mesh-prog-gemm",
+  "version": "0.1.0",
+  "kind": "executable",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "description": "gemm, f32 matrix multiply throughput as a native mesh worker: a cache-blocked multi-threaded GEMM, timed tasks and job items",
+  "bin": "gemm",
+  "main": "src/main.c",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/gemm",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "native",
+    "worker",
+    "program"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lm",
+    "-lpthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-worker": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-worker-node": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-ref-gemm": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

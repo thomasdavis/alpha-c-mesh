@@ -1,0 +1,24 @@
+# doom: a raycaster, 4 tasks a frame, the pose and keys on the GPU
+# (layout: mesh_abi::v2::views::doom; docs/plan-program-loading.md §3.8)
+name       = "doom"
+abi        = 6
+view_bytes = 0x4000
+view_abi   = 2
+snap_bytes = 0x3100
+nodes      = 4
+policy     = "periodic"
+hz         = 30
+fanout     = 4
+in_flight  = "batch"
+input      = 64
+counters   = ["frames", "keys", "stalls", "follows"]
+fields     = ["pos_x:f32:0x0", "pos_y:f32:0x4", "dir_x:f32:0x8", "dir_y:f32:0xc", "plane_x:f32:0x10", "plane_y:f32:0x14", "frame:u32:0x20", "keys:u32:0x28", "shown:u32:0x2000", "place:u32:0x2004", "lat_us:u32:0x200c"]
+autostart  = true
+backends   = ["cuda", "metal"]
+# Placement across a cluster (mesh-abi v2 "placement"): pin to one machine, or
+# split its 4 parts of 32 columns over several (the owner of part 0 owns the pose).
+place       = "split"
+place_state = ["0x0:0x24", "0x28:0x4", "0x100:0x400"]
+place_frame = 0x20
+place_out   = ["0x1000:0x200", "0x1400:0x200", "0x1800:0x200", "0x1c00:0x200"]
+place_show  = 0x2000

@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-prog-gpt2x",
+  "version": "0.1.0",
+  "description": "gpt2x, GPT-2 124M's exact-mode GPU kernels (embed, norm, GEMM/GEMV, KV, attention, logits) bitwise equal to the CPU reference, as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/gpt2x",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "gpt2", "transformer", "deterministic"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-linalg": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-ref-block": "workspace:*",
+    "@ajax/mesh-ref-gpt2-scalar": "workspace:*",
+    "@ajax/mesh-ref-gpt2-norm": "workspace:*",
+    "@ajax/mesh-ref-gpt2-attend": "workspace:*",
+    "@ajax/mesh-ref-gpt2-linear": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

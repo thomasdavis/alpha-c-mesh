@@ -1,0 +1,20 @@
+# pipehash: the pipe demo's GPU stage (layout: mesh_abi::v2::views::pipedemo, H_*).
+# Its inbox takes `msg` records from a CPU source (pipesrc: wasm, pipesrc-n: native);
+# each warp pops up to 32, its lanes hash one each (sha256d of the 64 bytes),
+# and the warp pushes the `digest`s into a CPU sink (pipesink: native, pipesink-w: wasm).
+# A sink without room for a warp's 32 stops the warp before it pops (backpressure up the pipe).
+name       = "pipehash"
+abi        = 6
+view_bytes = 0x16000
+inbox      = "0x80:1024:64"
+inbox_type = "msg"
+nodes      = 4
+fanout     = 4
+policy     = "continuous"
+in_flight  = "free"
+feeds      = ["pipesink:digest", "pipesink-w:digest"]
+counters   = ["hashed", "stalls", "carried", ""]
+fields     = ["dst:u32:0xc", "in_head:u32:0x80", "in_full:u32:0x84", "in_tail:u32:0xc0"]
+autostart  = false
+backends   = ["cuda", "metal"]
+replicas   = 1  # a fleet runs one hashing stage (pipes are single-machine; its source and sinks are colocated with it)

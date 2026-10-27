@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-rt-linalg",
+  "version": "0.1.0",
+  "description": "Exact-mode GEMM tile and GEMV at mesh node scope: sequential sums, unfused, bit-identical on every GPU",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-linalg",
+  "keywords": ["mesh", "alphaos", "gpu", "linear-algebra", "gemm", "deterministic"],
+  "dependencies": {
+    "@ajax/mesh-rt-block": "workspace:*",
+    "@ajax/mesh-rt-ctx": "workspace:*"
+  }
+}

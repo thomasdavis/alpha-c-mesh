@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-spawn",
+  "version": "0.1.0",
+  "description": "posix_spawn of a worker with chosen descriptors and extra environment in its own process group, close-on-exec pipes, and exit statuses described as meshd reports them",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-spawn",
+  "keywords": ["mesh", "alphaos", "process", "spawn", "posix"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

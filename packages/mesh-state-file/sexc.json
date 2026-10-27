@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-state-file",
+  "version": "0.1.0",
+  "description": "meshd's --state file: the loaded programs, their catalog dirs and run state, written atomically",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-state-file",
+  "keywords": ["mesh", "alphaos", "state", "persistence"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-abi-name": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

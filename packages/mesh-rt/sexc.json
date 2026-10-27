@@ -1,0 +1,19 @@
+{
+  "name": "@ajax/mesh-rt",
+  "version": "0.1.0",
+  "description": "The mesh device runtime: MESH_PROGRAM(init, task) makes a resident GPU kernel (mesh_main) on the node loop, or a CPU-simulated one",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt",
+  "keywords": ["mesh", "alphaos", "gpu", "cuda", "ptx", "runtime"],
+  "dependencies": {
+    "@ajax/mesh-abi": "workspace:*",
+    "@ajax/mesh-rt-block": "workspace:*",
+    "@ajax/mesh-rt-ctx": "workspace:*",
+    "@ajax/mesh-rt-loop": "workspace:*",
+    "@ajax/mesh-rt-prim": "workspace:*",
+    "@ajax/mesh-rt-view": "workspace:*"
+  }
+}

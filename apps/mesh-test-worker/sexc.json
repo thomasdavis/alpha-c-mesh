@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-test-worker",
+  "version": "0.1.0",
+  "description": "The native lifecycle fixture: a mesh worker whose ops sleep, crash, allocate, fault, spin or exit on demand",
+  "kind": "executable",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-test-worker",
+  "keywords": ["mesh", "alphaos", "worker", "native", "testing", "fixture"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/mesh-worker": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

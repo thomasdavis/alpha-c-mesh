@@ -1,0 +1,23 @@
+# tick: the scheduler's test program (docs/plan-fleet-scheduling.md F4): a
+# periodic counter whose view carries state a migration must move.
+# View: 0x0 magic "TICK" (init), 0x4 ticks, 0x8 inits (this view's OP_INITs),
+# 0xc the last verify's mismatches; 0x40.. the pattern: word i is P(i) after
+# init, and tick t overwrites word t mod W with P(t mod W) ^ (t + 1).
+# `task tick 3 0` verifies 4096 words spread over the region and the last 64
+# ticks' words (returns the mismatches; 0: the view is this view's own).
+# Variants (variants/*.toml, the same images under other names): tick-w
+# (wasm only), tick-m (metal only), tick-r (replicas 2), tick-big (a 6 MiB view).
+name       = "tick"
+abi        = 6
+view_bytes = 0x10000
+view_abi   = 1
+snap_bytes = 0x40
+nodes      = 1
+policy     = "periodic"
+hz         = 50
+counters   = ["ticks", "inits", "", ""]
+fields     = ["magic:u32:0x0", "ticks:u32:0x4", "inits:u32:0x8", "mismatches:u32:0xc"]
+autostart  = false
+backends   = ["cuda", "metal", "wasm"]
+replicas   = 1
+task_ms    = 2000

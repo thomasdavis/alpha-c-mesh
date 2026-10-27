@@ -1,20 +1,27 @@
 # @ajax/mesh-text
 
-Growable strings (`mt_buf`), string lists (`mt_strs`), `mt_fmt`, and Rust's splitting
-(`mt_split` = `split(c)`, `mt_words` = `split_whitespace()`, `mt_lines` = `lines()`,
-`mt_split_once`, `mt_trim`) with Rust's exact edge cases (`"".split(',')` is one empty item).
+Growable strings, `printf` into them, error messages (`char **err`), and the pieces of Rust's
+formatting that the Rust implementation's messages show: `{:?}` of strings, `f64` and `f32`,
+`str::trim` (Unicode whitespace), `u32::from_str` and `f64::from_str`. With them, every ported error
+message reads byte for byte as the Rust's.
 
-The fleet packages build and parse their text wire formats with these, the way the Rust did with
-`String` and `Vec<String>`. Allocation failure aborts.
+```c
+#include "mesh/text.h"
+mesh_text t = {0};
+mesh_text_puts(&t, "name ");
+mesh_text_debug_str(&t, name, strlen(name));   /* name "Bad" */
+```
 
 ## Ported from
 
-The `String` / `Vec<String>` / `str` methods [alpha-rust-mesh](https://github.com/rsafier/alpha-rust-mesh)'s
-`mesh-host` fleet code (fleet.rs, sched.rs, cluster.rs, peer.rs) uses.
+[alpha-rust-mesh](https://github.com/rsafier/alpha-rust-mesh) (Richard Safier, MIT) uses Rust's own
+`format!`; this package reproduces the parts its messages depend on. `src/escapes.c` (the code points
+`{:?}` escapes as `\u{..}`) was generated from Rust 1.88's `char::escape_debug`.
 
 ## Tests
 
-`tests/text.c`: splitting edge cases, buffers, lists.
+`tests/text.c`: `{:?}` of 37 f64s, 7 f32s and 16 strings and 5 `trim`s, each against what Rust 1.88
+printed; the integer and float parsers' edge cases.
 
 ## Licence
 

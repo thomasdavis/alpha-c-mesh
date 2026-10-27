@@ -1,0 +1,19 @@
+# A native worker program (README "Native workers"): an executable per target,
+# built by scripts/build-programs.sh into <catalog>/gemm/<target triple>/gemm.
+name        = "gemm"
+abi         = 6
+backends    = ["native"]
+view_bytes  = 0x8000
+snap_bytes  = 0x40
+nodes       = 1
+# Jobs (plan F5): each item (OP_JOB) is one size^3 GEMM (the view's size word;
+# OP_INIT sets 1024, a job's `setup 7:<n>` another), result its microseconds,
+# job_out (n, GFLOP/s): `job submit gemm items 200 setup 7:2048`.  On demand:
+# `task gemm 0 <n>` runs one of n, `task gemm 4 <n>` the plain Rust loop,
+# `task gemm 5 <n>` the fast path on one thread, `task gemm 3 <n>` (n <= 64)
+# writes C to the view at 0x1000 for the reference check.
+policy      = "job"
+job_out     = "0x6000:8"
+counters    = ["gemms", "gflop", "plain", "checks"]
+fields      = ["size:u32:0x04", "n:u32:0x08", "us:u32:0x0c", "gflops:f32:0x10", "best:f32:0x14", "plain:f32:0x18", "single:f32:0x1c", "impl:u32:0x20", "threads:u32:0x24", "runs:u32:0x28"]
+autostart   = false

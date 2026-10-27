@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-ptx-float-check",
+  "version": "0.1.0",
+  "description": "Refuses a mesh program PTX that breaks the cluster float mode (FTZ, correctly rounded, unfused float ops)",
+  "kind": "executable",
+  "bin": "mesh-ptx-float-check",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-ptx-float-check",
+  "keywords": ["mesh", "alphaos", "ptx", "ftz", "lint"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-ptx-float-rules": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

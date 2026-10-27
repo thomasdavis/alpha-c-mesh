@@ -1,0 +1,18 @@
+{
+  "name": "@ajax/mesh-prog-http",
+  "version": "0.1.0",
+  "description": "http, an HTTP/1.0 GET server parsed, routed and rendered by a GPU warp over the mesh program table, as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/http",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program", "http"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

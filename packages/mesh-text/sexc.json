@@ -1,7 +1,7 @@
 {
   "name": "@ajax/mesh-text",
   "version": "0.1.0",
-  "description": "Growable strings and string lists for the fleet packages, with Rust's split semantics",
+  "description": "Growable strings, formatting, and Rust-style Debug output for faithful error messages",
   "kind": "library",
   "license": "MIT",
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
@@ -10,11 +10,16 @@
   "keywords": [
     "mesh",
     "alphaos",
-    "fleet",
     "text",
+    "format",
     "string"
   ],
-  "cflags": ["-std=c17", "-D_XOPEN_SOURCE=700"],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lm"
+  ],
   "dependencies": {
     "@ajax/mesh-check": "workspace:*"
   }
