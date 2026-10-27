@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-mailbox",
+  "version": "0.1.0",
+  "description": "Host views of the mailbox words: acquire loads, release stores, atomic read-modify-writes, byte windows, and the pipe words over it",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-mailbox",
+  "keywords": ["mesh", "alphaos", "mailbox", "atomics", "host"],
+  "dependencies": {
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-words-host": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
