@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-jobs-id",
+  "version": "0.1.0",
+  "description": "Job ids (term.n) and payload hashes (sha256 hex): their types and text forms",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-id",
+  "keywords": ["mesh", "alphaos", "jobs", "id", "hash"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*", "@ajax/mesh-rs-parse": "workspace:*"}
+}

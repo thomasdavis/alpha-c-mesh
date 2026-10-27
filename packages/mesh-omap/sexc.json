@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-omap",
+  "version": "0.1.0",
+  "description": "An ordered map from fixed-width u64 keys to fixed-size values (an AVL tree), Rust's BTreeMap for the mesh",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-omap",
+  "keywords": ["mesh", "alphaos", "map", "btreemap", "avl", "ordered"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}
