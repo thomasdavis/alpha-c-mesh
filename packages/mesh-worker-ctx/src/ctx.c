@@ -223,7 +223,7 @@ bool mesh_ctx_pop(const mesh_worker_ctx *c, uint8_t *out, size_t n) {
 bool mesh_ctx_pipe_len(const mesh_worker_ctx *c, uint32_t s, uint32_t *len) {
     mesh_words w = mesh_mailbox_words(c->mb);
     mesh_pipe_inbox in;
-    if (mesh_pipe_target(&w, c->slot, s, &in) <= 0) return false;
+    if (mesh_pipe_target(&w, c->slot, s, &in) < 0) return false;
     *len = mesh_pipe_inbox_len(&in, &w);
     return true;
 }
