@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-jobs-op",
+  "version": "0.1.0",
+  "description": "An edit of the job table (submit, cancel, done, done-run, fail, fails, dupes, finish, forget, fold, tone), item results and payload references, and their binary encoding",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-op",
+  "keywords": ["mesh", "alphaos", "jobs", "op", "crdt"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-jobs-id": "workspace:*", "@ajax/mesh-jobs-ranges": "workspace:*", "@ajax/mesh-jobs-wire": "workspace:*",
+    "@ajax/mesh-jobs-spec": "workspace:*"
+  }
+}
