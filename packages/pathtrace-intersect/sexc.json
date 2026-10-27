@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/pathtrace-intersect",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's nearest hit of a ray against a scene's quads, spheres and bounded triangle mesh (template over a float's ops)",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "pathtrace", "ray", "intersection", "template"],
+  "dependencies": {"@ajax/pathtrace-math": "workspace:*", "@ajax/pathtrace-scene": "workspace:*"},
+  "cflags": ["-ffp-contract=off"]
+}

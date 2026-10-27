@@ -1,0 +1,10 @@
+{
+  "name": "@ajax/pathtrace-math",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's float contract and its math, written once over a float's operations: vectors, Newton sqrt, polynomial cis, constants",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["alphaos", "mesh", "pathtrace", "math", "determinism", "template"],
+  "cflags": ["-ffp-contract=off"]
+}

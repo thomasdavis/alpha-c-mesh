@@ -16,5 +16,8 @@
   ],
   "ldflags": [
     "-lm"
+  ],
+  "targets": [
+    "host"
   ]
 }

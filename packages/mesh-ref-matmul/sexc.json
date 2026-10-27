@@ -5,8 +5,26 @@
   "kind": "library",
   "license": "MIT",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "reference", "matmul", "gemv", "determinism"],
-  "dependencies": {"@ajax/mesh-ftz": "workspace:*", "@ajax/mesh-ref-block": "workspace:*"},
-  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
-  "ldflags": ["-lpthread"]
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "matmul",
+    "gemv",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-block": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lpthread"
+  ],
+  "targets": [
+    "host"
+  ]
 }
