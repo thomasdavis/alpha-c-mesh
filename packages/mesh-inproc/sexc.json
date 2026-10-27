@@ -1,0 +1,50 @@
+{
+  "name": "@ajax/mesh-inproc",
+  "version": "0.1.0",
+  "description": "A GPU program driven in-process: compile, load, install a program-table slot in a mailbox of its own, launch, publish, stop and relaunch, through meshd's backend",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-inproc",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "inproc",
+    "kcheck",
+    "backend",
+    "driver"
+  ],
+  "cflags": [
+    "-D_GNU_SOURCE"
+  ],
+  "dependencies": {
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-mps": "workspace:*",
+    "@ajax/nvjitlink": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-shm": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-trace": "workspace:*",
+    "@ajax/mesh-abi-view-heap": "workspace:*",
+    "@ajax/mesh-abi-input-queue": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-words": "workspace:*",
+    "@ajax/mesh-words-host": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/cuda-driver-fake": "workspace:*",
+    "@ajax/mesh-worker-node": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*"
+  }
+}

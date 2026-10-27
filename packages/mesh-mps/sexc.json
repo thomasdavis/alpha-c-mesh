@@ -1,0 +1,54 @@
+{
+  "name": "@ajax/mesh-mps",
+  "version": "0.1.0",
+  "description": "meshd's CUDA backend: one context that blinks, or --isolation mps with a private MPS daemon and a pool of worker processes; nvJitLink as its compiler",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-mps",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "cuda",
+    "mps",
+    "backend",
+    "gpu"
+  ],
+  "cflags": [
+    "-D_GNU_SOURCE",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread"
+  ],
+  "dependencies": {
+    "@ajax/mesh-backend": "workspace:*",
+    "@ajax/mesh-cuda": "workspace:*",
+    "@ajax/cuda-driver": "workspace:*",
+    "@ajax/nvjitlink": "workspace:*",
+    "@ajax/mesh-mps-wire": "workspace:*",
+    "@ajax/mesh-shm": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-spawn": "workspace:*",
+    "@ajax/mesh-log": "workspace:*",
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-host-status": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/cuda-driver-fake": "workspace:*",
+    "@ajax/mesh-mps-worker": "workspace:*",
+    "@ajax/mesh-worker-node": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-manifest-encode": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-ext": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*"
+  }
+}

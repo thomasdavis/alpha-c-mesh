@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-shm",
+  "version": "0.1.0",
+  "description": "The mailbox's memory: one zeroed shared-memory file (memfd on Linux, an unlinked shm_open on macOS) mapped MAP_SHARED, that child processes map too",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-shm",
+  "keywords": ["mesh", "alphaos", "shm", "memfd", "mailbox"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

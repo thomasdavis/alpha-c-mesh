@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-toml",
+  "version": "0.1.0",
+  "description": "The key = value subset of TOML that program.toml uses: integers, strings, booleans, floats, one-line string lists",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-toml",
+  "keywords": ["mesh", "alphaos", "toml", "manifest", "parser"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

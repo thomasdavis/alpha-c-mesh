@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/cuda-driver",
+  "version": "0.1.0",
+  "description": "The CUDA driver API calls meshd needs, loaded at runtime from libcuda.so.1 (no CUDA headers or toolkit to build), with an injectable table for tests",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/cuda-driver",
+  "keywords": ["mesh", "alphaos", "cuda", "gpu", "driver", "dlopen"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "ldflags": ["-ldl"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
