@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/pathtrace-default-scene",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's default scene as scene-format words: a 640x360 room of quads, spheres and a triangle mesh",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-default-scene",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "scene"
+  ]
+}

@@ -1,0 +1,12 @@
+# hello: task = arg * 3 + 7 (lifecycle tests; docs/plan-program-loading.md §3.3)
+name       = "hello"
+abi        = 6
+view_bytes = 0x1000
+view_abi   = 1
+snap_bytes = 0x40
+nodes      = 2
+policy     = "on_demand"
+counters   = ["tasks", "inits", "", ""]
+fields     = ["magic:u32:0x0", "last_arg:u32:0x4", "last_result:u32:0x8"]
+autostart  = true
+backends   = ["cuda", "metal", "wasm"]

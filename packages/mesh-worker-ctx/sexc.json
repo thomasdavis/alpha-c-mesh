@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-worker-ctx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "What a native worker's init and task see: mesh-rt's Ctx on a CPU thread (views with fault recording, peer views, the input queue, pipes, the request window, counters)",
   "kind": "library",
   "license": "MIT",

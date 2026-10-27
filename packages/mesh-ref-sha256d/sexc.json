@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-ref-sha256d",
+  "version": "0.1.0",
+  "description": "sha256d's CPU reference: FIPS 180-4 SHA-256, double SHA-256 of an 80-byte header, Bitcoin's little-endian targets",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-sha256d",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "sha256",
+    "bitcoin"
+  ]
+}

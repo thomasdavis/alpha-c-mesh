@@ -1,0 +1,11 @@
+{
+  "name": "@ajax/mesh-rt-ptx",
+  "version": "0.1.0",
+  "description": "mesh-rt's device primitives on NVIDIA GPUs as inline PTX: special registers, sys-scope ordering, atomics, warp shuffles, the block barrier",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-ptx",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "cuda", "runtime"]
+}

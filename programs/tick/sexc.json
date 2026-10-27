@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-prog-tick",
+  "version": "0.1.0",
+  "description": "tick, the mesh scheduler's test program (a periodic counter whose view a migration must carry), as PTX from C",
+  "kind": "ptx",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/programs/tick",
+  "keywords": ["mesh", "alphaos", "gpu", "ptx", "program"],
+  "cflags": ["-ffp-contract=off", "-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-rt": "workspace:*",
+    "@ajax/mesh-rt-sim-mailbox": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
