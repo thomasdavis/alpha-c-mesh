@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/nvjitlink",
+  "version": "0.1.0",
+  "description": "nvJitLink loaded at runtime: PTX to a cubin for the GPU's arch, off the blink, with no driver JIT fallback",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/nvjitlink",
+  "keywords": ["mesh", "alphaos", "cuda", "nvjitlink", "ptx", "jit"],
+  "cflags": ["-D_GNU_SOURCE"],
+  "ldflags": ["-ldl"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
