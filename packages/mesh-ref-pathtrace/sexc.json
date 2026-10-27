@@ -4,7 +4,9 @@
   "description": "programs/pathtrace's CPU reference: tiles rendered in Z on every core with their digests, the image raster from tiles, and its PPM",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-pathtrace",
   "keywords": [
     "alphaos",
     "mesh",

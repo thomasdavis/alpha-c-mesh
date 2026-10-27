@@ -1,0 +1,29 @@
+{
+  "name": "@ajax/mesh-ref-gpt2-weights",
+  "version": "0.1.0",
+  "description": "GPT-2 124M synthetic weights from a counter hash: kcheck's checks without a checkpoint",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-weights",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*",
+    "@ajax/mesh-ref-matmul": "workspace:*",
+    "@ajax/mesh-ref-gpt2-shape": "workspace:*"
+  },
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off",
+    "-D_XOPEN_SOURCE=700"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-ref-gpt2-shape",
+  "version": "0.1.0",
+  "description": "GPT-2 124M's shape: layers, heads, widths, vocabulary, context, and the flat weight buffer's layout in checkpoint order",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-shape",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ]
+}

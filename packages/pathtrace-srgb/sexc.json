@@ -4,6 +4,14 @@
   "description": "The sRGB quantization table of programs/pathtrace: the least linear value of each 8-bit code, as f32 bits",
   "kind": "library",
   "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["alphaos", "mesh", "pathtrace", "srgb", "tonemap"]
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-srgb",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "srgb",
+    "tonemap"
+  ]
 }
