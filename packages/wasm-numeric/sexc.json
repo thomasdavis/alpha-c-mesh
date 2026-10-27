@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/wasm-numeric",
+  "version": "0.1.0",
+  "description": "WebAssembly's numeric instructions as C functions: traps, saturation, min/max, nearest, and wasmtime's NaN canonicalisation",
+  "kind": "library",
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "keywords": ["wasm", "webassembly", "float", "nan", "numeric"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"},
+  "cflags": ["-ffp-contract=off"],
+  "ldflags": ["-lm"]
+}
