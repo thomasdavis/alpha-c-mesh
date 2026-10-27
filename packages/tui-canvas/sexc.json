@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/tui-canvas",
+  "version": "0.1.0",
+  "description": "A drawing surface of braille dots, half blocks or characters: points and clipped lines in world coordinates, as ratatui's Canvas",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-canvas",
+  "keywords": [
+    "tui",
+    "terminal",
+    "canvas",
+    "braille",
+    "ratatui"
+  ],
+  "ldflags": [
+    "-lm"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-block": "workspace:*",
+    "@ajax/tui-utf8": "workspace:*"
+  }
+}

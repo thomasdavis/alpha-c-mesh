@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/tui-paragraph",
+  "version": "0.1.0",
+  "description": "Text in a box: word-wrapped (trimmed or not) or truncated, aligned, scrolled, as ratatui's Paragraph",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/tui-paragraph",
+  "keywords": [
+    "tui",
+    "terminal",
+    "paragraph",
+    "wrap",
+    "ratatui"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-block": "workspace:*",
+    "@ajax/tui-grapheme": "workspace:*",
+    "@ajax/tui-utf8": "workspace:*"
+  }
+}

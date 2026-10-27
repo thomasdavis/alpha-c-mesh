@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/tui-golden",
+  "version": "0.1.0",
+  "description": "Not published: the tui widgets checked cell for cell against ratatui 0.30.2 on 1900 random configurations",
+  "kind": "library",
+  "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/tui-paragraph": "workspace:*",
+    "@ajax/tui-table": "workspace:*",
+    "@ajax/tui-chart": "workspace:*",
+    "@ajax/tui-sparkline": "workspace:*"
+  }
+}
