@@ -63,7 +63,9 @@ tested, a three-member fleet of whole meshds included.
   and a native worker beside it (apps/meshd's test): autoload, tasks, stop/start, reset blinks,
   unload/load, peek, the views, a native crash failing only its program, `--state`, SIGINT, exit 0.
 - **Without a GPU**, meshd's default backend fails exactly as the Rust's does: nvJitLink first, exit 1.
-- Every package builds and tests with gcc, and with clang under `--profile asan` (leak-free).
+- Every package builds and tests with gcc, and with clang under `--profile asan` (leak-free): on the
+  merged tree (main + this area), `sexc test --timeout 900` and `CC=clang sexc test --profile asan
+  --timeout 1800` each pass 351 of 351 test programs, the three-meshd fleet included.
 
 ## What meshd does today (no GPU)
 
