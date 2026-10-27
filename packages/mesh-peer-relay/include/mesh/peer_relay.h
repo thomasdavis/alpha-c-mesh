@@ -143,6 +143,8 @@ void mpr_broadcast(mpr_relay *r, const uint8_t *f, size_t n);
 void mpr_board_own(mpr_relay *r, const msr_report *rep);
 /* The echoes for this member's next F_PERF: (member, its t_us we received last, µs held since). */
 size_t mpr_board_echoes(mpr_relay *r, uint32_t *k, uint64_t *t, uint64_t *held);
+/* The link RTTs measured from the others' echoes of ours, for this member's next F_PERF: (member, µs). */
+size_t mpr_board_rtts(mpr_relay *r, uint32_t *k, float *us);
 
 /* For tests and the control port: the committed document's version, the leader, the role (MFC_*). */
 uint64_t mpr_version(mpr_relay *r);

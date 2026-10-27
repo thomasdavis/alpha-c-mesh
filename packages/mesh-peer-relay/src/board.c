@@ -75,3 +75,13 @@ size_t mpr_board_echoes(mpr_relay *r, uint32_t *k, uint64_t *t, uint64_t *held) 
     pthread_mutex_unlock(&b->mu);
     return n;
 }
+
+size_t mpr_board_rtts(mpr_relay *r, uint32_t *k, float *us) {
+    board_t *b = &r->board;
+    size_t n = 0;
+    pthread_mutex_lock(&b->mu);
+    for (uint32_t j = 0; j < r->n; j++)
+        if (b->rtt_us[j].some) k[n] = j, us[n++] = b->rtt_us[j].v;
+    pthread_mutex_unlock(&b->mu);
+    return n;
+}

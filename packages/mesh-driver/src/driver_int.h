@@ -10,6 +10,7 @@
 #include "mesh/jobs/ranges.h"
 #include "mesh/log.h"
 #include "mesh/manifest_encode.h"
+#include "mesh/placer.h"
 #include "mesh/prog_table.h"
 #include "mesh/publish.h"
 #include "mesh/view_alloc.h"
@@ -136,6 +137,22 @@ typedef struct {
     uint32_t inflight;
 } djobslot;
 
+/* A placeable program's placement (place.rs), peered only (driver.rs PSlot). */
+typedef struct {
+    mpl_placer *p;
+    char *name;
+    bool has_follow; /* the follow batch to publish (split, a follower): its frame */
+    uint32_t follow;
+    bool stopped;    /* the placement stopped it here (pin elsewhere): it runs again when that ends */
+    uint32_t part_ns;
+} dplace;
+
+/* A `place` request waiting for its change (by handle). */
+typedef struct {
+    uint64_t h;
+    mesh_reply *reply;
+} dplace_reply;
+
 struct mesh_driver {
     mesh_shared *sh;
     mesh_backend *gpu;
@@ -173,6 +190,14 @@ struct mesh_driver {
     bool has_fleet_leader;
     uint32_t fleet_leader;
     djobslot jobw[MESH_PROG_SLOTS];
+    /* Per slot: its placement (programs whose manifest declares `place`, when peered). */
+    dplace *place[MESH_PROG_SLOTS];
+    dplace_reply *place_replies;
+    size_t nplace_replies, cplace_replies;
+    uint64_t place_handle;
+    /* The fleet's placement requests (FleetView). */
+    mesh_place_req *fleet_places;
+    size_t nfleet_places;
     ddead *dead;
     size_t ndead, cdead;
 };
@@ -222,6 +247,29 @@ void drv_jobs_tick(mesh_driver *d);
 void drv_blink_tick(mesh_driver *d);
 bool drv_op_reset(mesh_driver *d, uint32_t s, char **text);
 bool drv_precheck(mesh_driver *d, const mesh_manifest *m, char **err);
+
+/* place.c */
+const char *drv_role_word(mpm_role r);
+char *drv_placed_here(const mesh_driver *d, uint32_t s);
+void drv_place_words(mesh_driver *d, uint32_t s);
+void drv_place_acts(mesh_driver *d, bool has_s, uint32_t s, mpl_acts acts);
+void drv_sync_place(mesh_driver *d, uint32_t s);
+void drv_place_drop(mesh_driver *d, uint32_t s, const char *name);
+void drv_place_free_all(mesh_driver *d);
+bool drv_place_busy(const mesh_driver *d);
+void drv_place_part_ns(mesh_driver *d);
+void drv_place_log(mesh_driver *d);
+void drv_place_tick(mesh_driver *d);
+void drv_place_frame(mesh_driver *d, uint32_t s, bool own, bool follow);
+void drv_place_follow_lost(mesh_driver *d, uint32_t s);
+bool drv_place_stopped(const mesh_driver *d, const char *name);
+void drv_place_publish(mesh_driver *d, uint32_t s, bool *paused, mpm_role *role, uint32_t *parts);
+void drv_cmd_place(mesh_driver *d, mesh_cmd *c, mesh_reply *reply);
+void drv_cmd_peer_place(mesh_driver *d, mesh_cmd *c);
+void drv_cmd_peer_frame(mesh_driver *d, mesh_cmd *c);
+void drv_cmd_peer_input(mesh_driver *d, mesh_cmd *c);
+void drv_cmd_fleet_view(mesh_driver *d, mesh_cmd *c);
+uint32_t drv_input_to(const mesh_driver *d, uint32_t s);
 
 /* jobs.c */
 void drv_publish_jobs(mesh_driver *d, uint32_t s);

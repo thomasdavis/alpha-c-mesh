@@ -244,7 +244,10 @@ int main(void) {
     CHECK_S(b, "pipes system=4294967295 inboxes=0\n");
     free(b);
     CHECK_S(ask("fleet"), "err not in a fleet (single meshd: --cluster / --peer)\n");
-    CHECK_S(ask("jobs"), "err the jobs thread is gone\n");
+    /* The jobs thread runs (a single meshd leads its own job table). */
+    b = frame("jobs", NULL);
+    CHECK(b && strncmp(b, "jobs system 0 leader 0 role leader ", 35) == 0);
+    free(b);
     b = frame("http /status", NULL);
     CHECK_S(b, "err no program \"http\" (`programs` lists them)\n");
     free(b);

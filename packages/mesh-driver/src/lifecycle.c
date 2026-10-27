@@ -288,6 +288,14 @@ static void run_request(mesh_driver *d, uint32_t s) {
     x->run_seq = req;
     bool on = (req & 1u) && !x->unloading;
     bool want = x->want_run;
+    if (on != want) {
+        char *why = drv_placed_here(d, s);
+        if (why) {
+            mesh_info("run request ignored: %s", why);
+            free(why);
+            return;
+        }
+    }
     /* In a fleet the run state is the desired state's: the request goes through the leader. */
     if (d->sh->peer) {
         if (on != want) {
@@ -334,15 +342,17 @@ void drv_collect(mesh_driver *d, uint32_t s) {
     size_t n;
     mesh_pring_collect(&x->ring, mb, &done, &n);
     bool lockstep = x->image.manifest.peer == MESH_PEER_MODE_LOCKSTEP;
+    bool own = false, follow = false;
     for (size_t i = 0; i < n; i++) {
         mesh_out *o = &done[i].out;
         uint32_t r = done[i].result;
         x = d->slots[s];
         switch (o->kind.tk) {
         case MESH_TK_AUTO:
+            own = true;
             if (lockstep) lock_progress(d, s);
             break;
-        case MESH_TK_FOLLOW: break;
+        case MESH_TK_FOLLOW: follow = true; break;
         case MESH_TK_INIT: mesh_info("%s: OP_INIT done", drv_name(x)); break;
         case MESH_TK_JOB: {
             djobslot *j = &d->jobw[s];
@@ -403,6 +413,7 @@ void drv_collect(mesh_driver *d, uint32_t s) {
         }
     }
     free(done);
+    if ((own || follow) && d->place[s]) drv_place_frame(d, s, own, follow);
 }
 
 /* ---------------------------------------------------------------- phases */
@@ -446,6 +457,7 @@ void drv_not_run(mesh_driver *d, uint32_t s, mesh_out *outs, size_t n) {
         mesh_kind *k = &outs[i].kind;
         switch (k->tk) {
         case MESH_TK_INIT: x->needs_init = true; break;
+        case MESH_TK_FOLLOW: drv_place_follow_lost(d, s); break;
         case MESH_TK_TASK:
         case MESH_TK_REQ: mesh_reply_err(k->reply, why); k->reply = NULL; break;
         case MESH_TK_JOB:
@@ -688,6 +700,7 @@ void drv_remove(mesh_driver *d, uint32_t s) {
     d->ndead = k;
     drv_connect_pipes(d);
     if (lockstep) drv_zero_exchange(d);
+    drv_place_drop(d, s, name);
     d->state_dirty = true;
     mesh_info("%s unloaded from slot %u (module and %zu view pages freed at the next blink)", name, s, mesh_view_pages(view_bytes));
     /* The slot's own resources. */
@@ -758,8 +771,20 @@ static void publish_slot(mesh_driver *d, uint32_t s, int64_t now) {
     }
     if (x->image.manifest.policy == MESH_POLICY_JOB && x->want_run && x->phase == PH_RUNNING) { drv_publish_jobs(d, s); return; }
     const mesh_manifest *m = &x->image.manifest;
-    if (x->want_run && (m->peer != MESH_PEER_MODE_LOCKSTEP || lock_ok))
-        mesh_publish_auto(mb, m, x->view_off, &x->ring, &x->last_auto, now);
+    /* Placement: the follow batch (split, a follower's parts) on the owner's state, written just before. */
+    bool paused;
+    mpm_role role;
+    uint32_t parts;
+    drv_place_publish(d, s, &paused, &role, &parts);
+    if (x->want_run && !paused && (m->peer != MESH_PEER_MODE_LOCKSTEP || lock_ok)) {
+        switch (role) {
+        case MPM_ROLE_LOCAL:
+        case MPM_ROLE_RUNNER: mesh_publish_auto(mb, m, x->view_off, &x->ring, &x->last_auto, now); break;
+        case MPM_ROLE_OWNER: mesh_publish_parts(mb, m, x->view_off, &x->ring, &x->last_auto, now, parts); break;
+        case MPM_ROLE_FOLLOWER:
+        case MPM_ROLE_MIRROR: break;
+        }
+    }
 }
 
 void drv_programs_tick(mesh_driver *d, int64_t now) {
@@ -777,6 +802,7 @@ void drv_programs_tick(mesh_driver *d, int64_t now) {
         if (!x) continue;
         if (!in_blink && (x->phase == PH_RUNNING || x->phase == PH_STARTING) && !x->failed) publish_slot(d, s, now);
     }
+    drv_place_tick(d);
     http_load(d);
     dead_cells_tick(d);
 }

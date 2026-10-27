@@ -456,6 +456,8 @@ static bool op_load(mesh_driver *d, mesh_prepared *p, int run, char **out) {
     mesh_pring_init(&x->ring, s);
     x->last_auto = mesh_mono_ns();
     d->slots[s] = x;
+    d->place[s] = NULL;
+    drv_sync_place(d, s);
     *out = mesh_buf_fmt("slot %u", s);
     return true;
 }
@@ -545,6 +547,7 @@ static bool op_upgrade(mesh_driver *d, uint32_t s, mesh_prepared *p, char **out)
     mesh_info("upgrade %s (slot %u) %016llx -> %016llx from %s: view %s", drv_name(x), s, (unsigned long long)old_hash, (unsigned long long)new_hash,
               dir, view);
     free(dir);
+    drv_sync_place(d, s);
     *out = mesh_buf_fmt("view %s", view);
     return true;
 }
@@ -574,6 +577,7 @@ static bool op_rollback(mesh_driver *d, uint32_t s, char **out) {
     drv_ext(x, ext);
     mesh_pt_write_entry(d->sh->mb, s, e, ext, drv_state(x));
     mesh_info("rollback %s (slot %u) to %016llx (%s): view %s", drv_name(x), s, (unsigned long long)x->image.hash, x->image.dir, view);
+    drv_sync_place(d, s);
     *out = mesh_buf_fmt("view %s", view);
     return true;
 }

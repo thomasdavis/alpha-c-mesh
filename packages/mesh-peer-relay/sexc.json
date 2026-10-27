@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-peer-relay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The fleet thread: links, the election and commit core, changes forwarded to the leader, the leader's policies and scheduler, migrations, lockstep groups and the published fleet state",
   "kind": "library",
   "license": "MIT",

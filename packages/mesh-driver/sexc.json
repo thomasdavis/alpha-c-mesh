@@ -1,6 +1,6 @@
 {
   "name": "@ajax/mesh-driver",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "meshd's driver thread: the only ring publisher and program-table writer; lifecycle, blinks, publishing, pipes and job items",
   "kind": "library",
   "license": "MIT",
@@ -47,6 +47,12 @@
     "@ajax/mesh-reply": "workspace:*",
     "@ajax/mesh-buf": "workspace:*",
     "@ajax/mesh-rsfmt": "workspace:*",
-    "@ajax/mesh-check": "workspace:*"
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-placer": "workspace:*",
+    "@ajax/mesh-place-mode": "workspace:*",
+    "@ajax/mesh-place-spec": "workspace:*",
+    "@ajax/mesh-place-wire": "workspace:*",
+    "@ajax/mesh-place-compose": "workspace:*",
+    "@ajax/mesh-mt": "workspace:*"
   }
 }

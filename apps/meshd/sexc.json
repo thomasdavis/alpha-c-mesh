@@ -1,16 +1,32 @@
 {
   "name": "@ajax/meshd",
-  "version": "0.1.0",
-  "description": "meshd: the host daemon of the GPU mesh: the executors, the driver, the control and HTTP ports, the samplers",
+  "version": "0.1.1",
+  "description": "meshd: the host daemon of the GPU mesh: the executors, the driver, the control and HTTP ports, the samplers, the jobs and blob threads, and a fleet member's links, leader and reconciler",
   "kind": "executable",
   "bin": "meshd",
   "license": "MIT",
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
   "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/meshd",
-  "keywords": ["mesh", "alphaos", "daemon", "gpu", "cuda", "wasm"],
-  "cflags": ["-D_XOPEN_SOURCE=700", "-pthread"],
-  "ldflags": ["-pthread", "-ldl", "-lm"],
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "daemon",
+    "gpu",
+    "cuda",
+    "wasm",
+    "fleet",
+    "jobs"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700",
+    "-pthread"
+  ],
+  "ldflags": [
+    "-pthread",
+    "-ldl",
+    "-lm"
+  ],
   "dependencies": {
     "@ajax/mesh-args": "workspace:*",
     "@ajax/mesh-driver": "workspace:*",
@@ -33,6 +49,13 @@
     "@ajax/mesh-rsfmt": "workspace:*",
     "@ajax/mesh-chan": "workspace:*",
     "@ajax/mesh-exec-wasm-testkit": "workspace:*",
-    "@ajax/mesh-check": "workspace:*"
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-fleetd": "workspace:*",
+    "@ajax/mesh-jobd": "workspace:*",
+    "@ajax/mesh-jobs-node": "workspace:*",
+    "@ajax/mesh-cluster-conf": "workspace:*",
+    "@ajax/mesh-peer-codec": "workspace:*",
+    "@ajax/mesh-peer-relay": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*"
   }
 }

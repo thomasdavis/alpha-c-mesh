@@ -2,7 +2,8 @@
  * mailbox and every program's resident kernel), the CPU executors beside it (wasm lanes, native
  * worker processes), and the driver, which publishes tasks and runs the program lifecycle on the main
  * thread; the control, HTTP and sampler threads only talk to the driver (commands) or read the
- * mailbox. */
+ * mailbox. The jobs and blob threads run the job table (mesh-jobd); in a fleet, the fleet thread
+ * (mesh-fleetd over mesh-peer-relay) links the members, follows the leader and reconciles. */
 #include "meshd.h"
 
 #include "mesh/abi.h"
@@ -13,8 +14,10 @@
 #include "mesh/cuda.h"
 #include "mesh/driver.h"
 #include "mesh/exec_wasm.h"
+#include "mesh/fleetd.h"
 #include "mesh/http_relay.h"
 #include "mesh/infer_svc.h"
+#include "mesh/jobd/jobd.h"
 #include "mesh/log.h"
 #include "mesh/mps.h"
 #include "mesh/mps_worker.h"
@@ -203,8 +206,6 @@ _Noreturn int meshd_main(int argc, char **argv) {
     install_signals();
     struct stat st;
     if (stat(a.programs, &st) != 0 || !S_ISDIR(st.st_mode)) fail(mesh_buf_fmt("--programs %s: not a directory", a.programs));
-    if (a.cluster)
-        fail(mesh_xstrdup("--cluster/--peer: this port's fleet thread (peer.rs run) is not wired into meshd yet; run a single meshd"));
 
     /* Ports first: a busy port should fail before the GPU is touched. */
     int control = bind_or_exit("control", a.control);
@@ -276,6 +277,7 @@ _Noreturn int meshd_main(int argc, char **argv) {
     free(label);
 
     uint32_t system = a.cluster ? a.topo.me : MESH_PEER_NONE;
+    bool peered = a.cluster;
     /* The fleet's id and size (viewers; the http program). */
     mesh_mailbox_set(mb, MESH_H_PEER, system);
     mesh_mailbox_set(mb, MESH_H_SYSTEMS, nsys);
@@ -287,7 +289,11 @@ _Noreturn int meshd_main(int argc, char **argv) {
     mesh_mailbox_set(mb, MESH_H_BACKEND, mesh_caps_word(caps));
     mesh_mailbox_set(mb, MESH_H_MAX_TG_THREADS, caps->max_tg_threads);
     mesh_mailbox_set(mb, MESH_H_MAX_SHARED, caps->max_shared);
-    mesh_shared *sh = mesh_shared_new(mb, a.programs, a.cluster, a.cluster ? system : 0, nsys, &QUIT);
+    mesh_shared *sh = mesh_shared_new(mb, a.programs, peered, peered ? system : 0, nsys, &QUIT);
+    /* A fleet member's persistent state, read (and checked) before anything runs. */
+    mesh_fleetd *fleet = NULL;
+    bool skip_startup = false;
+    if (peered && !(fleet = mesh_fleetd_open(sh, &a.topo, a.fleet_state, &skip_startup, &err))) fail(err);
     mesh_host_block *host = &sh->host;
     char hostname[256] = "";
     gethostname(hostname, sizeof hostname - 1);
@@ -315,10 +321,14 @@ _Noreturn int meshd_main(int argc, char **argv) {
     sh->svc = svc;
     sh->has_svc = true;
     mesh_shared_set_peer_state(sh, a.cluster ? MESH_PEER_WAITING : MESH_PEER_SINGLE);
-    /* The jobs and blob threads (jobd.rs, blobd.rs) are not wired yet: `jobs` requests answer at once. */
-    mesh_chan_close_rx(sh->jobs);
+    /* The job table's log (replayed) and the blob store (indexed) before anything runs. */
+    mjd_config jc = {a.jobs_state, a.blobs, (uint64_t)a.blobs_cap_mb << 20, peered ? a.topo.tun.dead_ms : MESH_PEER_DEAD_MS};
+    mjd *jobs = mjd_open(sh, &jc, &err);
+    if (!jobs) fail(err);
+    mesh_control_render = mjd_render;
 
-    mesh_driver_config cfg = {a.cluster, a.state, a.autoload, false};
+    /* A member with a committed desired state reconciles to it: --state / --autoload are for a fresh fleet. */
+    mesh_driver_config cfg = {peered, a.state, a.autoload, skip_startup};
     mesh_driver *d = mesh_driver_new(sh, gpu, cpus, ncpus, cfg);
     if (!mesh_driver_start(d, &err)) fail(err);
     static serve_arg cs, hs;
@@ -328,6 +338,13 @@ _Noreturn int meshd_main(int argc, char **argv) {
     spawn(http_thread, &hs);
     spawn(net_thread, sh);
     spawn(load_thread, sh);
+    /* The jobs thread (its own leader when single; in a fleet the job table follows the fleet's leader)
+     * and the blob thread. */
+    mjd_start(jobs);
+    if (fleet) {
+        mpk_caps pc = mesh_fleetd_caps(sh, caps->name, ARCH);
+        mesh_fleetd_start(fleet, &pc);
+    }
     /* The driver runs on the main thread (it made the context current in start). */
     int code = mesh_driver_run(d);
     /* A fail-stop: the fleet state or the job log could not be made durable. */

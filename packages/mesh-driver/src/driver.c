@@ -290,6 +290,8 @@ static void save_state(mesh_driver *d) {
 
 /* Something wants prompt attention: a continuous program, a transition, a blink, job work. */
 static bool busy(const mesh_driver *d) {
+    /* A placed program's frames hop between the machines: see them promptly. */
+    if (drv_place_busy(d)) return true;
     for (uint32_t s = 0; s < MESH_PROG_SLOTS; s++) if (d->jobw[s].n || d->jobw[s].inflight) return true;
     if (d->nblinks || d->working) return true;
     for (uint32_t s = 0; s < MESH_PROG_SLOTS; s++) {
@@ -342,6 +344,8 @@ static void member_stats(mesh_driver *d, float dt, float *rtt_out, uint32_t *cnt
         if (rtt[k].n) { sum += r; cnt++; }
         if (w > worst) worst = w;
     }
+    /* Placed programs: the measured time per part (for `split auto`). */
+    drv_place_part_ns(d);
     *rtt_out = cnt ? sum / (float)cnt : 0.0f;
     *cnt_out = cnt;
     *worst_out = worst;
@@ -406,6 +410,7 @@ static void stats(mesh_driver *d) {
         mesh_info("%s", mesh_buf_str(&line));
         mesh_buf_free(&line);
         mesh_buf_free(&p);
+        drv_place_log(d);
     }
 }
 
@@ -515,6 +520,7 @@ int mesh_driver_run(mesh_driver *d) {
 
 void mesh_driver_free(mesh_driver *d) {
     if (!d) return;
+    drv_place_free_all(d);
     for (uint32_t s = 0; s < MESH_PROG_SLOTS; s++) {
         dslot *x = d->slots[s];
         djobslot *j = &d->jobw[s];
@@ -608,6 +614,8 @@ static void cmd_unload(mesh_driver *d, mesh_cmd *c) {
 static void cmd_prog_run(mesh_driver *d, mesh_cmd *c) {
     int s = drv_find(d, c->name);
     if (s < 0) { err_unknown(&c->reply, c->name); return; }
+    char *why = drv_placed_here(d, (uint32_t)s);
+    if (why) { mesh_reply_err(take(&c->reply), why); free(why); return; }
     /* P_RUN is the host's word; GPU requests come through the GPU-owned P_RUN_REQ. */
     mesh_mailbox_set(d->sh->mb, mesh_prog_ctl((uint32_t)s) + MESH_P_RUN, c->on);
     dslot *x = d->slots[s];
@@ -664,9 +672,18 @@ static void cmd_req(mesh_driver *d, mesh_cmd *c) {
 static void cmd_input(mesh_driver *d, mesh_cmd *c) {
     int s = drv_find(d, c->name);
     if (s < 0) { err_unknown(&c->reply, c->name); return; }
-    /* Placed programs forward their input to the machine that applies it: not wired (no placer is ever created here). */
+    /* Placed: the input goes to the machine that applies it (pin k: k; split: the owner). */
+    uint32_t to = drv_input_to(d, (uint32_t)s);
     char *text = NULL;
-    bool ok = drv_input(d, (uint32_t)s, c->bytes, c->len, &text) == 0;
+    bool ok;
+    if (to == d->me) ok = drv_input(d, (uint32_t)s, c->bytes, c->len, &text) == 0;
+    else if (c->len > MESH_F_INPUT_MAX) ok = false, text = mesh_buf_fmt("%s: at most %d bytes forwarded at once", c->name, MESH_F_INPUT_MAX);
+    else {
+        mpw_bytes f = mpw_input_encode(c->name, c->bytes, c->len);
+        ok = mesh_shared_send_peer(d->sh, to, f.b, f.n);
+        mpw_bytes_free(&f);
+        text = ok ? mesh_buf_fmt("%zu bytes to system %u", c->len, to) : mesh_buf_fmt("peer: the cluster is not up; %s's input goes to system %u", c->name, to);
+    }
     drv_answer(take(&c->reply), ok, text);
     free(text);
 }
@@ -767,7 +784,7 @@ static void cmd_inventory(mesh_driver *d, mesh_cmd *c) {
         y->hash = x->image.hash;
         y->has_prev = x->has_prev;
         y->prev = x->has_prev ? x->prev.hash : 0;
-        y->run = x->want_run;
+        y->run = x->want_run || drv_place_stopped(d, drv_name(x));
         y->failed = x->failed != NULL;
         y->lockstep = x->image.manifest.peer == MESH_PEER_MODE_LOCKSTEP;
     }
@@ -807,6 +824,8 @@ void drv_program_cmd(mesh_driver *d, mesh_cmd *c) {
     case MESH_CMD_RESET: {
         int s = drv_find(d, c->name);
         if (s < 0) { err_unknown(&c->reply, c->name); break; }
+        char *why = drv_placed_here(d, (uint32_t)s);
+        if (why) { mesh_reply_err(take(&c->reply), why); free(why); break; }
         if (!drv_live(d->slots[s])) {
             char *t = NULL;
             bool ok = drv_op_reset(d, (uint32_t)s, &t);
@@ -824,26 +843,14 @@ void drv_program_cmd(mesh_driver *d, mesh_cmd *c) {
     case MESH_CMD_TASK: cmd_task(d, c); break;
     case MESH_CMD_REQ: cmd_req(d, c); break;
     case MESH_CMD_INPUT: cmd_input(d, c); break;
-    case MESH_CMD_PLACE: {
-        int s = drv_find(d, c->name);
-        if (s < 0) { err_unknown(&c->reply, c->name); break; }
-        /* A placer exists only when peered and the manifest declares `place` (wired with the fleet's placement). */
-        if (!d->cfg.peered) mesh_reply_err(take(&c->reply), "not peered: placement needs a cluster (--cluster, --system)");
-        else mesh_reply_errf(take(&c->reply), "%s declares no `place` in its manifest", c->name);
+    case MESH_CMD_PLACE:
+        if (drv_find(d, c->name) < 0) err_unknown(&c->reply, c->name);
+        else drv_cmd_place(d, c, take(&c->reply));
         break;
-    }
-    case MESH_CMD_PEER_PLACE:
-        mesh_error("place: F_PLACE for a program from system %u, which is not placeable here; ignored", c->from);
-        break;
-    case MESH_CMD_PEER_FRAME: break;
-    case MESH_CMD_PEER_INPUT:
-        mesh_error("place: %zu byte(s) of input for %s from a member, which does not apply its input here; dropped", c->len, c->name);
-        break;
-    case MESH_CMD_FLEET_VIEW:
-        d->fleet_up = c->up;
-        d->has_fleet_leader = c->has_leader;
-        d->fleet_leader = c->leader;
-        break;
+    case MESH_CMD_PEER_PLACE: drv_cmd_peer_place(d, c); break;
+    case MESH_CMD_PEER_FRAME: drv_cmd_peer_frame(d, c); break;
+    case MESH_CMD_PEER_INPUT: drv_cmd_peer_input(d, c); break;
+    case MESH_CMD_FLEET_VIEW: drv_cmd_fleet_view(d, c); break;
     case MESH_CMD_INVENTORY: cmd_inventory(d, c); break;
     case MESH_CMD_VIEW_GET: cmd_view_get(d, c); break;
     case MESH_CMD_VIEW_PUT: cmd_view_put(d, c); break;
