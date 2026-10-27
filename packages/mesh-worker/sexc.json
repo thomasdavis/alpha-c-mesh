@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/mesh-worker",
+  "version": "0.1.0",
+  "description": "The SDK of native worker programs: mesh_worker_run(init, task) maps meshd's mailbox, says ready, and runs a slot's nodes at each run until they halt",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-worker",
+  "keywords": ["mesh", "alphaos", "worker", "native", "sdk", "process"],
+  "cflags": ["-D_GNU_SOURCE", "-pthread"],
+  "ldflags": ["-pthread"],
+  "dependencies": {
+    "@ajax/mesh-worker-node": "workspace:*",
+    "@ajax/mesh-worker-ctx": "workspace:*",
+    "@ajax/mesh-mailbox": "workspace:*",
+    "@ajax/mesh-abi-native": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

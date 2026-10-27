@@ -1,0 +1,21 @@
+{
+  "name": "@ajax/mesh-backend",
+  "version": "0.1.0",
+  "description": "The executor interface meshd's driver runs programs on: images, streams, compilers and backends (CUDA, native, wasm)",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-backend",
+  "keywords": ["mesh", "alphaos", "backend", "executor", "gpu", "interface"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-manifest": "workspace:*",
+    "@ajax/mesh-loader": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-abi-control-protocol": "workspace:*",
+    "@ajax/mesh-abi-program-table": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

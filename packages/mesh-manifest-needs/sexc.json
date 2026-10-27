@@ -1,0 +1,17 @@
+{
+  "name": "@ajax/mesh-manifest-needs",
+  "version": "0.1.0",
+  "description": "What a program needs from the fleet scheduler: placement terms, replicas, migration, reservations",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-manifest-needs",
+  "keywords": ["mesh", "alphaos", "manifest", "scheduler", "fleet"],
+  "dependencies": {
+    "@ajax/mesh-text": "workspace:*",
+    "@ajax/mesh-abi-backend": "workspace:*",
+    "@ajax/mesh-abi-base": "workspace:*",
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

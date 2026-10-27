@@ -1,0 +1,26 @@
+{
+  "name": "@ajax/mesh-text",
+  "version": "0.1.0",
+  "description": "Growable strings, formatting, and Rust-style Debug output for faithful error messages",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-text",
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "text",
+    "format",
+    "string"
+  ],
+  "cflags": [
+    "-D_XOPEN_SOURCE=700"
+  ],
+  "ldflags": [
+    "-lm"
+  ],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}
