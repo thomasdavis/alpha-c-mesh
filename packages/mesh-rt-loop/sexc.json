@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-rt-loop",
+  "version": "0.1.0",
+  "description": "The node loop of every mesh program's kernel: tickets from the slot's ring, completion, heartbeat, load records, shutdown",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-loop",
+  "keywords": ["mesh", "alphaos", "gpu", "runtime", "ring"],
+  "dependencies": {
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-header": "workspace:*",
+    "@ajax/mesh-abi-node": "workspace:*",
+    "@ajax/mesh-abi-node-load": "workspace:*",
+    "@ajax/mesh-abi-ops": "workspace:*",
+    "@ajax/mesh-abi-ring": "workspace:*",
+    "@ajax/mesh-abi-trace": "workspace:*",
+    "@ajax/mesh-rt-block": "workspace:*",
+    "@ajax/mesh-rt-ctx": "workspace:*",
+    "@ajax/mesh-rt-prim": "workspace:*"
+  }
+}

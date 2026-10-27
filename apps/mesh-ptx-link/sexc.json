@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-ptx-link",
+  "version": "0.1.0",
+  "description": "Links LLVM bitcode into one PTX module in the mesh cluster float mode (f32 FTZ, unfused), exporting only the kernel",
+  "kind": "executable",
+  "bin": "mesh-ptx-link",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/apps/mesh-ptx-link",
+  "keywords": ["mesh", "alphaos", "ptx", "llvm", "linker", "ftz"],
+  "cflags": ["-D_XOPEN_SOURCE=700"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*"
+  }
+}

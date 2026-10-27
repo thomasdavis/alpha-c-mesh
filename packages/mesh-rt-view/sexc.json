@@ -1,0 +1,16 @@
+{
+  "name": "@ajax/mesh-rt-view",
+  "version": "0.1.0",
+  "description": "A bounds-checked byte window of the mailbox for mesh programs, and the program fault record",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-rt-view",
+  "keywords": ["mesh", "alphaos", "gpu", "runtime", "view"],
+  "dependencies": {
+    "@ajax/mesh-abi-control-block": "workspace:*",
+    "@ajax/mesh-abi-fault": "workspace:*",
+    "@ajax/mesh-rt-prim": "workspace:*"
+  }
+}
