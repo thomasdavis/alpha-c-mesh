@@ -1,6 +1,9 @@
 /* Answered, dropped unanswered, answered too late, and across threads. */
 #include "mesh/check.h"
+#include "mesh/buf.h"
 #include "mesh/reply.h"
+
+#include <stdlib.h>
 
 #include <pthread.h>
 
@@ -57,5 +60,17 @@ int main(void) {
     CHECK(x.bytes[0] == 'a' && x.bytes[2] == 'c');
     mesh_result_free(&x);
     mesh_reply_release(r);
+
+    /* A pointer payload: taken, or freed with the channel when nobody waits. */
+    r = mesh_reply_new();
+    mesh_reply_ptr(mesh_reply_sender(r), mesh_xstrdup("inventory"), free);
+    CHECK_I(mesh_reply_wait(r, 100, &x), MESH_CHAN_OK);
+    CHECK_S(x.ptr, "inventory");
+    mesh_result_free(&x);
+    mesh_reply_release(r);
+    r = mesh_reply_new();
+    s = mesh_reply_sender(r);
+    mesh_reply_release(r);
+    mesh_reply_ptr(s, mesh_xstrdup("nobody"), free);
     return mesh_check_done();
 }

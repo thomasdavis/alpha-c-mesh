@@ -35,17 +35,19 @@ void mesh_reply_drop(mesh_reply *r) {
 }
 
 mesh_result mesh_result_ok(const char *text) {
-    mesh_result x = {true, 0, mesh_xstrdup(text ? text : ""), NULL, 0};
+    mesh_result x = {true, 0, mesh_xstrdup(text ? text : ""), NULL, 0, NULL, NULL};
     return x;
 }
 
 mesh_result mesh_result_err(const char *text) {
-    mesh_result x = {false, 0, mesh_xstrdup(text ? text : ""), NULL, 0};
+    mesh_result x = {false, 0, mesh_xstrdup(text ? text : ""), NULL, 0, NULL, NULL};
     return x;
 }
 
 mesh_result mesh_result_copy(const mesh_result *r) {
     mesh_result x = *r;
+    x.ptr = NULL;
+    x.ptr_free = NULL;
     if (r->text) x.text = mesh_xstrdup(r->text);
     if (r->bytes) {
         x.bytes = mesh_xmalloc(r->len);
@@ -63,7 +65,7 @@ void mesh_reply_okf(mesh_reply *r, const char *fmt, ...) {
     va_start(ap, fmt);
     mesh_buf_vprintf(&b, fmt, ap);
     va_end(ap);
-    mesh_result x = {true, 0, mesh_buf_take(&b), NULL, 0};
+    mesh_result x = {true, 0, mesh_buf_take(&b), NULL, 0, NULL, NULL};
     mesh_reply_send(r, x);
 }
 
@@ -73,18 +75,23 @@ void mesh_reply_errf(mesh_reply *r, const char *fmt, ...) {
     va_start(ap, fmt);
     mesh_buf_vprintf(&b, fmt, ap);
     va_end(ap);
-    mesh_result x = {false, 0, mesh_buf_take(&b), NULL, 0};
+    mesh_result x = {false, 0, mesh_buf_take(&b), NULL, 0, NULL, NULL};
     mesh_reply_send(r, x);
 }
 
 void mesh_reply_value(mesh_reply *r, uint32_t v) {
-    mesh_result x = {true, v, NULL, NULL, 0};
+    mesh_result x = {true, v, NULL, NULL, 0, NULL, NULL};
     mesh_reply_send(r, x);
 }
 
 void mesh_reply_bytes(mesh_reply *r, const void *p, size_t n) {
-    mesh_result x = {true, 0, NULL, mesh_xmalloc(n), n};
+    mesh_result x = {true, 0, NULL, mesh_xmalloc(n), n, NULL, NULL};
     if (n) memcpy(x.bytes, p, n);
+    mesh_reply_send(r, x);
+}
+
+void mesh_reply_ptr(mesh_reply *r, void *ptr, void (*ptr_free)(void *ptr)) {
+    mesh_result x = {true, 0, NULL, NULL, 0, ptr, ptr_free};
     mesh_reply_send(r, x);
 }
 
@@ -107,6 +114,8 @@ void mesh_reply_release(mesh_reply *r) {
 void mesh_result_free(mesh_result *r) {
     free(r->text);
     free(r->bytes);
+    if (r->ptr && r->ptr_free) r->ptr_free(r->ptr);
+    r->ptr = NULL;
     r->text = NULL;
     r->bytes = NULL;
     r->len = 0;

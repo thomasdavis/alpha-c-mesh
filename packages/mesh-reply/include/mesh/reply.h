@@ -23,6 +23,8 @@ typedef struct {
     char *text;     /* the Ok text (Reply), or the error; NULL when neither */
     uint8_t *bytes; /* the Ok bytes (HttpReply) */
     size_t len;
+    void *ptr;                   /* any other Ok payload (an inventory, a view), freed by ptr_free */
+    void (*ptr_free)(void *ptr);
 } mesh_result;
 
 typedef mesh_chan mesh_reply;
@@ -41,6 +43,8 @@ void mesh_reply_err(mesh_reply *r, const char *text);
 void mesh_reply_errf(mesh_reply *r, const char *fmt, ...) __attribute__((format(printf, 2, 3)));
 void mesh_reply_value(mesh_reply *r, uint32_t v);
 void mesh_reply_bytes(mesh_reply *r, const void *p, size_t n);
+/* Ok(ptr): ownership of ptr passes to the receiver (freed with ptr_free if nobody takes it). */
+void mesh_reply_ptr(mesh_reply *r, void *ptr, void (*ptr_free)(void *ptr));
 /* Let go without answering: the waiter sees MESH_CHAN_CLOSED. */
 void mesh_reply_drop(mesh_reply *r);
 
@@ -54,7 +58,7 @@ void mesh_reply_release(mesh_reply *r);
 
 mesh_result mesh_result_ok(const char *text);
 mesh_result mesh_result_err(const char *text);
-/* A copy (text and bytes duplicated). */
+/* A copy (text and bytes duplicated; ptr is not copied: NULL in the copy). */
 mesh_result mesh_result_copy(const mesh_result *r);
 void mesh_result_free(mesh_result *r);
 
