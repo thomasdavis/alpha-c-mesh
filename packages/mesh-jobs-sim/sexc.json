@@ -1,15 +1,38 @@
 {
   "name": "@ajax/mesh-jobs-sim",
   "version": "0.1.0",
-  "description": "Test bed for the job nodes: simulated fleets checked against the Rust (traces) and the jobs.rs fleet tests",
+  "description": "Test bed for the job nodes: simulated fleets checked against the Rust (traces) and jobs.rs's fleet tests over the fleet's election core",
   "kind": "library",
   "private": true,
   "license": "MIT",
   "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
   "repository": "https://github.com/thomasdavis/alpha-c-mesh",
-  "keywords": ["mesh", "alphaos", "jobs", "simulation", "tests"],
+  "keywords": [
+    "mesh",
+    "alphaos",
+    "jobs",
+    "simulation",
+    "tests"
+  ],
   "dependencies": {
-    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-node": "workspace:*",
-    "@ajax/mesh-ref-sha256d": "workspace:*"
-  }
+    "@ajax/mesh-check": "workspace:*",
+    "@ajax/mesh-strbuf": "workspace:*",
+    "@ajax/mesh-jobs-node": "workspace:*",
+    "@ajax/mesh-ref-sha256d": "workspace:*",
+    "@ajax/mesh-fleet-core": "workspace:*",
+    "@ajax/mesh-blobs-store": "workspace:*",
+    "@ajax/mesh-assemble": "workspace:*",
+    "@ajax/mesh-ref-pathtrace": "workspace:*",
+    "@ajax/pathtrace-z": "workspace:*",
+    "@ajax/pathtrace-scene": "workspace:*",
+    "@ajax/pathtrace-view": "workspace:*",
+    "@ajax/pathtrace-digest": "workspace:*",
+    "@ajax/mesh-ftz": "workspace:*"
+  },
+  "cflags": [
+    "-O2"
+  ],
+  "targets": [
+    "host"
+  ]
 }
