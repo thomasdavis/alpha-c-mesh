@@ -1,0 +1,40 @@
+# sha256d: Bitcoin-style double SHA-256 nonce grinding (layout: programs/sha256d/src/lib.rs, V_*)
+# A task grinds a chunk of 2^chunk_log2 nonces: OP_JOB the chunk a job's lease
+# names (the fleet), OP_TASK the next from the view's chunk counter (`task`).
+# param = chunk_log2, read by every image (PTX, program.metal, wasm) and part of
+# the image hash, so every member of a mixed CUDA/Metal/wasm fleet grinds one
+# chunk size (no runtime `chunk` setting).  2^16 since multi-warp nodes
+# (README "Multi-warp tasks"): a node is 16 warps (512 threads, nonce = thread +
+# 512 i), so a chunk is 64 iterations of 2 nonces a thread.  Before (one warp,
+# 2^14), 2026-10-26: GB10 105.9 MH/s at 8 nodes; M3 Ultra 16.2 MH/s.
+# Default demo target (OP_INIT, ZBITS_DEFAULT): 26 leading zero bits.  Measured on dgx-00 (GB10, shared
+# with other tenants at ~96% load), 8 nodes: 51-55 MH/s, so 2^26 / rate = 1.2-1.3 s per share (32 nodes:
+# 208-219 MH/s).  Change it live: `task sha256d 3 <bits>` (or `req`: "zbits <bits>", "nbits 1d00ffff").
+# nodes = fanout = 8: a stop or a blink drains in a task or two (~0.4 ms on a GB10)
+# while the other programs keep most of the GPU; 32 nodes (the per-program maximum) is 4x the rate.
+# Jobs (plan F5): policy "job" -- meshd grinds nothing on its own; every chunk is an
+# item of a fleet job (`job submit sha256d items 0- results nonzero setup 6:0`:
+# grind continuously; a nonce window: `items a-b`), leased by the leader and run
+# as OP_JOB (chunk = the u64 at job_base + arg), its shares in the item's job_out
+# record.  fanout = 8: a Metal member's tickets in flight (one ~8 ms command buffer).
+name       = "sha256d"
+abi        = 6
+view_bytes = 0x2000
+view_abi   = 1
+snap_bytes = 0x800
+nodes      = 8
+warps      = 16
+shared_bytes = 0x60
+policy     = "job"
+fanout     = 8
+job_base   = 0x1000
+job_out    = "0x1800:32"
+request    = "0x800:0x200,0xa00:0x200"
+counters   = ["Mhash", "shares", "chunks", "stale"]
+fields     = ["hashes:u64:0x10", "best_zbits:u32:0x30", "best_hi:u32:0x50", "best_nonce:u32:0x34", "shares:u32:0x2c", "found:u32:0xc", "last_nonce:u32:0x3c", "last_zbits:u32:0x5c", "target_zbits:u32:0x28", "version:u32:0x44", "time:u32:0x48", "nbits:u32:0x4c", "base:u32:0x20", "chunk_log2:u32:0x24", "system:u32:0x54", "gen:u32:0x4"]
+autostart  = false
+backends   = ["cuda", "metal", "wasm"]
+param      = 16
+# wasm (one lane a task; warps is the GPU shape): a 2^16-nonce chunk is ~30 ms on one core (2.2 MH/s); with up to 32 lanes on
+# shared cores a task's wall time can stretch several-fold: 1 s before FAULT_TIME.
+task_ms    = 1000
