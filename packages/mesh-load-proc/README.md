@@ -2,11 +2,10 @@
 
 Parsers of the Linux /proc files the load sampler reads: stat, pressure, meminfo, loadavg, key-value files.
 
-```
-@ajax/mesh-load-proc: the pure parsers of load.rs: /proc/stat's CPU times,
-the big/little core classes, PSI (the /proc/pressure files), /proc/meminfo,
-/proc/loadavg and `key value` / `Key: value` files. Errors are the Rust's
-text. The OS readers that feed them are mesh-load-host.
+The pure parsers of load.rs: /proc/stat's CPU times, the big/little core classes, PSI (the /proc/pressure files), /proc/meminfo, /proc/loadavg and `key value` / `Key: value` files. Errors are the Rust's text. The OS readers that feed them are mesh-load-host.
+
+```c
+#include "mesh/load_proc.h"
 ```
 
 ## Ported from

@@ -2,14 +2,12 @@
 
 Network interface counters: /proc/net/dev (or macOS's 64-bit if_data), wrap-safe totals, NIC records.
 
-```
-@ajax/mesh-nic: the machine's network interfaces' counters (net.rs, "Network I/O").
+The machine's network interfaces' counters (net.rs, "Network I/O").
 
-Read once a second: Linux /proc/net/dev, macOS the routing sysctl's 64-bit
-if_data64. Each OS counter is extended to a monotonic u64 (a narrower one
-that went down wrapped; a 64-bit one that went down was reset), and a total
-sums every physical interface (mesh-abi NET_VIRTUAL prefixes left out) that
-never goes down. NIC records (NI_*) are what the host block publishes.
+Read once a second: Linux /proc/net/dev, macOS the routing sysctl's 64-bit if_data64. Each OS counter is extended to a monotonic u64 (a narrower one that went down wrapped; a 64-bit one that went down was reset), and a total sums every physical interface (mesh-abi NET_VIRTUAL prefixes left out) that never goes down. NIC records (NI_*) are what the host block publishes.
+
+```c
+#include "mesh/nic.h"
 ```
 
 ## Ported from

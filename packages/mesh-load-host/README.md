@@ -2,8 +2,7 @@
 
 This machine's load sample: the OS readers (CPU, PSI, memory, disk, thermal), rates between samples, the machine region and the member summary.
 
-```
-@ajax/mesh-load-host: this machine's side of the load telemetry (load.rs):
+This machine's side of the load telemetry (load.rs):
 
 - `mesh_host_read`: one sample of the host (per-CPU times, load average,
 PSI, memory, swap, meshd's own CPU, RSS and threads, free disk for the
@@ -13,6 +12,9 @@ class, iowait, PSI shares, meshd's CPU, swap-outs);
 - `mesh_machine_bytes`: the host block's machine region (S_LOAD..S_MLOAD);
 - `mesh_exec_totals`: the CPU executors' sums into it;
 - `mesh_loadrep`: the member summary sent to the cluster as F_LOADREP.
+
+```c
+#include "mesh/load_host.h"
 ```
 
 ## Ported from

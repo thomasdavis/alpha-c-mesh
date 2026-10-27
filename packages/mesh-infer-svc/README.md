@@ -2,11 +2,10 @@
 
 Where each member's inference services listen, and the address one member dials for another's.
 
-```
-@ajax/mesh-infer-svc: where each member's inference services listen
-(infer.rs Svc): its peer host and port (the base: a worker listens on
-base + its manifest's `param`) and the address members outside its subnet
-use (`k.lan` in the cluster config).
+Where each member's inference services listen (infer.rs Svc): its peer host and port (the base: a worker listens on base + its manifest's `param`) and the address members outside its subnet use (`k.lan` in the cluster config).
+
+```c
+#include "mesh/infer_svc.h"
 ```
 
 ## Ported from

@@ -2,11 +2,10 @@
 
 An inference request: the control port's infer words and GET /infer's query, parsed; results as text.
 
-```
-@ajax/mesh-infer-request: an `infer` request (infer.rs Request, parse,
-from_query, text): `infer [fast|fast16|exact|exact-cpu] [max N]
-[prefill=K decode=J | mono=K] [repeat=R] [len=N] <prompt>` on the control
-port, `GET /infer?prompt=..&max=..&mode=..` on meshd's http.
+An `infer` request (infer.rs Request, parse, from_query, text): `infer [fast|fast16|exact|exact-cpu] [max N] [prefill=K decode=J | mono=K] [repeat=R] [len=N] <prompt>` on the control port, `GET /infer?prompt=..&max=..&mode=..` on meshd's http.
+
+```c
+#include "mesh/infer_request.h"
 ```
 
 ## Ported from

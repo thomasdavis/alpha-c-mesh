@@ -2,15 +2,12 @@
 
 The gpt2 service protocol's wire: frames, key=value messages, checksummed KV layers.
 
-```
-@ajax/mesh-infer-wire: the wire of the inference services (programs/gpt2;
-docs/plan-disagg-inference.md).
+The wire of the inference services (programs/gpt2; docs/plan-disagg-inference.md).
 
-Every gpt2 worker listens on TCP; frames are a u32 length (LE, of what
-follows), a u8 kind, a payload. A request (K_GEN, K_DECODE, K_PREFILL)
-carries a Msg: `key=value` lines (sorted by key), a blank line, a body. KV
-travels as K_LAYER frames (layer, rows, a checksum, the bytes); K_FIRST
-ends a prefill; K_RESULT and K_ERROR answer.
+Every gpt2 worker listens on TCP; frames are a u32 length (LE, of what follows), a u8 kind, a payload. A request (K_GEN, K_DECODE, K_PREFILL) carries a Msg: `key=value` lines (sorted by key), a blank line, a body. KV travels as K_LAYER frames (layer, rows, a checksum, the bytes); K_FIRST ends a prefill; K_RESULT and K_ERROR answer.
+
+```c
+#include "mesh/infer_wire.h"
 ```
 
 ## Ported from

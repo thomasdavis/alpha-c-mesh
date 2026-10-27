@@ -2,11 +2,10 @@
 
 The view heap's first-fit page allocator (meshd gives each loaded program its view from it).
 
-```
-@ajax/mesh-view-alloc: first-fit allocation over the view heap's
-VIEW_PAGES pages (programs.rs Heap). A view of 0 bytes takes no page
-(offset 0). Offsets are mailbox offsets. Freeing a free page is a bug in
-meshd: it aborts, as the Rust panics.
+First-fit allocation over the view heap's VIEW_PAGES pages (programs.rs Heap). A view of 0 bytes takes no page (offset 0). Offsets are mailbox offsets. Freeing a free page is a bug in meshd: it aborts, as the Rust panics.
+
+```c
+#include "mesh/view_alloc.h"
 ```
 
 ## Ported from

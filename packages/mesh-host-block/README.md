@@ -2,11 +2,10 @@
 
 meshd's host status block (S_* fields) under one lock, with its uptime clock and the live network counters.
 
-```
-@ajax/mesh-host-block: the host status block (status.rs HostStatus):
-SNAP_HOST bytes, little-endian, written by meshd's threads under one lock,
-read whole by the snapshot with the uptime and the live network counters
-filled in at that moment (the counters' rates are timed by that uptime).
+The host status block (status.rs HostStatus): SNAP_HOST bytes, little-endian, written by meshd's threads under one lock, read whole by the snapshot with the uptime and the live network counters filled in at that moment (the counters' rates are timed by that uptime).
+
+```c
+#include "mesh/host_block.h"
 ```
 
 ## Ported from

@@ -2,11 +2,10 @@
 
 The GPU share maths of the load sampler: node load record deltas, share, slices, gaps, and nearest-rank quantiles.
 
-```
-@ajax/mesh-load-share: the GPU share a program's nodes obtained (load.rs Nl,
-Share, share, quantile): from the node load records' counters (mesh-abi NL_*:
-time observed, time lost to someone else, gaps, queue delay), summed over a
-program's nodes and over a window of samples.
+The GPU share a program's nodes obtained (load.rs Nl, Share, share, quantile): from the node load records' counters (mesh-abi NL_*: time observed, time lost to someone else, gaps, queue delay), summed over a program's nodes and over a window of samples.
+
+```c
+#include "mesh/load_share.h"
 ```
 
 ## Ported from
