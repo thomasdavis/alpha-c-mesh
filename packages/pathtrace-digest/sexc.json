@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/pathtrace-digest",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's digests: FNV-1a 64 over words, a tile's fold of 32 column digests, a payload's digest",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-digest",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "fnv",
+    "digest"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-scene": "workspace:*"
+  }
+}

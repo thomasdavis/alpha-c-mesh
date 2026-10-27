@@ -1,0 +1,24 @@
+{
+  "name": "@ajax/pathtrace-f32",
+  "version": "0.1.0",
+  "description": "programs/pathtrace's renderer instantiated with plain f32 operations (what the GPU computes, FTZ aside): pt_*_f32",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/pathtrace-f32",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "pathtrace",
+    "renderer",
+    "f32"
+  ],
+  "dependencies": {
+    "@ajax/pathtrace-tile": "workspace:*",
+    "@ajax/pathtrace-default-scene": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
+}

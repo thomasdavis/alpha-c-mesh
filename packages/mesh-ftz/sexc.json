@@ -1,0 +1,20 @@
+{
+  "name": "@ajax/mesh-ftz",
+  "version": "0.1.0",
+  "description": "The cluster float mode Z: f32 arithmetic with subnormal inputs and results flushed to signed zero, as the PTX .ftz ops",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ftz",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "float",
+    "ftz",
+    "determinism"
+  ],
+  "cflags": [
+    "-ffp-contract=off"
+  ]
+}

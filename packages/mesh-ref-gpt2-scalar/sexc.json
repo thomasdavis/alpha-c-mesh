@@ -1,0 +1,23 @@
+{
+  "name": "@ajax/mesh-ref-gpt2-scalar",
+  "version": "0.1.0",
+  "description": "GPT-2's scalar functions from + - * / in the cluster float mode: exp by a degree-10 polynomial, tanh, the tanh GELU, Newton sqrt",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gpt2-scalar",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gpt2",
+    "determinism"
+  ],
+  "dependencies": {
+    "@ajax/mesh-ftz": "workspace:*"
+  },
+  "cflags": [
+    "-ffp-contract=off"
+  ]
+}

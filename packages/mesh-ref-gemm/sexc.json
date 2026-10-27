@@ -1,0 +1,25 @@
+{
+  "name": "@ajax/mesh-ref-gemm",
+  "version": "0.1.0",
+  "description": "The gemm native program's inputs (exact small fractions) and its f64 reference with error bound",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-ref-gemm",
+  "keywords": [
+    "alphaos",
+    "mesh",
+    "reference",
+    "gemm"
+  ],
+  "targets": [
+    "host"
+  ],
+  "cflags": [
+    "-ffp-contract=off"
+  ],
+  "ldflags": [
+    "-lm"
+  ]
+}
