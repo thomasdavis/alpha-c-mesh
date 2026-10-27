@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-out",
+  "version": "0.1.0",
+  "description": "The job node's outputs (sends, blob pushes and fetches, persists, runs, cuts, answers, logs) and the rule that every persist is synced before the next send",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-out",
+  "keywords": ["mesh", "alphaos", "jobs", "durability", "fail-stop"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-strbuf": "workspace:*", "@ajax/mesh-jobs-id": "workspace:*",
+    "@ajax/mesh-jobs-frame": "workspace:*", "@ajax/mesh-jobs-log": "workspace:*"
+  }
+}

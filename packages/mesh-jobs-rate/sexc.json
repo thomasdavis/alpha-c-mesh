@@ -1,0 +1,12 @@
+{
+  "name": "@ajax/mesh-jobs-rate",
+  "version": "0.1.0",
+  "description": "A member's measured rate for a job program (an EWMA over windows) with slow start for its lease size",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-rate",
+  "keywords": ["mesh", "alphaos", "jobs", "rate", "ewma", "slow-start"],
+  "dependencies": {"@ajax/mesh-check": "workspace:*"}
+}

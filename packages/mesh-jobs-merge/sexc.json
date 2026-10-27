@@ -1,0 +1,15 @@
+{
+  "name": "@ajax/mesh-jobs-merge",
+  "version": "0.1.0",
+  "description": "A new job-table leader's merge of a majority's answers: committed tables first, then uncommitted entries, the latest leadership's first",
+  "kind": "library",
+  "license": "MIT",
+  "author": "Thomas Davis (C port); Richard Safier (alpha-rust-mesh)",
+  "repository": "https://github.com/thomasdavis/alpha-c-mesh",
+  "homepage": "https://github.com/thomasdavis/alpha-c-mesh/tree/main/packages/mesh-jobs-merge",
+  "keywords": ["mesh", "alphaos", "jobs", "merge", "election", "raft"],
+  "dependencies": {
+    "@ajax/mesh-check": "workspace:*", "@ajax/mesh-omap": "workspace:*", "@ajax/mesh-jobs-op": "workspace:*",
+    "@ajax/mesh-jobs-table": "workspace:*", "@ajax/mesh-jobs-log": "workspace:*"
+  }
+}
